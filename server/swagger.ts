@@ -1,5 +1,5 @@
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -10,14 +10,12 @@ const swaggerOptions = {
         name: 'parodi.dev@gmail.com',
       },
       servers: ['http://localhost:4000'],
+      version: '1.0.0', // Ajoutez une version ici
     },
   },
-  apis: ['./routes/**/*.js'],
+  apis: ['./routes/**/*.ts'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-module.exports = {
-  swaggerUi,
-  swaggerDocs,
-};
+export { swaggerUi, swaggerDocs };

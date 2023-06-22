@@ -1,5 +1,5 @@
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+import express, { Request, Response } from 'express';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -30,8 +30,9 @@ const prisma = new PrismaClient();
  *         description: Something went wrong.
  */
 
-router.get('/', async (req, res) => {
-  const { sort, active } = req.query;
+router.get('/', async (req: Request, res: Response) => {
+  const sort: any = req.query.sort;
+  const active: any = req.query.active;
 
   const sortOptions = [
     'idAsc',
@@ -54,53 +55,37 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ error: 'Invalid active parameter.' });
   }
 
-  let sortParams;
+  let sortParams: any;
   switch (sort) {
-    // e.g., http://localhost:4000/registered?sort=idAsc
     case 'idAsc':
       sortParams = { id: 'asc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=idDesc
     case 'idDesc':
       sortParams = { id: 'desc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=emailAsc
     case 'emailAsc':
       sortParams = { email: 'asc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=emailDesc
     case 'emailDesc':
       sortParams = { email: 'desc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=createdAtAsc
     case 'createdAtAsc':
       sortParams = { createdAt: 'asc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=createdAtDesc
     case 'createdAtDesc':
       sortParams = { createdAt: 'desc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=updatedAtAsc
     case 'updatedAtAsc':
       sortParams = { updatedAt: 'asc' };
       break;
-
-    // e.g., http://localhost:4000/registered?sort=updatedAtDesc
     case 'updatedAtDesc':
       sortParams = { updatedAt: 'desc' };
       break;
-
     default:
       break;
   }
 
-  let filterParams = {};
+  let filterParams: any = {};
   if (active !== undefined) {
     filterParams.active = active === 'true';
   }
@@ -113,9 +98,10 @@ router.get('/', async (req, res) => {
 
     return res.json(registeredUsers);
   } catch (error) {
-    console.error(error);
+    const prismaError = error as Prisma.PrismaClientKnownRequestError;
+    console.error(prismaError);
     return res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
-module.exports = router;
+export default router;

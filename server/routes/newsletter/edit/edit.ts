@@ -1,8 +1,8 @@
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+import express, { Request, Response, Router } from 'express';
+import { PrismaClient, Prisma } from '@prisma/client';
 
-const router = express.Router();
-const prisma = new PrismaClient();
+const router: Router = express.Router();
+const prisma: PrismaClient = new PrismaClient();
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ const prisma = new PrismaClient();
  *               type: string
  */
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { column, value } = req.body;
 
@@ -93,4 +93,4 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

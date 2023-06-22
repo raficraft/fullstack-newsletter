@@ -1,7 +1,6 @@
-const validator = require('validator');
-const PRISMA = require('../../../constante.js');
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+import validator from 'validator';
+import express, { Request, Response } from 'express';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -46,33 +45,34 @@ const prisma = new PrismaClient();
  *               type: string
  */
 
-router.post('/', async (req, res) => {
-  const { email } = req.body;
+export default function (prisma: PrismaClient) {
+  const router = express.Router();
 
-  if (!email && !validator.isEmail(email)) {
-    return res.status(400).json({ error: 'Valid email is required' });
-  }
+  router.post('/', async (req: Request, res: Response) => {
+    const { email } = req.body;
 
-  try {
-    const newUser = await prisma.newsletter.create({
-      data: {
-        email,
-        active: true, // New users are active by default
-      },
-    });
-
-    return res.json(newUser);
-  } catch (error) {
-    if (
-      error.code === PRISMA.UNIQUE_CONSTRAINT_ERROR &&
-      error.meta?.target?.includes('email')
-    ) {
-      return res.status(400).json({ error: 'This email is already in use' });
+    if (!email || !validator.isEmail(email)) {
+      return res.status(400).json({ error: 'Valid email is required' });
     }
 
-    console.error(error);
-    return res.status(500).json({ error: 'Something went wrong' });
-  }
-});
+    try {
+      const newUser = await prisma.newsletter.create({
+        data: {
+          email,
+          active: true, // New users are active by default
+        },
+      });
+      console.log('good', newUser);
 
-module.exports = router;
+      return res.json(newUser);
+    } catch (error: any) {
+      console.log(error);
+      if (error.code === 'P2002') {
+        console.log('400');
+        res.status(400).json({ error: 'This email is already in use' });
+      }
+    }
+  });
+
+  return router;
+}
