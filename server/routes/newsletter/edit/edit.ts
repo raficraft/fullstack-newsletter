@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 /**
@@ -55,7 +55,7 @@ import { PrismaClient } from '@prisma/client';
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.put('/:id', async (req: Request, res: Response) => {
+  router.put('/:id', async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { email } = req.body;
 

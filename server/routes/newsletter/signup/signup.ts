@@ -2,9 +2,6 @@ import validator from 'validator';
 import express, { Request, Response } from 'express';
 import { PrismaClient, Prisma } from '@prisma/client';
 
-const router = express.Router();
-const prisma = new PrismaClient();
-
 /**
  * @swagger
  * /newsletter/signup:

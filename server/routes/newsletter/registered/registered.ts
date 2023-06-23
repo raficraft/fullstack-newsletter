@@ -1,8 +1,5 @@
 import express, { Request, Response } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
-
-const router = express.Router();
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client';
 
 /**
  * @swagger
@@ -26,14 +23,36 @@ const prisma = new PrismaClient();
  *     responses:
  *       200:
  *         description: The list of users registered for the newsletter.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid parameters.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Something went wrong.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.get('/', async (req: Request, res: Response) => {
+  router.get('/', async (req: Request, res: Response): Promise<Response> => {
     const sort: any = req.query.sort;
     const active: any = req.query.active;
 
