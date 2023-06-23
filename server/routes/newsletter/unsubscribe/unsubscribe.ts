@@ -1,13 +1,16 @@
 import express, { Request, Response, Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
+
+const router: Router = express.Router();
+const prisma: PrismaClient = new PrismaClient();
 
 /**
  * @swagger
- * /newsletter/edit/{id}:
+ * /newsletter/unsubscribe/{id}:
  *   put:
  *     tags:
  *       - Newsletter
- *     summary: Edit email field on BDD
+ *     summary: Edit active field on BDD
  *     consumes:
  *       - application/json
  *     parameters:
@@ -22,11 +25,11 @@ import { PrismaClient } from '@prisma/client';
  *         schema:
  *           type: object
  *           properties:
- *             email:
- *               type: string
+ *             active:
+ *               type: boolean
  *     responses:
  *       200:
- *         description: Successfully edit email field
+ *         description: Successfully edit active field
  *         schema:
  *           type: object
  *           properties:
@@ -57,23 +60,22 @@ export default function (prisma: PrismaClient) {
 
   router.put('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { email } = req.body;
+    const { active } = req.body;
 
-    if (email === undefined || typeof email !== 'string') {
+    if (active === undefined || typeof active !== 'boolean') {
       return res
         .status(400)
-        .json({ error: 'Invalid value for "email". Expected a string.' });
+        .json({ error: 'Invalid value for "active". Expected a boolean.' });
     }
 
     try {
       const user = await prisma.newsletter.update({
         where: { id: Number(id) },
-        data: { email },
+        data: { active },
       });
 
       return res.json(user);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Something went wrong' });
     }
   });

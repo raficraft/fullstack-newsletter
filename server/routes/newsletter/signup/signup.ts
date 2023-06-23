@@ -62,14 +62,15 @@ export default function (prisma: PrismaClient) {
           active: true, // New users are active by default
         },
       });
-      console.log('good', newUser);
 
       return res.json(newUser);
-    } catch (error: any) {
-      console.log(error);
-      if (error.code === 'P2002') {
-        console.log('400');
+    } catch (error) {
+      const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+      if (prismaError.code === 'P2002') {
         res.status(400).json({ error: 'This email is already in use' });
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
       }
     }
   });

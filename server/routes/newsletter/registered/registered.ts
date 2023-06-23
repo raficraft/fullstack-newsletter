@@ -30,78 +30,80 @@ const prisma = new PrismaClient();
  *         description: Something went wrong.
  */
 
-router.get('/', async (req: Request, res: Response) => {
-  const sort: any = req.query.sort;
-  const active: any = req.query.active;
+export default function (prisma: PrismaClient) {
+  const router = express.Router();
 
-  const sortOptions = [
-    'idAsc',
-    'idDesc',
-    'emailAsc',
-    'emailDesc',
-    'createdAtAsc',
-    'createdAtDesc',
-    'updatedAtAsc',
-    'updatedAtDesc',
-  ];
+  router.get('/', async (req: Request, res: Response) => {
+    const sort: any = req.query.sort;
+    const active: any = req.query.active;
 
-  // Vérification de la validité du paramètre sort
-  if (sort && !sortOptions.includes(sort)) {
-    return res.status(400).json({ error: 'Invalid sort parameter.' });
-  }
+    const sortOptions = [
+      'idAsc',
+      'idDesc',
+      'emailAsc',
+      'emailDesc',
+      'createdAtAsc',
+      'createdAtDesc',
+      'updatedAtAsc',
+      'updatedAtDesc',
+    ];
 
-  // Vérification de la validité du paramètre active
-  if (active !== undefined && active !== 'true' && active !== 'false') {
-    return res.status(400).json({ error: 'Invalid active parameter.' });
-  }
+    // Vérification de la validité du paramètre sort
+    if (sort && !sortOptions.includes(sort)) {
+      return res.status(400).json({ error: 'Invalid sort parameter.' });
+    }
 
-  let sortParams: any;
-  switch (sort) {
-    case 'idAsc':
-      sortParams = { id: 'asc' };
-      break;
-    case 'idDesc':
-      sortParams = { id: 'desc' };
-      break;
-    case 'emailAsc':
-      sortParams = { email: 'asc' };
-      break;
-    case 'emailDesc':
-      sortParams = { email: 'desc' };
-      break;
-    case 'createdAtAsc':
-      sortParams = { createdAt: 'asc' };
-      break;
-    case 'createdAtDesc':
-      sortParams = { createdAt: 'desc' };
-      break;
-    case 'updatedAtAsc':
-      sortParams = { updatedAt: 'asc' };
-      break;
-    case 'updatedAtDesc':
-      sortParams = { updatedAt: 'desc' };
-      break;
-    default:
-      break;
-  }
+    // Vérification de la validité du paramètre active
+    if (active !== undefined && active !== 'true' && active !== 'false') {
+      return res.status(400).json({ error: 'Invalid active parameter.' });
+    }
 
-  let filterParams: any = {};
-  if (active !== undefined) {
-    filterParams.active = active === 'true';
-  }
+    let sortParams: any;
+    switch (sort) {
+      case 'idAsc':
+        sortParams = { id: 'asc' };
+        break;
+      case 'idDesc':
+        sortParams = { id: 'desc' };
+        break;
+      case 'emailAsc':
+        sortParams = { email: 'asc' };
+        break;
+      case 'emailDesc':
+        sortParams = { email: 'desc' };
+        break;
+      case 'createdAtAsc':
+        sortParams = { createdAt: 'asc' };
+        break;
+      case 'createdAtDesc':
+        sortParams = { createdAt: 'desc' };
+        break;
+      case 'updatedAtAsc':
+        sortParams = { updatedAt: 'asc' };
+        break;
+      case 'updatedAtDesc':
+        sortParams = { updatedAt: 'desc' };
+        break;
+      default:
+        break;
+    }
 
-  try {
-    const registeredUsers = await prisma.newsletter.findMany({
-      orderBy: sortParams,
-      where: filterParams,
-    });
+    let filterParams: any = {};
+    if (active !== undefined) {
+      filterParams.active = active === 'true';
+    }
 
-    return res.json(registeredUsers);
-  } catch (error) {
-    const prismaError = error as Prisma.PrismaClientKnownRequestError;
-    console.error(prismaError);
-    return res.status(500).json({ error: 'Something went wrong' });
-  }
-});
+    try {
+      const registeredUsers = await prisma.newsletter.findMany({
+        orderBy: sortParams,
+        where: filterParams,
+      });
 
-export default router;
+      return res.json(registeredUsers);
+    } catch (error) {
+      return res.status(500).json({ error: 'Something went wrong' });
+    }
+  });
+
+  return router;
+}

@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import createSignupRouter from '../signup';
 import { prismaMock } from '../../../../__mocks__/prisma';
-import { Prisma } from '@prisma/client';
+import { convertDatesToStrings } from '../../../../utils/utils';
 
 const app = express();
 app.use(express.json());
@@ -17,70 +17,63 @@ const mockUser = {
   updatedAt: new Date(),
 };
 
-const mockUserForAssertion = {
-  ...mockUser,
-  createdAt: mockUser.createdAt.toISOString(),
-  updatedAt: mockUser.updatedAt.toISOString(),
-};
-
 describe('POST /newsletter/signup', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should register a new user', async () => {
-    prismaMock.newsletter.create.mockResolvedValue(mockUser);
+  describe('Good request', () => {
+    test('should register a new user', async () => {
+      prismaMock.newsletter.create.mockResolvedValue(mockUser);
 
-    const res = await request(app)
-      .post('/newsletter/signup')
-      .send({ email: mockUser.email });
+      const res = await request(app)
+        .post('/newsletter/signup')
+        .send({ email: mockUser.email });
 
-    expect(res.status).toBe(200);
+      expect(res.status).toBe(200);
 
-    const { createdAt, updatedAt, ...rest } = res.body;
-    const formattedResBody = {
-      ...rest,
-      createdAt: new Date(createdAt).toISOString(),
-      updatedAt: new Date(updatedAt).toISOString(),
-    };
+      convertDatesToStrings(mockUser);
 
-    expect(formattedResBody).toEqual(mockUserForAssertion);
+      expect(res.body).toEqual(mockUser);
+    });
   });
 
-  it('should handle duplicate email error', async () => {
-    const prismaError: any = new Error(
-      'Unique constraint failed on the fields: (`email`)'
-    );
-    prismaError.code = 'P2002';
-    prismaMock.newsletter.create.mockRejectedValue(prismaError);
+  describe('Wrong request', () => {
+    test('should handle duplicate email error', async () => {
+      prismaMock.newsletter.create.mockRejectedValue({
+        code: 'P2002',
+        clientVersion: '4.15.0',
+        meta: { target: 'Newsletter_email_key' },
+      });
 
-    const res = await request(app)
-      .post('/newsletter/signup')
-      .send({ email: mockUser.email });
+      const res = await request(app)
+        .post('/newsletter/signup')
+        .send({ email: mockUser.email });
 
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: 'This email is already in use' });
-  });
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: 'This email is already in use' });
+    });
 
-  it('should handle server errors', async () => {
-    const unknownError = new Error('Unknown error');
+    test('should handle server errors', async () => {
+      const unknownError = new Error('Unknown error');
 
-    prismaMock.newsletter.create.mockRejectedValue(unknownError);
+      prismaMock.newsletter.create.mockRejectedValue(unknownError);
 
-    const res = await request(app)
-      .post('/newsletter/signup')
-      .send({ email: mockUser.email });
+      const res = await request(app)
+        .post('/newsletter/signup')
+        .send({ email: mockUser.email });
 
-    expect(res.status).toBe(500);
-    expect(res.body).toEqual({ error: 'Something went wrong' });
-  });
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ error: 'Something went wrong' });
+    });
 
-  it('should validate email', async () => {
-    const res = await request(app)
-      .post('/newsletter/signup')
-      .send({ email: 'not an email' });
+    test('should validate email', async () => {
+      const res = await request(app)
+        .post('/newsletter/signup')
+        .send({ email: 'not an email' });
 
-    expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: 'Valid email is required' });
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: 'Valid email is required' });
+    });
   });
 });
