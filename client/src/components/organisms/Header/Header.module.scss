@@ -1,0 +1,14 @@
+@import "@css/mixin/mixin.scss";
+
+.header {
+  @include flex(row, space-between, center);
+  padding: 58px 0 51px;
+  background-color: var(--background);
+}
+
+.switch {
+  position: relative;
+  @include flex(row, space-between, center);
+  gap: 1.625rem;
+  z-index: 300;
+}

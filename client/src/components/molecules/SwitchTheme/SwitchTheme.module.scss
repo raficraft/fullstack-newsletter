@@ -1,0 +1,93 @@
+$width: 2.5rem;
+$height: 1.25rem;
+$spacing: 3px;
+
+.switchButton {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: $width;
+  height: $height;
+  background-color: var(--dark-to-accent);
+  border-radius: 99999px;
+  cursor: pointer;
+  content: " ";
+  -webkit-appearance: none;
+  appearance: none;
+
+  &::before {
+    position: absolute;
+    display: block;
+    left: $spacing;
+    width: calc($height - ($spacing * 2));
+    height: calc($height - ($spacing * 2));
+    transition: ease-in var(--transition-xs);
+    content: " ";
+    background-color: var(--clr-primary-800);
+    border-radius: 99999px;
+  }
+
+  &:checked::before {
+    transform: translateX(calc(200% - ($height / 2) + $spacing));
+    background-color: white;
+  }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  height: $height;
+  overflow: hidden;
+  position: relative;
+  height: $height;
+  width: $height;
+  svg {
+    height: $height;
+    width: $height;
+  }
+}
+
+.animate_switchTheme {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+
+  // height: calc(3 * $height);
+  // position: absolute;
+  // width: $height;
+  // content: " ";
+  // transform: translateY(0%);
+}
+
+.enter,
+.appear {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.enterActive,
+.appearActive {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.exitActive {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s, transform 0.3s;
+}

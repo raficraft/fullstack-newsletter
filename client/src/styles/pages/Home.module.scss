@@ -1,0 +1,16 @@
+@import "@css/mixin/mixin.scss";
+
+.main {
+  @include flex(column);
+  gap: 2.5rem;
+
+  &_header {
+    @include flex(row, space-between, center);
+    gap: 2rem;
+  }
+
+  .title {
+    @include flex(column);
+    gap: 0.5rem;
+  }
+}

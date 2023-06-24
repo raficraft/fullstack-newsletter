@@ -1,0 +1,23 @@
+@import "@css/mixin/mixin.scss";
+
+.icon {
+  position: absolute;
+  top: 0;
+  right: 1.25rem;
+  bottom: 0;
+  @include flex(row, center, center);
+
+  svg {
+    @include size(1rem);
+    color: var(--clr-accent);
+  }
+}
+
+.bloc {
+  gap: 0.75rem;
+  @include flex(column);
+}
+
+.blocInput {
+  position: relative;
+}

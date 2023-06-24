@@ -1,0 +1,57 @@
+@import "@css/mixin/mixin.scss";
+
+.dropList {
+  position: relative;
+  @include flex(column);
+  cursor: pointer;
+
+  button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: var(--fs-200);
+    color: var(--color);
+    font-family: var(--font-family);
+  }
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.optionsList {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  @include flex(column);
+  width: 183px;
+  padding: 1.5rem;
+  gap: 1rem;
+  color: var(--color-dropList);
+  box-sizing: border-box;
+  background-color: var(--background-dropList);
+  box-shadow: var(--shadow);
+  border-radius: 1rem;
+  transition: ease-in var(--transition-md);
+  z-index: var(--z-index-200);
+  cursor: pointer;
+
+  &[data-open="false"] {
+    display: none;
+  }
+
+  &[data-open="true"] {
+    display: flex;
+  }
+
+  .option {
+    text-align: left;
+  }
+
+  .option:hover,
+  .active {
+    color: var(--clr-accent);
+  }
+}
