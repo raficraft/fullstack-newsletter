@@ -1,10 +1,21 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { Inter } from 'next/font/google';
+import { Button, Text } from '@components/atoms';
+import { Field } from '@components/molecules';
+import styles from '@styles/pages/Home.module.scss';
+import SubscribeNewsletter from '@components/organisms/form/SubscribeNewsLetter/SubscribeNewsletter';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const [subscribed, setSubscribed] = useState(false);
+  const [subscribedEmail, setSubscribedEmail] = useState<string | null>(null);
+
+  const handleSuccessfulSubmit = (email: string) => {
+    setSubscribed(true);
+    setSubscribedEmail(email);
+  };
   return (
     <>
       <Head>
@@ -13,8 +24,40 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main>
-        <h1>NEW PROJECT</h1>
+      <main className='rootContainer'>
+        {subscribed ? (
+          <div>
+            yes {subscribedEmail}
+            <button
+              onClick={() => {
+                setSubscribed(false);
+              }}
+            >
+              close
+            </button>
+          </div>
+        ) : (
+          <section className={styles.content}>
+            <div>
+              <Text tag='h1' className='text_xl'>
+                Stay uptated !
+              </Text>
+              <Text tag='p'>
+                Join 60,000+ product managers receiving monthly updates on:
+              </Text>
+
+              <ul>
+                <li>Product discovery and building what matters</li>
+                <li>Measuring to ensure updates are a success</li>
+                <li>And much more!</li>
+              </ul>
+              <SubscribeNewsletter
+                onSuccessfulSubmit={handleSuccessfulSubmit}
+              />
+            </div>
+            <div className={styles.pureCss}>Pure css</div>
+          </section>
+        )}
       </main>
     </>
   );

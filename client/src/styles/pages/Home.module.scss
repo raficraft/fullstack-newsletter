@@ -1,16 +1,20 @@
-@import "@css/mixin/mixin.scss";
+@import '@css/mixin/mixin.scss';
 
-.main {
-  @include flex(column);
-  gap: 2.5rem;
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 
-  &_header {
-    @include flex(row, space-between, center);
-    gap: 2rem;
+@media (max-width: 600px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row-reverse;
   }
+}
 
-  .title {
-    @include flex(column);
-    gap: 0.5rem;
-  }
+.pureCss {
+  background: var(--gradient);
+  border-radius: var(--radius-md);
+  min-width: 100%;
 }

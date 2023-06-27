@@ -7,7 +7,7 @@ import {
 import { swaggerDocs } from './swagger';
 import cors from 'cors';
 
-import newsletterRoutes from '@newsletter/index';
+import newsletterRoutes from './routes/newsletter/index';
 
 dotenv.config();
 

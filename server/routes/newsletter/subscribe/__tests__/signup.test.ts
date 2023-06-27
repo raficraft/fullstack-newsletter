@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import createSignupRouter from '../signup';
+import createSignupRouter from '../subscribe';
 import { prismaMock } from '../../../../__mocks__/prisma';
 import { convertDatesToStrings } from '../../../../utils/utils';
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   FieldErrorMessages,
   FormElementType,
@@ -6,7 +6,7 @@ import {
   FormValidity,
   UseFormOptions,
   UseFormReturn,
-} from "./types";
+} from './types';
 
 const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
   const [errors, setErrors] = useState<FormErrors>({});
@@ -37,7 +37,7 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
     const validFields: string[] = [];
 
     for (const element of elements) {
-      if (element.tagName === "BUTTON" || element.disabled) continue;
+      if (element.tagName === 'BUTTON' || element.disabled) continue;
       if (!element.checkValidity()) {
         const name = element.name;
         const errorMessage = getErrorMessage(fields[name], element);
@@ -126,26 +126,26 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
       let validityLabel;
 
       switch (key) {
-        case "required":
-          validityLabel = "valueMissing";
+        case 'required':
+          validityLabel = 'valueMissing';
           break;
-        case "pattern":
-          validityLabel = "patternMismatch";
+        case 'pattern':
+          validityLabel = 'patternMismatch';
           break;
-        case "maxLength":
-          validityLabel = "tooLong";
+        case 'maxLength':
+          validityLabel = 'tooLong';
           break;
-        case "minLength":
-          validityLabel = "tooShort";
+        case 'minLength':
+          validityLabel = 'tooShort';
           break;
-        case "min":
-          validityLabel = "rangeUnderflow";
+        case 'min':
+          validityLabel = 'rangeUnderflow';
           break;
-        case "max":
-          validityLabel = "rangeOverflow";
+        case 'max':
+          validityLabel = 'rangeOverflow';
           break;
-        case "step":
-          validityLabel = "stepMismatch";
+        case 'step':
+          validityLabel = 'stepMismatch';
           break;
         default:
           validityLabel = key;

@@ -4,22 +4,39 @@ import { Input, Text } from '@atoms/index';
 import Spinner from '@components/atoms/Spinner/Spinner';
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  children?: ReactNode;
-  reverse?: boolean;
-  error?: string;
-  svg?: ReactNode;
-  loading?: boolean;
+  children: ReactNode;
+  reverse: boolean;
+  error: string;
+  svg: ReactNode;
+  loading: boolean;
+  errorPosition: 'bottom' | 'label';
 }
 
 const Field = forwardRef(
   (
-    { children, reverse, error, svg, loading = false, ...rest }: FieldProps,
+    {
+      children,
+      reverse,
+      error,
+      svg,
+      loading = false,
+      errorPosition = 'bottom',
+      ...rest
+    }: Partial<FieldProps>,
     ref: Ref<HTMLInputElement>
   ) => {
     return (
       <div className={styles.bloc}>
         <div className={styles.blocInput}>
-          {!reverse && children ? children : null}
+          <span className={styles.blocLabel}>
+            {!reverse && children ? children : null}
+
+            {errorPosition === 'label' ? (
+              <Text className={`text_warning text_s`} role='alert'>
+                {error || ''}
+              </Text>
+            ) : null}
+          </span>
           <Input ref={ref} {...rest}></Input>
           {svg && !loading ? <span className={styles.icon}>{svg}</span> : null}
           {loading && (
@@ -29,9 +46,12 @@ const Field = forwardRef(
           )}
           {reverse && children ? children : null}
         </div>
-        <Text className={`text_warning text_s`} role='alert'>
-          {error || ''}
-        </Text>
+
+        {errorPosition === 'bottom' ? (
+          <Text className={`text_warning text_s`} role='alert'>
+            {error || ''}
+          </Text>
+        ) : null}
       </div>
     );
   }

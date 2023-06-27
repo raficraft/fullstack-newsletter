@@ -1,4 +1,4 @@
-@import "@css/mixin/mixin.scss";
+@import '@css/mixin/mixin.scss';
 
 .icon {
   position: absolute;
@@ -14,10 +14,14 @@
 }
 
 .bloc {
-  gap: 0.75rem;
   @include flex(column);
+  gap: 0.75rem;
 }
 
 .blocInput {
   position: relative;
+}
+
+.blocLabel {
+  @include flex();
 }

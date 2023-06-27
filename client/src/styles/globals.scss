@@ -1,26 +1,30 @@
 @use '@css/components/atoms/form/input.scss';
+@use '@css/components/atoms/form/button.scss';
 @use '@css/components/atoms/Text/text.scss';
 @import '@css/mixin/mixin.scss';
 @import '@css/utils/animation.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
-  --clr-accent: #ff6155;
-  --clr-warning: rgb(255, 82, 82);
-  --clr-light-gray: rgba(25, 24, 43, 0.25);
+  --clr-accent: rgb(255, 97, 85);
+  --clr-warning: rgb(255, 232, 230);
+  --clr-light-gray: rgb(216, 216, 216);
+  --clr-primary-transparent: rgba(25, 24, 43, 0.25);
 
   --clr-primary-100: rgb(25, 24, 43);
   --clr-primary-200: rgb(36, 39, 66);
   --clr-primary-300: rgba(46, 49, 73);
-  --clr-primary-400: rgba(58, 58, 58);
-  --clr-primary-500: rgba(117, 117, 117);
-  --clr-primary-600: rgba(180, 180, 180);
-  --clr-primary-700: rgba(244, 244, 244);
+  --clr-primary-400: rgba(54, 66, 76);
+  --clr-primary-500: rgba(105, 117, 137);
+  --clr-primary-600: rgba(165, 172, 180);
+  --clr-primary-700: rgba(210, 210, 210);
   --clr-primary-800: rgba(255, 255, 255);
+
+  --gradient: linear-gradient(180deg, #ff6a3d 0%, #ff5b66 100%);
 
   // Font size
 
-  --fs-500: 4rem; // 64px
+  --fs-500: 3.5rem; // 56px
   --fs-400: 1.5rem; // 24px
   --fs-300: 1.25rem; // 20px
   --fs-200: 1.125rem; // 18px
@@ -36,6 +40,12 @@
   --root-size: 51rem;
 
   --color: rgb(36, 39, 66);
+
+  // radius
+
+  --radius-xl: 2.25rem;
+  --radius-md: 1rem;
+  --radius-sm: 0.5rem;
 
   @media screen and (max-width: 600px) {
     --fs-500: 2rem; // 32px
@@ -80,23 +90,23 @@ body {
   font-family: var(--font-family);
   color: var(--color);
   line-height: 1.5;
+  font-size: 16px;
 }
 
 #__next {
   width: 100%;
   height: inherit;
-  background-color: var(--background);
-  @include flex(column, '', center);
-}
-
-main {
-  padding-bottom: 8rem;
+  @include flex(column, center, center);
+  background-color: var(--clr-primary-400);
 }
 
 .rootContainer {
   @include flex(column);
-  min-height: 100%;
-  width: min(100% - 2.5rem, 51rem);
+  width: min(100%, 58rem);
+  padding-bottom: 8rem;
+  background-color: var(--clr-primary-800);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
 }
 
 label {

@@ -52,3 +52,8 @@
 .italic {
   font-style: italic;
 }
+
+h1 {
+  font-size: var(--fs-500);
+  line-height: 1;
+}
