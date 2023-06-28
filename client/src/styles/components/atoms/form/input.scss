@@ -15,7 +15,8 @@
 
   &::placeholder {
     opacity: 0.5;
-    color: rgb(146, 147, 161);
+    color: var(--clr-primary-100);
+    font-weight: 400;
   }
 
   @media screen and (max-width: 600px) {
@@ -29,9 +30,9 @@
     caret-color: var(--clr-primary-100);
   }
 
-  &_invalid {
+  &:invalid {
     border: 1px solid var(--clr-accent);
-    background-color: var(--clr-warning);
+    background-color: rgb(255, 96, 84, 0.15);
     outline-width: 1px;
     outline-color: var(--clr-accent);
   }

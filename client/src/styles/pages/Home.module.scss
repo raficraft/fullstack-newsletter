@@ -3,18 +3,29 @@
 .content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
+  gap: 4rem;
+  height: 641px;
+  background-color: var(--clr-primary-800);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem 1.5rem 1.5rem 4rem;
 
-@media (max-width: 600px) {
-  .parent {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row-reverse;
+  &_form {
+    @include flex(column, center);
+    gap: 2.5rem;
   }
-}
+  &_info {
+    @include flex(column);
+    gap: 1.5rem;
+  }
 
-.pureCss {
-  background: var(--gradient);
-  border-radius: var(--radius-md);
-  min-width: 100%;
+  ul {
+    @include flex(column);
+    gap: 0.625rem;
+  }
+
+  li {
+    list-style: none;
+    @include flex(row, '', center);
+    gap: 1rem;
+  }
 }

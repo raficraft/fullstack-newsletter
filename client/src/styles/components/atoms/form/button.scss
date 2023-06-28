@@ -4,10 +4,15 @@
   max-width: 100%;
   width: 100%;
   border: none;
-  background-color: var(--clr-primary-100);
+  background: var(--clr-primary-100);
   color: var(--clr-primary-800);
   border-radius: var(--radius-sm);
   height: 3.25rem;
   font-weight: 700;
   font-size: 1rem;
+
+  @include on-event {
+    background: linear-gradient(225deg, #ff6a3a 0%, #ff527b 100%);
+    box-shadow: 0px 16px 32px 0px rgba(255, 97, 85, 0.5);
+  }
 }

@@ -29,9 +29,9 @@
       "@svg/*": ["src/assets/svg/*"],
       "@styles/*": ["src/styles/*"],
       "@store/*": ["src/store/*"],
-      "@pages/*": ["src/pages/*"],
-    },    
-  },  
+      "@pages/*": ["src/pages/*"]
+    }    
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -19,7 +19,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
           message: 'Email required',
         },
         pattern: {
-          message: 'Email invalid',
+          message: 'Valid email required',
         },
       },
     },

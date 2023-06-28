@@ -7,7 +7,7 @@
 
 :root {
   --clr-accent: rgb(255, 97, 85);
-  --clr-warning: rgb(255, 232, 230);
+  --clr-warning: rgb(255, 97, 85);
   --clr-light-gray: rgb(216, 216, 216);
   --clr-primary-transparent: rgba(25, 24, 43, 0.25);
 
@@ -28,7 +28,7 @@
   --fs-400: 1.5rem; // 24px
   --fs-300: 1.25rem; // 20px
   --fs-200: 1.125rem; // 18px
-  --fs-100: 0.875rem; // 14px
+  --fs-100: 0.75rem; // 12px
 
   --transition-xs: 0.3s;
   --transition-md: 0.5s;
@@ -52,7 +52,7 @@
     --fs-400: 1.125rem; // 18px
     --fs-300: 1.125rem; // 18px
     --fs-200: 0.875rem; // 14px
-    --fs-100: 0.875rem; // 14px
+    --fs-100: 0.75rem; // 12px
   }
 
   // NEXT.js default font
@@ -103,10 +103,6 @@ body {
 .rootContainer {
   @include flex(column);
   width: min(100%, 58rem);
-  padding-bottom: 8rem;
-  background-color: var(--clr-primary-800);
-  border-radius: var(--radius-xl);
-  padding: 1.5rem;
 }
 
 label {
@@ -141,4 +137,12 @@ label {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.absolute {
+  position: absolute;
+}
+
+button {
+  cursor: pointer;
 }

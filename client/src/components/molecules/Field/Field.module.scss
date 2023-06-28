@@ -13,15 +13,23 @@
   }
 }
 
-.bloc {
+.field {
   @include flex(column);
   gap: 0.75rem;
 }
 
-.blocInput {
+.field_input {
   position: relative;
+  margin-bottom: 1.5rem;
 }
 
-.blocLabel {
-  @include flex();
+.label {
+  @include flex(row, space-between);
+  margin-bottom: 0.5rem;
+  max-height: 1.125rem;
+
+  label {
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
 }

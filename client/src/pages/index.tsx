@@ -5,6 +5,9 @@ import { Field } from '@components/molecules';
 import styles from '@styles/pages/Home.module.scss';
 import SubscribeNewsletter from '@components/organisms/form/SubscribeNewsLetter/SubscribeNewsletter';
 import { useState } from 'react';
+import { AbstractDiagram, AbstractScore } from '@assets/svg/abstract';
+import Abstract from '@components/pages/Abstract/Abstract';
+import { IconCheck } from '@assets/svg/icons';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,24 +41,34 @@ export default function Home() {
           </div>
         ) : (
           <section className={styles.content}>
-            <div>
-              <Text tag='h1' className='text_xl'>
-                Stay uptated !
-              </Text>
-              <Text tag='p'>
-                Join 60,000+ product managers receiving monthly updates on:
-              </Text>
+            <div className={styles.content_form}>
+              <div className={styles.content_info}>
+                <Text tag='h1' className='text_xl'>
+                  Stay uptated !
+                </Text>
+                <Text tag='p'>
+                  Join 60,000+ product managers receiving monthly updates on:
+                </Text>
 
-              <ul>
-                <li>Product discovery and building what matters</li>
-                <li>Measuring to ensure updates are a success</li>
-                <li>And much more!</li>
-              </ul>
+                <ul>
+                  <li>
+                    <IconCheck /> discovery and building what matters
+                  </li>
+                  <li>
+                    <IconCheck />
+                    Measuring to ensure updates are a success
+                  </li>
+                  <li>
+                    <IconCheck />
+                    And much more!
+                  </li>
+                </ul>
+              </div>
               <SubscribeNewsletter
                 onSuccessfulSubmit={handleSuccessfulSubmit}
               />
             </div>
-            <div className={styles.pureCss}>Pure css</div>
+            <Abstract />
           </section>
         )}
       </main>

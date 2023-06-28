@@ -26,13 +26,13 @@ const Field = forwardRef(
     ref: Ref<HTMLInputElement>
   ) => {
     return (
-      <div className={styles.bloc}>
-        <div className={styles.blocInput}>
-          <span className={styles.blocLabel}>
+      <div className={styles.field}>
+        <div className={styles.field_input}>
+          <span className={styles.label}>
             {!reverse && children ? children : null}
 
             {errorPosition === 'label' ? (
-              <Text className={`text_warning text_s`} role='alert'>
+              <Text className={`text_warning text_xs bold_700`} role='alert'>
                 {error || ''}
               </Text>
             ) : null}
@@ -48,7 +48,7 @@ const Field = forwardRef(
         </div>
 
         {errorPosition === 'bottom' ? (
-          <Text className={`text_warning text_s`} role='alert'>
+          <Text className={`text_warning text_xs`} role='alert'>
             {error || ''}
           </Text>
         ) : null}
