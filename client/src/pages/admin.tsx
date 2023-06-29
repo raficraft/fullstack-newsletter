@@ -2,18 +2,53 @@ import Head from 'next/head';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import { Field } from '@components/molecules';
-import { Button, Text } from '@components/atoms';
+import { DropList, SwitchButton, Text } from '@components/atoms';
 import { usePaginate } from '@hooks/index';
 import styles from '@styles/pages/Admin.module.scss';
-import { IconMagnify } from '@assets/svg/icons';
+import { IconMagnify, IconeDelete, IconeUnsubscribe } from '@assets/svg/icons';
+import useNewsLetterAPI from '@hooks/useNewsLetterAPI/useNewsLetterApi';
 
 export default function Admin({
   newsLetters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [data, setData] = useState(newsLetters);
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
-    newsLetters,
-    10
+    data,
+    5
   );
+
+  const {
+    errorApi,
+    loading,
+    deleteSubscribe,
+    toggleSubscribe,
+    editSubscribe,
+    registered,
+  } = useNewsLetterAPI();
+
+  const loadData = async () => {
+    const newsLetters = await registered();
+    setData(newsLetters);
+  };
+
+  const handleDeletesubscribe = async (id: string) => {
+    await deleteSubscribe(id);
+    await loadData();
+  };
+
+  const handleUnsubscribe = async (id: string, active: boolean) => {
+    await toggleSubscribe(id, active);
+    await loadData();
+  };
+
+  const handleEditSubscribe = async (id: string, event) => {
+    await editSubscribe(id, event.target.value);
+    await loadData();
+  };
+
+  useEffect(() => {
+    console.log('render');
+  }, [data]);
 
   return (
     <>
@@ -35,12 +70,83 @@ export default function Admin({
         <details>
           <summary>Filtre</summary>
           <div>
-            <p>Tous les filtres</p>
+            <label>Name</label>
+            <DropList
+              options={[
+                { label: 'none', value: 'none' },
+                { label: 'Ascendant', value: 'asc' },
+                { label: 'Descendant', value: 'desc' },
+              ]}
+            />
           </div>
+
+          <div>
+            <label>CreateAt</label>
+            <DropList
+              options={[
+                { label: 'none', value: 'none' },
+                { label: 'Ascendant', value: 'asc' },
+                { label: 'Descendant', value: 'desc' },
+              ]}
+            />
+          </div>
+
+          <div>
+            <label>UpdateAt</label>
+            <DropList
+              options={[
+                { label: 'none', value: 'none' },
+                { label: 'Ascendant', value: 'asc' },
+                { label: 'Descendant', value: 'desc' },
+              ]}
+            />
+          </div>
+          <div>
+            <label>Active</label>
+            <DropList
+              options={[
+                { label: 'all', value: 'none' },
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' },
+              ]}
+            />
+          </div>
+
+          <footer>
+            <button type='button'>Filtrer</button>
+            <button type='button'>reset</button>
+          </footer>
         </details>
         <div>
           {items.map((item) => (
-            <div key={item.id}>{item.email}</div>
+            <div key={item.id}>
+              <input
+                className='input'
+                type='text'
+                defaultValue={item.email}
+                {...(!item.active && { disabled: true })}
+                onChange={(event) => {
+                  handleEditSubscribe(item.id, event);
+                }}
+              />
+              <span>
+                <button
+                  type='button'
+                  onClick={() => {
+                    handleDeletesubscribe(item.id);
+                  }}
+                >
+                  <IconeDelete />
+                </button>
+                <button type='button'>
+                  <IconeUnsubscribe
+                    onClick={() => {
+                      handleUnsubscribe(item.id, !item.active);
+                    }}
+                  />
+                </button>
+              </span>
+            </div>
           ))}
         </div>
         <div>
@@ -61,9 +167,17 @@ export default function Admin({
 
 export async function loadNewsletter() {
   const url = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${url}/newsletter/registered`);
-  const newsLetter = await res.json();
-  return newsLetter;
+  try {
+    const res = await fetch(`${url}/newsletter/registered`);
+    if (!res.ok) {
+      throw new Error('Error loading newsletter data');
+    }
+    const newsLetter = await res.json();
+    return newsLetter;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {

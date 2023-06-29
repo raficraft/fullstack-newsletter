@@ -10,16 +10,35 @@ import { PrismaClient } from '@prisma/client';
  *     summary: Lists users subscribed to the newsletter
  *     parameters:
  *       - in: query
- *         name: sort
- *         description: Parameter to sort the list.
+ *         name: id
+ *         description: Parameter to sort the list by id.
  *         schema:
  *           type: string
- *           enum: [idAsc, idDesc, emailAsc, emailDesc, createdAtAsc, createdAtDesc, updatedAtAsc, updatedAtDesc]
+ *           enum: [asc, desc]
+ *       - in: query
+ *         name: email
+ *         description: Parameter to sort the list by email.
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *       - in: query
+ *         name: createdAt
+ *         description: Parameter to sort the list by createdAt.
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *       - in: query
+ *         name: updatedAt
+ *         description: Parameter to sort the list by updatedAt.
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
  *       - in: query
  *         name: active
  *         description: Filter users by active status.
  *         schema:
- *           type: boolean
+ *           type: string
+ *           enum: [true, false]
  *     responses:
  *       200:
  *         description: The list of users registered for the newsletter.
@@ -29,15 +48,6 @@ import { PrismaClient } from '@prisma/client';
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
- *       400:
- *         description: Invalid parameters.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
  *       500:
  *         description: Something went wrong.
  *         content:
@@ -53,64 +63,37 @@ export default function (prisma: PrismaClient) {
   const router = express.Router();
 
   router.get('/', async (req: Request, res: Response): Promise<Response> => {
-    const sort: any = req.query.sort;
-    const active: any = req.query.active;
+    const { id, email, createdAt, updatedAt, active } = req.query;
 
-    const sortOptions = [
-      'idAsc',
-      'idDesc',
-      'emailAsc',
-      'emailDesc',
-      'createdAtAsc',
-      'createdAtDesc',
-      'updatedAtAsc',
-      'updatedAtDesc',
-    ];
+    const sortOptions = ['asc', 'desc'];
 
-    // Vérification de la validité du paramètre sort
-    if (sort && !sortOptions.includes(sort)) {
-      return res.status(400).json({ error: 'Invalid sort parameter.' });
+    const sortParams: any = {};
+    const filterParams: any = {};
+
+    if (id && sortOptions.includes(id as string)) {
+      sortParams.id = id;
     }
 
-    // Vérification de la validité du paramètre active
-    if (active !== undefined && active !== 'true' && active !== 'false') {
-      return res.status(400).json({ error: 'Invalid active parameter.' });
+    if (email && sortOptions.includes(email as string)) {
+      sortParams.email = email;
     }
 
-    let sortParams: any;
-    switch (sort) {
-      case 'idAsc':
-        sortParams = { id: 'asc' };
-        break;
-      case 'idDesc':
-        sortParams = { id: 'desc' };
-        break;
-      case 'emailAsc':
-        sortParams = { email: 'asc' };
-        break;
-      case 'emailDesc':
-        sortParams = { email: 'desc' };
-        break;
-      case 'createdAtAsc':
-        sortParams = { createdAt: 'asc' };
-        break;
-      case 'createdAtDesc':
-        sortParams = { createdAt: 'desc' };
-        break;
-      case 'updatedAtAsc':
-        sortParams = { updatedAt: 'asc' };
-        break;
-      case 'updatedAtDesc':
-        sortParams = { updatedAt: 'desc' };
-        break;
-      default:
-        break;
+    if (createdAt && sortOptions.includes(createdAt as string)) {
+      sortParams.createdAt = createdAt;
     }
 
-    let filterParams: any = {};
-    if (active !== undefined) {
+    if (updatedAt && sortOptions.includes(updatedAt as string)) {
+      sortParams.updatedAt = updatedAt;
+    }
+
+    if (active !== undefined && (active === 'true' || active === 'false')) {
       filterParams.active = active === 'true';
     }
+
+    // If no valid sort params provided, return error
+    // if (!Object.keys(sortParams).length) {
+    //   return res.status(400).json({ error: 'Invalid sort parameters.' });
+    // }
 
     try {
       const registeredUsers = await prisma.newsletter.findMany({
@@ -120,7 +103,7 @@ export default function (prisma: PrismaClient) {
 
       return res.json(registeredUsers);
     } catch (error) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      return res.status(500).json({ error: 'Something went wrong.' });
     }
   });
 

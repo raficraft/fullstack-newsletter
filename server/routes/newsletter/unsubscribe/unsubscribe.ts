@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client';
 
 /**
  * @swagger
- * /newsletter/unsubscribe/{id}:
+ * /newsletter/subscribe/toggle/{id}:
  *   put:
  *     tags:
  *       - Newsletter
- *     summary: Edit active field on BDD
+ *     summary: Edit active subscribe on BDD
  *     consumes:
  *       - application/json
  *     parameters:

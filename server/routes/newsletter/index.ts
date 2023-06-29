@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import { Express } from 'express';
 import signupRouter from './subscribe/subscribe';
 import searchRouter from './search/search';
 import registeredRouter from './registered/registered';
@@ -7,7 +7,9 @@ import deleteRouter from './delete/delete';
 import unsubscribeRouter from './unsubscribe/unsubscribe';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
 
 export default function (app: Express) {
   app.use('/newsletter/search', searchRouter(prisma));
@@ -15,7 +17,7 @@ export default function (app: Express) {
   app.use('/newsletter/registered', registeredRouter(prisma));
   app.use('/newsletter/edit', editRouter(prisma));
   app.use('/newsletter/delete', deleteRouter(prisma));
-  app.use('/newsletter/unsubscribe', unsubscribeRouter(prisma));
+  app.use('/newsletter/subscribe/toggle', unsubscribeRouter(prisma));
 
   return app;
 }

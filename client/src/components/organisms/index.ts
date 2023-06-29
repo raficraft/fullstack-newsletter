@@ -1,7 +1,4 @@
-import Header from "@organisms/Header/Header";
-import SearchWord from "@organisms/form/SearchWord/SearchWord";
-import Dictionnary from "@organisms/Dictionnary/Dictionnary";
-import ErrorApi from "./ErrorApi/ErrorApi";
+import Abstract from './Abstract/Abstract';
+import SubscribeNewsletter from './form/SubscribeNewsLetter/SubscribeNewsletter';
 
-
-export { Header,SearchWord,Dictionnary,ErrorApi };
+export { Abstract, SubscribeNewsletter };

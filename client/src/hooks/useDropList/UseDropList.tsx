@@ -1,8 +1,14 @@
-import React, { useState, useRef, createRef, RefObject } from 'react';
-import { useClickOutside } from '@hooks/index';
+import React, {
+  useState,
+  useRef,
+  createRef,
+  RefObject,
+  useEffect,
+} from "react";
+import { useClickOutside } from "@hooks/index";
 
 export interface Option {
-  label: React.ReactNode;
+  label: string;
   value: any;
 }
 
@@ -34,8 +40,8 @@ function useDropList({
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     switch (event.key) {
-      case 'Enter':
-      case 'Espace':
+      case "Enter":
+      case "Espace":
         event.preventDefault();
         setOpen(!open);
         if (open) {
@@ -44,23 +50,23 @@ function useDropList({
         }
         break;
 
-      case 'Escape':
+      case "Escape":
         setOpen(false);
         break;
 
-      case 'ArrowUp':
-      case 'ArrowDown':
+      case "ArrowUp":
+      case "ArrowDown":
         if (!open) {
           setOpen(true);
         }
 
-        const direction = event.key === 'ArrowUp' ? -1 : 1;
+        const direction = event.key === "ArrowUp" ? -1 : 1;
         const index =
           (selectedIndex + direction + options.length) % options.length;
         setSelectedIndex(index);
         break;
 
-      case 'Tab':
+      case "Tab":
         if (open) {
           event.preventDefault();
           const direction = event.shiftKey ? -1 : 1;

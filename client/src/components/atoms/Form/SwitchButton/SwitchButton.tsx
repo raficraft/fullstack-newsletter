@@ -1,26 +1,18 @@
-import React, { ChangeEvent, forwardRef, HTMLProps } from "react";
-import internalStyles from "./SwitchButton.module.scss";
+import React, { ChangeEvent, forwardRef, HTMLProps } from 'react';
+import styles from './SwitchButton.module.scss';
 
 type SwitchButtonProps = {
-  callback: (e: ChangeEvent<HTMLInputElement>) => void;
+  callback?: (e: ChangeEvent<HTMLInputElement>) => void;
   children?: string | React.ReactElement | SVGElement;
-  externalStyles?: any;
-} & Omit<HTMLProps<HTMLInputElement>, "ref">;
+} & Omit<HTMLProps<HTMLInputElement>, 'ref'>;
 
 const SwitchButton = forwardRef<HTMLInputElement, SwitchButtonProps>(
-  (
-    { callback, externalStyles, children, ...props }: SwitchButtonProps,
-    ref
-  ) => {
-    const styles = externalStyles || internalStyles;
-
+  ({ callback, children, ...props }: SwitchButtonProps, ref) => {
     return (
       <div className={`${styles.switchButton}`}>
         <input
           className={styles.checkbox}
-          id="switchTheme"
-          name="switchTheme"
-          type="checkbox"
+          type='checkbox'
           onChange={callback}
           ref={ref}
           {...props}
@@ -31,6 +23,6 @@ const SwitchButton = forwardRef<HTMLInputElement, SwitchButtonProps>(
   }
 );
 
-SwitchButton.displayName = "SwitchButton";
+SwitchButton.displayName = 'SwitchButton';
 
 export default SwitchButton;

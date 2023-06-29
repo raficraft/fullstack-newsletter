@@ -1,5 +1,3 @@
-import AudioPlayer from '@atoms/AudioPlayer/AudioPlayer';
-import DropList from '@atoms/DropList/DropList';
 import Text from '@atoms/Text/Text';
 import Loading from '@atoms/Loading/Loading';
 import SwitchButton from '@atoms/Form/SwitchButton/SwitchButton';
@@ -9,15 +7,15 @@ import Tablet from '@atoms/Abstract/Tablet/Tablet';
 import Browser from '@atoms/Abstract/Browser/Browser';
 import Graphic from '@atoms/Abstract/Graphic/Graphic';
 import Range from '@atoms/Abstract/Range/Range';
+import DropList from '@atoms/DropList/DropList';
 
 export {
-  AudioPlayer,
-  DropList,
   Input,
   SwitchButton,
   Text,
-  Loading,
   Button,
+  DropList,
+  Loading,
   Tablet,
   Browser,
   Graphic,
