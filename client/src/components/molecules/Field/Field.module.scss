@@ -15,12 +15,10 @@
 
 .field {
   @include flex(column);
-  gap: 0.75rem;
 }
 
 .field_input {
   position: relative;
-  margin-bottom: 1.5rem;
 }
 
 .label {

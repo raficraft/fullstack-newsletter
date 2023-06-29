@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Field } from '@components/molecules';
 import { Button, Text } from '@components/atoms';
 import { usePaginate } from '@hooks/index';
+import styles from '@styles/pages/Admin.module.scss';
+import { IconMagnify } from '@assets/svg/icons';
 
 export default function Admin({
   newsLetters,
@@ -21,9 +23,21 @@ export default function Admin({
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className='rootContainer'>
-        <Field type='search' className='input' />
-        <Button type='button'>F</Button>
+      <main className={styles.admin}>
+        <Field
+          type='search'
+          className='input'
+          placeholder='find a subscriber'
+          name='search'
+          svg={<IconMagnify />}
+        />
+
+        <details>
+          <summary>Filtre</summary>
+          <div>
+            <p>Tous les filtres</p>
+          </div>
+        </details>
         <div>
           {items.map((item) => (
             <div key={item.id}>{item.email}</div>
@@ -33,12 +47,12 @@ export default function Admin({
           <button onClick={prevPage} disabled={currentPage === 0}>
             Prev
           </button>
-          <button onClick={nextPage} disabled={currentPage === totalPages - 1}>
-            Next
-          </button>
           <Text tag='p'>
             Page {currentPage + 1} / {totalPages}
           </Text>
+          <button onClick={nextPage} disabled={currentPage === totalPages - 1}>
+            Next
+          </button>
         </div>
       </main>
     </>

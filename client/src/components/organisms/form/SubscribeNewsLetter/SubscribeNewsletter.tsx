@@ -65,6 +65,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
         error={errors.newsletter || errorApi}
         pattern='^[^\s@]+@[^\s@]+\.[^\s@]+$'
         required
+        style={{ marginBottom: '1.5rem' }}
       >
         <label htmlFor='newsletter'>Email adress</label>
       </Field>
