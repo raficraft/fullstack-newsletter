@@ -1,0 +1,16 @@
+@import '@css/mixin/mixin.scss';
+
+.graphic {
+  z-index: 500;
+  @include flexCenter();
+  @include size(5.8125rem, 8.125rem);
+  border-radius: var(--radius-sm);
+  background-color: var(--clr-primary-800);
+  content: '';
+  .svg {
+    background-image: url('/assets/svg/desktop/diagram.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    @include size(inherit);
+  }
+}

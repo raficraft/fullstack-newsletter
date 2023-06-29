@@ -70,17 +70,11 @@
   box-sizing: border-box;
 }
 
-html {
+html,
+body {
   height: 100%;
-}
-
-a {
-  text-decoration: none;
-  color: var(--color);
-}
-
-a:hover {
-  text-decoration: underline;
+  width: 100%;
+  display: flex;
 }
 
 body {
@@ -95,14 +89,32 @@ body {
 
 #__next {
   width: 100%;
+  min-height: 100%;
   height: inherit;
-  @include flex(column, center, center);
+  @include flex(column);
   background-color: var(--clr-primary-400);
+  @media screen and (min-width: 1023px) {
+    @include flex(column, center, center);
+  }
 }
 
 .rootContainer {
   @include flex(column);
   width: min(100%, 58rem);
+  background-color: var(--clr-primary-800);
+  @media screen and (min-width: 1023px) {
+    @include flexCenter();
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--color);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 label {
@@ -145,4 +157,24 @@ label {
 
 button {
   cursor: pointer;
+}
+
+.admin_link {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background-color: var(--clr-primary-800);
+  color: var(--clr-primary-100);
+  @include size(2rem);
+  border-radius: var(--radius-sm);
+  @include flexCenter();
+  transition: 0.5s ease-in-out;
+
+  svg {
+    @include size(1.5rem);
+  }
+
+  @include on_event {
+    transform: scale(1.05);
+  }
 }

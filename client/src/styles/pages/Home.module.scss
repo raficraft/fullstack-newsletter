@@ -1,17 +1,27 @@
 @import '@css/mixin/mixin.scss';
 
 .content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  height: 641px;
+  @include flex(column-reverse);
+  padding: 0;
+  border-radius: 0;
   background-color: var(--clr-primary-800);
-  border-radius: var(--radius-xl);
-  padding: 1.5rem 1.5rem 1.5rem 4rem;
+  height: 100%;
+
+  @media screen and (min-width: 1023px) {
+    @include flex();
+    gap: 4rem;
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+    height: min-content;
+  }
 
   &_form {
     @include flex(column, center);
     gap: 2.5rem;
+    padding: 2.5rem 1.5rem;
+    @media screen and (min-width: 1023px) {
+      padding: 4.5625rem 0;
+    }
   }
   &_info {
     @include flex(column);

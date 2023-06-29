@@ -1,0 +1,15 @@
+@import '@css/mixin/mixin.scss';
+
+.range {
+  @include flexCenter();
+  @include size(8rem, 9.5rem);
+  content: '';
+  background-color: var(--clr-primary-800);
+  border-radius: var(--radius-sm);
+  .svg {
+    background-image: url('/assets/svg/desktop/score.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    @include size(inherit);
+  }
+}

@@ -35,7 +35,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
       const email = dataForm.newsletter;
       subscribe(email);
 
-      if (errorApi) {
+      if (!errorApi) {
         onSuccessfulSubmit(email);
         reset();
       }

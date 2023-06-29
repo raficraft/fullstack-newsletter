@@ -1,15 +1,12 @@
 import Head from 'next/head';
-import { Inter } from 'next/font/google';
-import { Button, Text } from '@components/atoms';
-import { Field } from '@components/molecules';
-import styles from '@styles/pages/Home.module.scss';
-import SubscribeNewsletter from '@components/organisms/form/SubscribeNewsLetter/SubscribeNewsletter';
 import { useState } from 'react';
-import { AbstractDiagram, AbstractScore } from '@assets/svg/abstract';
-import Abstract from '@components/pages/Abstract/Abstract';
+import { Text } from '@components/atoms';
+import styles from '@styles/pages/Home.module.scss';
+import Abstract from '@organisms/Abstract/Abstract';
+import SubscribeNewsletter from '@organisms/form/SubscribeNewsLetter/SubscribeNewsletter';
+import Succcess from '@molecules/Success/Success';
 import { IconCheck } from '@assets/svg/icons';
-
-const inter = Inter({ subsets: ['latin'] });
+import { Inter } from 'next/font/google';
 
 export default function Home() {
   const [subscribed, setSubscribed] = useState(false);
@@ -29,16 +26,7 @@ export default function Home() {
       </Head>
       <main className='rootContainer'>
         {subscribed ? (
-          <div>
-            yes {subscribedEmail}
-            <button
-              onClick={() => {
-                setSubscribed(false);
-              }}
-            >
-              close
-            </button>
-          </div>
+          <Succcess email={subscribedEmail} close={setSubscribed} />
         ) : (
           <section className={styles.content}>
             <div className={styles.content_form}>

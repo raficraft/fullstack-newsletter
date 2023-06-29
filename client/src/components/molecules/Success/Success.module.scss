@@ -1,0 +1,23 @@
+@import '@css/mixin/mixin.scss';
+
+.success {
+  background-color: var(--clr-primary-800);
+  padding: 3rem 4rem 4rem 4rem;
+  border-radius: var(--radius-xl);
+  width: min(100%, 31.5rem);
+  display: grid;
+  gap: 2.5rem;
+
+  .svg {
+    @include size(3rem);
+  }
+
+  .message {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    border-radius: none;
+  }
+}

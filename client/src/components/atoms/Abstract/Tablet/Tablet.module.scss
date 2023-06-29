@@ -1,0 +1,37 @@
+@import '@css/mixin/mixin.scss';
+
+.tablet {
+  @include size(432px, 290px);
+  border-radius: 1rem;
+  background-color: var(--clr-primary-100);
+
+  & span {
+    position: absolute;
+  }
+
+  .content {
+    inset: 1rem;
+    @include size(calc(100% - 2rem));
+    border-radius: var(--radius-sm);
+    background: linear-gradient(119deg, #ff3e83 14%, #ff9f2e 99%);
+    overflow: hidden;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.1);
+
+    & span {
+      @include size(19.75rem);
+      border-radius: 99999px;
+    }
+  }
+
+  .circleTop {
+    top: -76%;
+    right: 25%;
+    transform: rotate(-135deg);
+    background: linear-gradient(180deg, #ffb443 0%, rgba(255, 91, 100, 0) 100%);
+  }
+  .circleBottom {
+    bottom: -54%;
+    left: 14.5rem;
+    background: linear-gradient(180deg, #ffb443 0%, rgba(255, 91, 100, 0) 100%);
+  }
+}

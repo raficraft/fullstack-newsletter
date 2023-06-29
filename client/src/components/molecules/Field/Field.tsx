@@ -28,15 +28,16 @@ const Field = forwardRef(
     return (
       <div className={styles.field}>
         <div className={styles.field_input}>
-          <span className={styles.label}>
-            {!reverse && children ? children : null}
-
-            {errorPosition === 'label' ? (
-              <Text className={`text_warning text_xs bold_700`} role='alert'>
-                {error || ''}
-              </Text>
-            ) : null}
-          </span>
+          {!reverse && children && (
+            <span className={styles.label}>
+              {children}
+              {errorPosition === 'label' && error && (
+                <Text className={`text_warning text_xs bold_700`} role='alert'>
+                  {error}
+                </Text>
+              )}
+            </span>
+          )}
           <Input ref={ref} {...rest}></Input>
           {svg && !loading ? <span className={styles.icon}>{svg}</span> : null}
           {loading && (

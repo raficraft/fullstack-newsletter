@@ -1,0 +1,75 @@
+@import '@css/mixin/mixin.scss';
+
+.abstractContent {
+  position: relative;
+  min-width: 100%;
+  min-height: 284px;
+  background: linear-gradient(204.47deg, #ff6a3a 0%, #ff527b 100%);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  content: '';
+  overflow: hidden;
+
+  @media screen and (min-width: 1023px) {
+    border-radius: var(--radius-md);
+    min-width: 25rem;
+  }
+}
+
+.tablet {
+  position: absolute;
+  left: -192px;
+  top: 211px;
+  @media screen and (max-width: 1023px) {
+    transform: scale(0.542);
+    transform-origin: 0 0;
+    top: 5.5rem;
+    left: -1rem;
+  }
+}
+
+.browser {
+  position: absolute;
+  top: 115px;
+  right: -160px;
+  @media screen and (max-width: 1023px) {
+    transform: scale(0.54);
+    transform-origin: top right;
+    top: 2.25rem;
+    right: -1rem;
+  }
+}
+
+.range {
+  position: absolute;
+  top: 14.9375rem;
+  left: 18.375rem;
+  @media screen and (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.graphic {
+  position: absolute;
+  top: 5.8125rem;
+  left: 15.3125rem;
+  @media screen and (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.combo {
+  display: none;
+}
+
+@media screen and (max-width: 1023px) {
+  .combo {
+    display: block;
+    position: absolute;
+    @include size(6rem, 10.0625rem);
+    top: 1.5rem;
+    right: 3.625rem;
+    background-image: url('/assets/svg/mobile/combo.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
