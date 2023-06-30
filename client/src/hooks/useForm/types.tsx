@@ -1,13 +1,13 @@
 export type FormValidity =
-  | "required"
-  | "type"
-  | "pattern"
-  | "maxLength"
-  | "minLength"
-  | "min"
-  | "max"
-  | "step"
-  | "custom";
+  | 'required'
+  | 'type'
+  | 'pattern'
+  | 'maxLength'
+  | 'minLength'
+  | 'min'
+  | 'max'
+  | 'step'
+  | 'custom';
 
 export type FormElementType =
   | HTMLInputElement
@@ -22,13 +22,13 @@ export type FieldErrorMessages = {
   };
 };
 
-type Fields = Partial<Record<string, FieldErrorMessages>>;
+export type FieldsOptions = Partial<Record<string, FieldErrorMessages>>;
 
 export type FormErrors = Partial<Record<string, string>>;
 
 export type UseFormOptions = {
   local?: string;
-  fields: Fields;
+  fields: FieldsOptions;
 };
 
 export type FormValues = Record<string, string | Blob>;

@@ -11,6 +11,7 @@ import {
 const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
   const [errors, setErrors] = useState<FormErrors>({});
 
+  // Récupère tous les éléments du formulaire
   const getFormElements = (
     event: React.FormEvent<HTMLFormElement>
   ): FormElementType[] => {
@@ -18,42 +19,44 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
     return Array.from(form.elements) as FormElementType[];
   };
 
+  // Construit un objet avec les valeurs de chaque champ du formulaire
   const getFormData = (event: React.FormEvent<HTMLFormElement>) => {
     const elements = getFormElements(event);
-    const formData: any = [];
-    elements.forEach((element) => {
-      const name = element.name;
-      formData[name] = element.value;
-    });
-    return formData;
+    return elements.reduce((formData, element) => {
+      formData[element.name] = element.value;
+      return formData;
+    }, {} as Record<string, string>);
   };
 
+  // Map les noms des propriétés HTML ValidityState avec des noms personnalisés
+  const getValidityLabel = (key: string) => {
+    const validityLabels: Record<string, string> = {
+      required: 'valueMissing',
+      pattern: 'patternMismatch',
+      maxLength: 'tooLong',
+      minLength: 'tooShort',
+      min: 'rangeUnderflow',
+      max: 'rangeOverflow',
+      step: 'stepMismatch',
+      typeMismatch: 'typeMismatch',
+    };
+    return validityLabels[key] || key;
+  };
+
+  // Valide tous les champs du formulaire
   const validateForm = (event: React.FormEvent<HTMLFormElement>): boolean => {
     event.preventDefault();
     const elements = getFormElements(event);
     const formErrors: FormErrors = {};
 
-    // Ajout d'un tableau pour stocker les noms des champs valides
-    const validFields: string[] = [];
-
-    for (const element of elements) {
-      if (element.tagName === 'BUTTON' || element.disabled) continue;
+    elements.forEach((element) => {
+      if (element.tagName === 'BUTTON' || element.disabled) return;
+      const name = element.name;
       if (!element.checkValidity()) {
-        const name = element.name;
         const errorMessage = getErrorMessage(fields[name], element);
-        formErrors[name] = errorMessage || element.validationMessage!;
-      } else {
-        // Si le champ est valide, on l'ajoute au tableau des champs valides
-        validFields.push(element.name);
+        formErrors[name] = errorMessage || element.validationMessage;
       }
-    }
-
-    // On parcourt le tableau des champs valides et on supprime les erreurs de ces champs s'ils existent
-    for (const name of validFields) {
-      if (formErrors[name]) {
-        delete formErrors[name];
-      }
-    }
+    });
 
     if (Object.entries(formErrors).length > 0) {
       setErrors(formErrors);
@@ -64,111 +67,67 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
     }
   };
 
+  // Valide un champ de formulaire spécifique
   const validateField = <T extends FormElementType>(
     event: React.FormEvent<T>
   ): boolean => {
     const element = event.target as T;
     const name = element.name!;
     const isValid = element.checkValidity();
+    const errorMessage = getErrorMessage(fields[name], element);
 
     if (!name) {
       throw new Error("Le champ n'a pas de nom.");
     }
 
-    const previousError = errors[name];
-
-    if (isValid && previousError) {
-      // Retirer l'erreur précédente
+    if (isValid) {
       setErrors((prevErrors) => {
         const { [name]: _, ...rest } = prevErrors;
         return rest;
       });
-    } else if (
-      !isValid &&
-      previousError !== getErrorMessage(fields[name], element)
-    ) {
-      // Vérifier si l'erreur existe déjà
+    } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: getErrorMessage(fields[name], element),
-      }));
-    } else if (!isValid && !previousError) {
-      // Ajouter une nouvelle erreur
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: getErrorMessage(fields[name], element),
+        [name]: errorMessage || element.validationMessage,
       }));
     }
 
     return isValid;
   };
 
+  // Récupère un message d'erreur personnalisé pour un champ donné
   const getErrorMessage = <T extends FormElementType>(
     field: FieldErrorMessages = {},
     element: T
   ): string | undefined => {
     const validityKeys = Object.keys(field) as FormValidity[];
 
-    if (Object.keys(field).length === 0) {
-      return element.validationMessage;
-    }
-
-    // Traiter d'abord les validations personnalisées
     if (field.custom && field.custom.customValidation) {
       const { message, customValidation } = field.custom;
-
       if (!customValidation(element.value)) {
         return message;
       }
     }
 
     for (const key of validityKeys) {
-      let validityLabel;
-
-      switch (key) {
-        case 'required':
-          validityLabel = 'valueMissing';
-          break;
-        case 'pattern':
-          validityLabel = 'patternMismatch';
-          break;
-        case 'maxLength':
-          validityLabel = 'tooLong';
-          break;
-        case 'minLength':
-          validityLabel = 'tooShort';
-          break;
-        case 'min':
-          validityLabel = 'rangeUnderflow';
-          break;
-        case 'max':
-          validityLabel = 'rangeOverflow';
-          break;
-        case 'step':
-          validityLabel = 'stepMismatch';
-          break;
-        default:
-          validityLabel = key;
-      }
-
-      if (
-        element.validity &&
-        element.validity[validityLabel as keyof ValidityState]
-      ) {
-        const errorMessage = field[key]?.message || element.validationMessage;
+      const validityLabel = getValidityLabel(key);
+      if (element.validity[validityLabel as keyof ValidityState]) {
+        const errorMessage = field[key]?.message;
         const callback = field[key]?.callback;
         if (callback) callback();
         return errorMessage;
       }
     }
 
-    return undefined;
+    return element.validationMessage;
   };
 
+  // Réinitialise les erreurs du formulaire
   const reset = () => {
     setErrors({});
   };
 
+  // Retourne une API pour utiliser le hook
   return {
     validateForm,
     validateField,

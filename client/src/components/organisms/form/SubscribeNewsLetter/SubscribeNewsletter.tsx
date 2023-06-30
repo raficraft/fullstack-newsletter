@@ -10,7 +10,7 @@ type Props = {
 };
 
 const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
-  const { errorApi, subscribe } = useNewsLetterAPI();
+  const { errorApi, subscribe, setErrorApi } = useNewsLetterAPI();
 
   const { validateForm, validateField, errors, getFormData, reset } = useForm({
     fields: {
@@ -18,8 +18,8 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
         required: {
           message: 'Email required',
         },
-        pattern: {
-          message: 'Valid email required',
+        typeMismatch: {
+          message: 'Valid Email Required',
         },
       },
     },
@@ -28,16 +28,16 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(errorApi);
-
     if (validateForm(event)) {
       const dataForm = getFormData(event);
       const email = dataForm.newsletter;
-      subscribe(email);
 
-      if (!errorApi) {
+      try {
+        await subscribe(email);
         onSuccessfulSubmit(email);
         reset();
+      } catch (error: any) {
+        setErrorApi(error.message);
       }
     }
   };
@@ -45,7 +45,6 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
   const handleEmailChange = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
-      console.log(validateField(event));
       if (validateField(event)) {
         reset();
       }
@@ -56,14 +55,13 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <Field
-        type='text'
+        type='email'
         className='input'
         placeholder='email@company.com'
         errorPosition='label'
         name='newsletter'
         onChange={handleEmailChange}
         error={errors.newsletter || errorApi}
-        pattern='^[^\s@]+@[^\s@]+\.[^\s@]+$'
         required
         style={{ marginBottom: '1.5rem' }}
       >

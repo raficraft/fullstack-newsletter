@@ -31,8 +31,18 @@ const useNewsLetterAPI = () => {
     }
   };
 
+  const searchSubscriber = (query: string) =>
+    handleRequest(`${route}/search?query=${query}`, {
+      method: 'GET',
+    });
+
   const registered = () =>
     handleRequest(`${route}/registered`, {
+      method: 'GET',
+    });
+
+  const filter = (url: string) =>
+    handleRequest(`${route}/registered${url}`, {
       method: 'GET',
     });
 
@@ -68,11 +78,14 @@ const useNewsLetterAPI = () => {
     resultApi,
     loading,
     setLoading,
+    setErrorApi,
     registered,
     subscribe,
     deleteSubscribe,
     toggleSubscribe,
     editSubscribe,
+    filter,
+    searchSubscriber,
   };
 };
 

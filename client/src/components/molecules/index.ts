@@ -1,5 +1,7 @@
 import Field from '@molecules/Field/Field';
-
 import Success from '@molecules/Success/Success';
+import AdminFilter from '@molecules/AdminFilter/AdminFilter';
 
-export { Field, Success };
+import AdminSubscribeNewsLetter from '@molecules/AdminSubscribeNewsLetter/AdminSubscribeNewsLetter';
+
+export { Field, Success, AdminFilter, AdminSubscribeNewsLetter };

@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import styles from "./DropList.module.scss";
-import { IconArrowDown } from "@assets/svg/icons";
-import useDropList, { Option } from "@hooks/useDropList/UseDropList";
+import React, { useEffect } from 'react';
+import styles from './DropList.module.scss';
+import { IconArrowDown } from '@assets/svg/icons';
+import useDropList, { Option } from '@hooks/useDropList/UseDropList';
 
 interface SVGProps {
   open: React.FC<React.SVGProps<SVGSVGElement>>;
   close: React.FC<React.SVGProps<SVGSVGElement>>;
-  position: "left" | "right";
+  position: 'left' | 'right';
 }
 
 interface DropListProps extends React.HTMLProps<HTMLButtonElement> {
@@ -69,7 +69,7 @@ const DropList: React.FC<DropListProps> = ({
             <button
               className={`
                 ${styles.option} 
-                ${key === selectedIndex ? styles.active : ""}
+                ${key === selectedIndex ? styles.active : ''}
               `}
               type='button'
               key={key}
