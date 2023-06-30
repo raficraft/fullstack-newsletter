@@ -48,6 +48,16 @@ export default function Admin({
 
   const { validateField, errors } = useForm(generateFormConfig(items));
 
+  const handleEdit = (
+    id: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value as string;
+    if (validateField(event)) {
+      handleEditSubscribe(id, value);
+    }
+  };
+
   useEffect(() => {}, [data]);
 
   return (
@@ -72,12 +82,8 @@ export default function Admin({
                       id={item.id}
                       email={item.email}
                       active={item.active}
-                      handleEditSubscribe={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        if (validateField(event)) {
-                          handleEditSubscribe(item.id, event);
-                        }
+                      handleEditSubscribe={(event) => {
+                        handleEdit(item.id, event);
                       }}
                       handleDeletesubscribe={handleDeletesubscribe}
                       handleUnsubscribe={handleUnsubscribe}
