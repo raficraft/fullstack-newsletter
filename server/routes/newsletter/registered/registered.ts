@@ -10,26 +10,14 @@ import { PrismaClient } from '@prisma/client';
  *     summary: Lists users subscribed to the newsletter
  *     parameters:
  *       - in: query
- *         name: id
- *         description: Parameter to sort the list by id.
+ *         name: sortBy
+ *         description: Parameter to sort the list.
  *         schema:
  *           type: string
- *           enum: [asc, desc]
+ *           enum: [email, createdAt, updatedAt]
  *       - in: query
- *         name: email
- *         description: Parameter to sort the list by email.
- *         schema:
- *           type: string
- *           enum: [asc, desc]
- *       - in: query
- *         name: createdAt
- *         description: Parameter to sort the list by createdAt.
- *         schema:
- *           type: string
- *           enum: [asc, desc]
- *       - in: query
- *         name: updatedAt
- *         description: Parameter to sort the list by updatedAt.
+ *         name: order
+ *         description: Order to sort the list.
  *         schema:
  *           type: string
  *           enum: [asc, desc]
@@ -63,39 +51,39 @@ export default function (prisma: PrismaClient) {
   const router = express.Router();
 
   router.get('/', async (req: Request, res: Response): Promise<Response> => {
-    const { id, email, createdAt, updatedAt, active } = req.query;
+    const { email, createdAt, updatedAt, active } = req.query;
 
     const sortOptions = ['asc', 'desc'];
 
-    const sortParams: any = {};
+    let sortField: string | null = null;
+    let sortOrder: 'asc' | 'desc' | null = null;
+
+    switch (true) {
+      case email && sortOptions.includes(email as string):
+        sortField = 'email';
+        sortOrder = email as 'asc' | 'desc';
+        break;
+      case createdAt && sortOptions.includes(createdAt as string):
+        sortField = 'createdAt';
+        sortOrder = createdAt as 'asc' | 'desc';
+        break;
+      case updatedAt && sortOptions.includes(updatedAt as string):
+        sortField = 'updatedAt';
+        sortOrder = updatedAt as 'asc' | 'desc';
+        break;
+      default:
+        break;
+    }
+
     const filterParams: any = {};
-
-    if (id && sortOptions.includes(id as string)) {
-      sortParams.id = id;
-    }
-
-    if (email && sortOptions.includes(email as string)) {
-      sortParams.email = email;
-    }
-
-    if (createdAt && sortOptions.includes(createdAt as string)) {
-      sortParams.createdAt = createdAt;
-    }
-
-    if (updatedAt && sortOptions.includes(updatedAt as string)) {
-      sortParams.updatedAt = updatedAt;
-    }
-
     if (active !== undefined && (active === 'true' || active === 'false')) {
       filterParams.active = active === 'true';
     }
 
-    // If no valid sort params provided, return error
-    // if (!Object.keys(sortParams).length) {
-    //   return res.status(400).json({ error: 'Invalid sort parameters.' });
-    // }
-
     try {
+      const sortParams =
+        sortField && sortOrder ? { [sortField]: sortOrder } : {};
+
       const registeredUsers = await prisma.newsletter.findMany({
         orderBy: sortParams,
         where: filterParams,
@@ -103,6 +91,7 @@ export default function (prisma: PrismaClient) {
 
       return res.json(registeredUsers);
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: 'Something went wrong.' });
     }
   });

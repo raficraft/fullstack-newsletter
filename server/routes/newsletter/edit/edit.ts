@@ -1,3 +1,4 @@
+import validator from 'validator';
 import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
@@ -59,6 +60,10 @@ export default function (prisma: PrismaClient) {
     const { id } = req.params;
     const { email } = req.body;
 
+    if (!email || !validator.isEmail(email)) {
+      return res.status(400).json({ error: 'Valid email is required' });
+    }
+
     if (email === undefined || typeof email !== 'string') {
       return res
         .status(400)
@@ -73,7 +78,6 @@ export default function (prisma: PrismaClient) {
 
       return res.json(user);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Something went wrong' });
     }
   });

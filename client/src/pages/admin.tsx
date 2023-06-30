@@ -8,11 +8,21 @@ import styles from '@styles/pages/Admin.module.scss';
 import useNewsLetterAPI from '@hooks/useNewsLetterAPI/useNewsLetterApi';
 import { AdminSearch } from '@components/organisms';
 import { UseFormOptions, FieldsOptions } from '@hooks/useForm/types';
+import useNewsLetterActions from '@hooks/useNewsLetterActions/UseNewsLetterActions';
 
 export default function Admin({
   newsLetters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [data, setData] = useState(newsLetters || []);
+  const {
+    data,
+    errorApi,
+    handleDeletesubscribe,
+    handleUnsubscribe,
+    handleEditSubscribe,
+    handleFilter,
+    handleSearch,
+    loadData,
+  } = useNewsLetterActions(newsLetters);
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
     data,
     5
@@ -38,73 +48,6 @@ export default function Admin({
 
   const { validateField, errors } = useForm(generateFormConfig(items));
 
-  const {
-    errorApi,
-    loading,
-    setErrorApi,
-    deleteSubscribe,
-    toggleSubscribe,
-    editSubscribe,
-    registered,
-    filter,
-    searchSubscriber,
-  } = useNewsLetterAPI();
-
-  const loadData = async () => {
-    const newsLetters = await registered();
-    setData(newsLetters);
-  };
-
-  const handleDeletesubscribe = async (id: string) => {
-    try {
-      await deleteSubscribe(id);
-      await loadData();
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
-  };
-
-  const handleUnsubscribe = async (id: string, active: boolean) => {
-    try {
-      await toggleSubscribe(id, active);
-      await loadData();
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
-  };
-
-  const handleEditSubscribe = async (
-    id: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (validateField(event)) {
-      try {
-        await editSubscribe(id, event.target.value);
-        await loadData();
-      } catch (error: any) {
-        setErrorApi(error.message);
-      }
-    }
-  };
-
-  const handleFilter = async (url: string) => {
-    try {
-      const result = await filter(url);
-      setData(result);
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
-  };
-
-  const handleSearch = async (query: string) => {
-    try {
-      const result = await searchSubscriber(query);
-      setData(result);
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
-  };
-
   useEffect(() => {}, [data]);
 
   return (
@@ -129,7 +72,13 @@ export default function Admin({
                       id={item.id}
                       email={item.email}
                       active={item.active}
-                      handleEditSubscribe={handleEditSubscribe}
+                      handleEditSubscribe={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        if (validateField(event)) {
+                          handleEditSubscribe(item.id, event);
+                        }
+                      }}
                       handleDeletesubscribe={handleDeletesubscribe}
                       handleUnsubscribe={handleUnsubscribe}
                       error={errors[`email_${item.id}`]}
