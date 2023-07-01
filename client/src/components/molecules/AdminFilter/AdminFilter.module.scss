@@ -1,0 +1,40 @@
+@import '@css/mixin/mixin.scss';
+
+.filter {
+  .summary {
+    padding: 0 0 1rem 0;
+  }
+
+  footer {
+    padding: 2rem 0 0 0;
+    @include flex(row, space-between);
+    button {
+      padding: 0 2rem;
+    }
+  }
+}
+
+.dialog {
+  position: absolute;
+  z-index: 1000;
+  @include flexCenter();
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  &_content {
+    background-color: var(--clr-light);
+    border-radius: var(--radius-xl);
+    @include flex(column);
+    padding: 4rem 5rem;
+    gap: 3rem;
+  }
+
+  .items {
+    @include flex(column);
+  }
+}
+
+.droplist {
+  @include flex(row, space-between, center);
+  gap: 2rem;
+}

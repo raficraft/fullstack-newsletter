@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
-import { AdminFilter, AdminSubscribeNewsLetter } from '@components/molecules';
+import { useEffect } from 'react';
+import { AdminFilter, NewsLetterActions } from '@components/molecules';
 import { Text } from '@components/atoms';
 import { useForm, usePaginate } from '@hooks/index';
 import styles from '@styles/pages/Admin.module.scss';
@@ -27,7 +27,6 @@ export default function Admin({
     data,
     5
   );
-
   // Génére l'objet de configuration pour useForm
   const generateFormConfig = (items: any[]): UseFormOptions => {
     let fieldsConfig: FieldsOptions = {};
@@ -48,16 +47,6 @@ export default function Admin({
 
   const { validateField, errors } = useForm(generateFormConfig(items));
 
-  const handleEdit = (
-    id: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = event.target.value as string;
-    if (validateField(event)) {
-      handleEditSubscribe(id, value);
-    }
-  };
-
   useEffect(() => {}, [data]);
 
   return (
@@ -73,17 +62,30 @@ export default function Admin({
           <>
             {
               <>
-                <AdminSearch callback={handleSearch} />
-                <AdminFilter submit={handleFilter} reset={loadData} />
-                <div>
-                  {items.map((item) => (
-                    <AdminSubscribeNewsLetter
-                      key={item.id}
+                <header className={styles.admin_header}>
+                  <AdminSearch
+                    callback={handleSearch}
+                    className={styles.header_search}
+                  >
+                    <span className={styles.header_icon}>
+                      <AdminFilter submit={handleFilter} reset={loadData} />
+                    </span>
+                  </AdminSearch>
+                </header>
+                <div className={styles.input_list}>
+                  {items.map((item, key) => (
+                    <NewsLetterActions
+                      key={`email_${key}`}
                       id={item.id}
                       email={item.email}
                       active={item.active}
-                      handleEditSubscribe={(event) => {
-                        handleEdit(item.id, event);
+                      handleEditSubscribe={(
+                        id: string,
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        if (validateField(event)) {
+                          handleEditSubscribe(id, event);
+                        }
                       }}
                       handleDeletesubscribe={handleDeletesubscribe}
                       handleUnsubscribe={handleUnsubscribe}
@@ -92,16 +94,21 @@ export default function Admin({
                   ))}
                 </div>
                 {totalPages > 1 && (
-                  <div>
-                    <button onClick={prevPage} disabled={currentPage === 0}>
+                  <div className={styles.paginate}>
+                    <button
+                      onClick={prevPage}
+                      disabled={currentPage === 0}
+                      className='btn_primary'
+                    >
                       Prev
                     </button>
-                    <Text tag='p'>
-                      Page {currentPage + 1} / {totalPages}
+                    <Text tag='p' className='bold'>
+                      {currentPage + 1} / {totalPages}
                     </Text>
                     <button
                       onClick={nextPage}
                       disabled={currentPage === totalPages - 1}
+                      className='btn_primary'
                     >
                       Next
                     </button>

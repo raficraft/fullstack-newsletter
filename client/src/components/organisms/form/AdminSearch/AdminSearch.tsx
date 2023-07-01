@@ -2,13 +2,18 @@ import { IconMagnify } from '@assets/svg/icons';
 import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
 import { debounce } from '@utils/debounce/debounce';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, HTMLAttributes } from 'react';
 
-interface AdminSearchProps {
+interface AdminSearchProps extends HTMLAttributes<HTMLDivElement> {
   callback: (value: string) => void;
+  children?: any;
 }
 
-const AdminSearch: React.FC<AdminSearchProps> = ({ callback }) => {
+const AdminSearch: React.FC<AdminSearchProps> = ({
+  className,
+  callback,
+  children,
+}) => {
   const { validateField, errors, reset } = useForm({
     fields: {
       search: {
@@ -34,7 +39,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({ callback }) => {
   return (
     <Field
       type='search'
-      className='input'
+      className={`bloc_input ${className}`}
       placeholder='find a subscriber'
       name='search'
       svg={<IconMagnify />}
@@ -43,7 +48,10 @@ const AdminSearch: React.FC<AdminSearchProps> = ({ callback }) => {
       error={errors.search}
       onChange={handleChange}
       onSubmit={handleChange}
-    />
+      reverse
+    >
+      {children}
+    </Field>
   );
 };
 

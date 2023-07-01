@@ -10,6 +10,7 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   svg: ReactNode;
   loading: boolean;
   errorPosition: 'bottom' | 'label';
+  className: string;
 }
 
 const Field = forwardRef(
@@ -21,12 +22,17 @@ const Field = forwardRef(
       svg,
       loading = false,
       errorPosition = 'bottom',
+      className,
       ...rest
     }: Partial<FieldProps>,
     ref: Ref<HTMLInputElement>
   ) => {
     return (
-      <div className={styles.field}>
+      <div
+        className={`${styles.field} ${className} ${
+          error ? 'invalid_field' : ''
+        }`}
+      >
         {!reverse && children && (
           <span className={styles.label}>
             {children}
@@ -38,8 +44,12 @@ const Field = forwardRef(
           </span>
         )}
         <div className={styles.field_input}>
-          <Input ref={ref} {...rest}></Input>
-          {svg && !loading ? <span className={styles.icon}>{svg}</span> : null}
+          <Input ref={ref} {...rest}>
+            {svg && !loading ? (
+              <span className={styles.icon}>{svg}</span>
+            ) : null}
+          </Input>
+
           {loading && (
             <span className={styles.icon}>
               <Spinner />

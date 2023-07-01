@@ -1,0 +1,6 @@
+@import '@css/mixin/mixin.scss';
+
+.newsLetterAction {
+  @include flexCenter();
+  gap: 0.5rem;
+}

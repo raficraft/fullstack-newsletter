@@ -2,6 +2,6 @@ import Field from '@molecules/Field/Field';
 import Success from '@molecules/Success/Success';
 import AdminFilter from '@molecules/AdminFilter/AdminFilter';
 
-import AdminSubscribeNewsLetter from '@molecules/AdminSubscribeNewsLetter/AdminSubscribeNewsLetter';
+import NewsLetterActions from '@components/molecules/NewsletterActions/NewsLetterActions';
 
-export { Field, Success, AdminFilter, AdminSubscribeNewsLetter };
+export { Field, Success, AdminFilter, NewsLetterActions };

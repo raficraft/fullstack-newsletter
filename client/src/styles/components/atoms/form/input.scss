@@ -1,4 +1,4 @@
-.input {
+.bloc_input input {
   max-width: 100%;
   width: 100%;
   height: 3.5rem;
@@ -10,7 +10,7 @@
   font-weight: bold;
   border: 1px solid var(--clr-light-gray);
   text-align: left;
-  background-color: var(--clr-primary-800);
+  background-color: var(--clr-light);
   color: var(--input-text);
 
   &::placeholder {
@@ -30,10 +30,43 @@
     caret-color: var(--clr-primary-100);
   }
 
-  &:invalid {
-    border: 1px solid var(--clr-accent);
-    background-color: rgb(255, 96, 84, 0.15);
-    outline-width: 1px;
-    outline-color: var(--clr-accent);
+  &:disabled {
+    background: var(--clr-primary-700);
+    color: var(--clr-primary-600);
+    cursor: not-allowed;
+    text-decoration: line-through;
   }
+}
+
+.invalid_field input {
+  border: 1px solid var(--clr-accent);
+  background-color: rgb(255, 96, 84, 0.15);
+  outline-width: 1px;
+  outline-color: var(--clr-accent);
+}
+
+/* Supprime le style d'autocomplétion de Chrome pour les inputs de type "search" */
+input[type='search'] {
+  -webkit-appearance: none; /* Chrome, Safari */
+  -moz-appearance: none; /* Firefox */
+  appearance: none;
+}
+
+/* clears the ‘X’ from Internet Explorer */
+input[type='search']::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type='search']::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+/* clears the ‘X’ from Chrome */
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  display: none;
 }

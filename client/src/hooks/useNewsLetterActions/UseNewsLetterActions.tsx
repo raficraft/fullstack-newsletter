@@ -37,9 +37,12 @@ const useNewsLetterActions = (initialData: any) => {
     }
   };
 
-  const handleEditSubscribe = async (id: string, value: string) => {
+  const handleEditSubscribe = async (
+    id: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     try {
-      await editSubscribe(id, value);
+      await editSubscribe(id, event.target.value);
       await loadData();
     } catch (error: any) {
       setErrorApi(error.message);

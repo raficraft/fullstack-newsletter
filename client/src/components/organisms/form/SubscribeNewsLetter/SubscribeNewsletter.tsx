@@ -56,7 +56,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
     <form onSubmit={handleSubmit} noValidate>
       <Field
         type='email'
-        className='input'
+        className='bloc_input'
         placeholder='email@company.com'
         errorPosition='label'
         name='newsletter'
@@ -67,7 +67,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
       >
         <label htmlFor='newsletter'>Email adress</label>
       </Field>
-      <Button type='submit' className='button'>
+      <Button type='submit' className='btn_primary fullWidth'>
         Subscribe to monthly newsletter
       </Button>
     </form>

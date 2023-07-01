@@ -31,6 +31,12 @@ const useNewsLetterAPI = () => {
     }
   };
 
+  const createReqOptions = (method: string, data: any) => ({
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
   const searchSubscriber = (query: string) =>
     handleRequest(`${route}/search?query=${query}`, {
       method: 'GET',
@@ -46,32 +52,23 @@ const useNewsLetterAPI = () => {
       method: 'GET',
     });
 
-  const subscribe = (email: string) =>
-    handleRequest(`${route}/subscribe`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-
   const deleteSubscribe = (id: string) =>
     handleRequest(`${route}/delete/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
 
-  const toggleSubscribe = (id: string, active: boolean) =>
-    handleRequest(`${route}/subscribe/toggle/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ active: active }),
-    });
+  const subscribe = (email: string) =>
+    handleRequest(`${route}/subscribe`, createReqOptions('POST', { email }));
 
-  const editSubscribe = (id: string, newEmail: string) =>
-    handleRequest(`${route}/edit/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: newEmail }),
-    });
+  const toggleSubscribe = (id: string, active: boolean) =>
+    handleRequest(
+      `${route}/subscribe/toggle/${id}`,
+      createReqOptions('PUT', { active })
+    );
+
+  const editSubscribe = (id: string, email: string) =>
+    handleRequest(`${route}/edit/${id}`, createReqOptions('PUT', { email }));
 
   return {
     errorApi,

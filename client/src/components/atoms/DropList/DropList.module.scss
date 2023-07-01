@@ -1,4 +1,4 @@
-@import "@css/mixin/mixin.scss";
+@import '@css/mixin/mixin.scss';
 
 .dropList {
   position: relative;
@@ -10,7 +10,7 @@
     border: none;
     font-weight: bold;
     font-size: var(--fs-200);
-    color: var(--color);
+    color: var(--clr-primary-100);
     font-family: var(--font-family);
   }
 }
@@ -29,20 +29,20 @@
   width: 183px;
   padding: 1.5rem;
   gap: 1rem;
-  color: var(--color-dropList);
   box-sizing: border-box;
-  background-color: var(--background-dropList);
+  background-color: var(--clr-light);
+  border: 1px solid var(--clr-light-gray);
   box-shadow: var(--shadow);
   border-radius: 1rem;
   transition: ease-in var(--transition-md);
   z-index: var(--z-index-200);
   cursor: pointer;
 
-  &[data-open="false"] {
+  &[data-open='false'] {
     display: none;
   }
 
-  &[data-open="true"] {
+  &[data-open='true'] {
     display: flex;
   }
 

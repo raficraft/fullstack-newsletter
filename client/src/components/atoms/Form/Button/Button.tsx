@@ -1,3 +1,4 @@
+import Spinner from '@components/atoms/Spinner/Spinner';
 import React from 'react';
 
 type ButtonProps = {
@@ -8,7 +9,7 @@ type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({ loading, children, ...rest }) => {
   return (
     <button {...rest} disabled={rest.disabled || loading}>
-      {loading ? <span>Loading...</span> : children}
+      {loading ? <Spinner className='spinner' /> : children}
     </button>
   );
 };

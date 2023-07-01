@@ -37,8 +37,10 @@
   text-align: center;
 }
 
-.text_warning:empty {
+.text_warning {
   min-height: 2rem;
+  display: flex;
+  align-items: center;
 }
 
 .letter_spacing_2 {

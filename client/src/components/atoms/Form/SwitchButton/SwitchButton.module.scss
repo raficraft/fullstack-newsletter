@@ -32,7 +32,7 @@ $spacing: 3px;
     height: calc($height - ($spacing * 2));
     transition: ease-in var(--transition-xs);
     content: " ";
-    background-color: var(--clr-primary-800);
+    background-color: var(--clr-light);
     border-radius: 99999px;
   }
 

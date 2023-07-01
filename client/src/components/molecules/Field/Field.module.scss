@@ -20,6 +20,7 @@
 .field_input {
   position: relative;
   @include flex(row, '', center);
+  gap: 1rem;
 }
 
 .label {

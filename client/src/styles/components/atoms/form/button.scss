@@ -1,18 +1,53 @@
 @import '@css/mixin/mixin.scss';
 
-.button {
-  max-width: 100%;
-  width: 100%;
-  border: none;
-  background: var(--clr-primary-100);
-  color: var(--clr-primary-800);
-  border-radius: var(--radius-sm);
-  height: 3.25rem;
-  font-weight: 700;
-  font-size: 1rem;
+.btn {
+  &_primary {
+    border: none;
+    background: var(--clr-primary-100);
+    color: var(--clr-light);
+    border-radius: var(--radius-sm);
+    height: 3.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    &:hover {
+      background: linear-gradient(225deg, #ff6a3a 0%, #ff527b 100%);
+      box-shadow: 0px 16px 32px 0px rgba(255, 97, 85, 0.5);
+    }
 
-  @include on-event {
-    background: linear-gradient(225deg, #ff6a3a 0%, #ff527b 100%);
-    box-shadow: 0px 16px 32px 0px rgba(255, 97, 85, 0.5);
+    &:disabled {
+      background: var(--clr-primary-700);
+      cursor: not-allowed;
+      &:hover {
+        background: var(--clr-primary-700);
+        box-shadow: none;
+      }
+    }
+  }
+
+  &_icon {
+    @include flexCenter();
+    @include size(2rem);
+    transition: 0.5s ease-in-out;
+    border-radius: var(--radius-sm);
+    border: none;
+    @include on_event {
+      transform: scale(1.05);
+    }
+    svg {
+      @include size(1.5rem);
+      color: white;
+    }
+  }
+
+  &_green {
+    background-color: var(--clr-green);
+  }
+
+  &_accent {
+    background-color: var(--clr-accent);
+  }
+
+  &_blue {
+    background-color: var(--clr-blue);
   }
 }

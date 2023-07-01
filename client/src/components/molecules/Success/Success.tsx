@@ -18,7 +18,11 @@ const Succcess = ({ email, close }: SuccessProps) => {
           click the button inside to confirm your subscription.
         </Text>
       </div>
-      <Button type='button' onClick={() => close(false)} className='button'>
+      <Button
+        type='button'
+        onClick={() => close(false)}
+        className='btn_primary'
+      >
         Dismiss Message
       </Button>
     </div>

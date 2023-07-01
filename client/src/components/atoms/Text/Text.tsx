@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes } from "react";
+import React, { FC, HTMLAttributes } from 'react';
 
 interface TextProps extends HTMLAttributes<HTMLElement> {
   tag?: keyof TextElementMap;
@@ -21,9 +21,11 @@ type TextElementMap = {
   sub: HTMLElement;
   sup: HTMLElement;
   strong: HTMLElement;
+  summary: HTMLElement;
+  legend: HTMLElement;
 };
 
-const Text: FC<TextProps> = ({ tag = "p", children, ...rest }) => {
+const Text: FC<TextProps> = ({ tag = 'p', children, ...rest }) => {
   const Component = tag as keyof TextElementMap;
   return <Component {...rest}>{children}</Component>;
 };

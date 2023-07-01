@@ -1,5 +1,8 @@
-import { DropList } from '@components/atoms';
-import { useEffect, useState } from 'react';
+import { Button, DropList, Text } from '@components/atoms';
+import { useState } from 'react';
+import styles from './AdminFilter.module.scss';
+import { IconCross, IconeFilter, IconeReload } from '@assets/svg/icons';
+import { createPortal } from 'react-dom';
 
 interface AdminFilterProps {
   submit: (url: string) => void;
@@ -38,8 +41,8 @@ const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
     active: 'none',
   });
 
-  const [resetKey, setResetKey] = useState<number>(0);
-  const [detailsOpen, setDetailsOpen] = useState<boolean>(false);
+  // const [resetKey, setResetKey] = useState<number>(0);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const updateState = (key: string, value: string) => {
     setFilter((prevFilter) => ({
@@ -69,57 +72,91 @@ const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
   const resetFilter = () => {
     setFilter({ sortBy: 'none', order: 'none', active: 'none' });
     reset();
-    setResetKey((prevKey) => prevKey + 1);
+    // setResetKey((prevKey) => prevKey + 1);
   };
 
   return (
-    <details
-      key={resetKey}
-      open={detailsOpen}
-      onToggle={(e) => setDetailsOpen(e.currentTarget.open)}
-    >
-      <summary>Filtre</summary>
-      <div>
-        <label>Sort By</label>
-        <DropList
-          options={optionsFilter}
-          name='sortBy'
-          callback={(value: string) => updateState('sortBy', value)}
-        />
-      </div>
+    <>
+      <button
+        type='button'
+        className='btn_icon btn_blue'
+        onClick={() => {
+          setDialogOpen(!dialogOpen);
+          submit(generateFilterUrl());
+        }}
+      >
+        <IconeFilter />
+      </button>
+      <span className='hr_vertical'></span>
+      <button
+        type='button'
+        onClick={resetFilter}
+        className='btn_icon btn_green'
+      >
+        <IconeReload />
+      </button>
 
-      <div>
-        <label>Order</label>
-        <DropList
-          options={optionsOrder}
-          name='order'
-          callback={(value: string) => updateState('order', value)}
-        />
-      </div>
+      {dialogOpen &&
+        createPortal(
+          <div
+            className={styles.dialog}
+            onClick={(event) => {
+              setDialogOpen(false);
+            }}
+          >
+            <div
+              className={styles.dialog_content}
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <header>
+                <IconCross />
+              </header>
 
-      <div>
-        <label>Active</label>
-        <DropList
-          options={optionsFilterActive}
-          name='active'
-          callback={(value: string) => updateState('active', value)}
-        />
-      </div>
-
-      <footer>
-        <button
-          type='button'
-          onClick={() => {
-            submit(generateFilterUrl());
-          }}
-        >
-          Filtrer
-        </button>
-        <button type='button' onClick={resetFilter}>
-          reset
-        </button>
-      </footer>
-    </details>
+              <div className={styles.items}>
+                <div className={styles.droplist}>
+                  <label className='text_s bold'>Sort By :</label>
+                  <DropList
+                    options={optionsFilter}
+                    name='sortBy'
+                    callback={(value: string) => updateState('sortBy', value)}
+                  />
+                </div>
+                <hr></hr>
+                <div className={styles.droplist}>
+                  <label className='text_s bold'>Order :</label>
+                  <DropList
+                    options={optionsOrder}
+                    name='order'
+                    callback={(value: string) => updateState('order', value)}
+                  />
+                </div>
+                <hr></hr>
+                <div className={styles.droplist}>
+                  <label className='text_s bold'>Active :</label>
+                  <DropList
+                    options={optionsFilterActive}
+                    name='active'
+                    callback={(value: string) => updateState('active', value)}
+                  />
+                </div>
+              </div>
+              <footer>
+                <Button
+                  className='btn_primary'
+                  onClick={() => {
+                    submit(generateFilterUrl());
+                  }}
+                >
+                  Filtrer
+                </Button>
+              </footer>
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
