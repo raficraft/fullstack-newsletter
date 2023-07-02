@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec ts-node server.ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node server.ts",
+    "build": "tsc",
+    "heroku-postbuild": "npm run build",
     "test": "jest --config ./jest.config.js --watchAll"
   },
   "keywords": [],
@@ -20,8 +23,7 @@
     "prisma": "^4.15.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
-    "validator": "^13.9.0",
-    "nodemon": "^2.0.22"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
@@ -37,6 +39,7 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "nodemon": "^2.0.22",
     "typescript": "^5.1.3"
   }
 }
