@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const ROUTE = `${process.env.NEXT_PUBLIC_API_URL}/newsletter`;
+const ROUTE = `${process.env.NEXT_PUBLIC_API_URL}newsletter`;
 
 export enum StoreActions {
   RELOAD = 'RELOAD',

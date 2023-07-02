@@ -80,7 +80,7 @@ export default function Admin({
 export async function loadNewsletter() {
   const url = process.env.NEXT_PUBLIC_API_URL;
   try {
-    const res = await fetch(`${url}/newsletter/registered`);
+    const res = await fetch(`${url}newsletter/registered`);
     if (!res.ok) {
       throw new Error('Error loading newsletter data');
     }
