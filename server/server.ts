@@ -6,7 +6,8 @@ import {
 } from 'swagger-ui-express';
 import { swaggerDocs } from './swagger';
 import cors from 'cors';
-
+if (process.env.CLEARDB_DATABASE_URL)
+  process.env.DATABASE_URL = process.env.CLEARDB_DATABASE_URL;
 import newsletterRoutes from './routes/newsletter/index';
 
 dotenv.config();
