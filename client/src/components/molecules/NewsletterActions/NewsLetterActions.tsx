@@ -1,20 +1,20 @@
 import { ConfirmAction, Field } from '@components/molecules';
-import { IconCross, IconeDelete, IconeEnabled } from '@assets/svg/icons';
+import {
+  IconCross,
+  IconUnsubscribe,
+  IconeDelete,
+  IconeEnabled,
+} from '@assets/svg/icons';
 import styles from './NewsLetterActions.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from '@components/atoms';
+import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
+import Spinner from '@components/atoms/Spinner/Spinner';
 
 interface NewsLetterActionsProps {
   id: string;
   email: string;
   active: boolean;
-  loading?: boolean;
-  handleEditSubscribe: (
-    id: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  handleDeletesubscribe: (id: string) => void;
-  handleUnsubscribe: (id: string, active: boolean) => void;
   error?: string;
 }
 
@@ -22,13 +22,19 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
   id,
   email,
   active,
-  loading,
-  handleEditSubscribe,
-  handleDeletesubscribe,
-  handleUnsubscribe,
   error,
 }) => {
+  const {
+    editSubscribe,
+    deleteSubscribe,
+    toggleSubscribe,
+    loading,
+    currentActiveElement,
+    currentAction,
+  } = useNewsLetterStore();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const showLoading = loading && currentActiveElement === id;
+
   return (
     <>
       <Field
@@ -37,23 +43,30 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
         className={`bloc_input ${styles.admin_input}`}
         key={`email_${id}`}
         name={`email_${id}`}
+        loading={showLoading && currentAction === StoreActions.EDIT}
         defaultValue={email}
         onChange={(event) => {
-          handleEditSubscribe(id, event);
+          editSubscribe(id, event.target.value);
         }}
         error={error}
         {...(!active && { disabled: true })}
       >
         <span className={styles.newsLetterAction}>
           <button
-            className={`btn_icon ${active ? 'btn_accent' : 'btn_green'}`}
+            className={`btn_icon ${active ? 'btn_purple' : 'btn_green'}`}
             type='button'
             title={active ? 'Unsubscribe' : 'Subscribe'}
             onClick={() => {
-              handleUnsubscribe(id, !active);
+              toggleSubscribe(id, !active);
             }}
           >
-            {active ? <IconCross /> : <IconeEnabled />}
+            {showLoading && currentAction == StoreActions.TOGGLE ? (
+              <Spinner style={{ borderColor: 'white' }} />
+            ) : active ? (
+              <IconUnsubscribe />
+            ) : (
+              <IconeEnabled />
+            )}
           </button>
           <span className='hr_vertical'></span>
           <button
@@ -64,7 +77,11 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
               setDialogOpen(true);
             }}
           >
-            <IconeDelete />
+            {showLoading && currentAction === StoreActions.DELETE ? (
+              <Spinner />
+            ) : (
+              <IconeDelete />
+            )}
           </button>
         </span>
       </Field>
@@ -80,7 +97,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
               setDialogOpen(false);
             }}
             confirm={() => {
-              handleDeletesubscribe(id);
+              deleteSubscribe(id);
             }}
           />
         </Modal>

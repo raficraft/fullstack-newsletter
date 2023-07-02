@@ -6,24 +6,15 @@ import { useForm, usePaginate } from '@hooks/index';
 import styles from '@styles/pages/Admin.module.scss';
 import { AdminHeader } from '@components/organisms';
 import { UseFormOptions, FieldsOptions } from '@hooks/useForm/types';
-import useNewsLetterActions from '@hooks/useNewsLetterActions/UseNewsLetterActions';
+import useNewsLetterStore from '@store/useNewsletterStore';
 
 export default function Admin({
   newsLetters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const {
-    data,
-    errorApi,
-    loading,
-    handleDeletesubscribe,
-    handleUnsubscribe,
-    handleEditSubscribe,
-    handleFilter,
-    handleSearch,
-    loadData,
-  } = useNewsLetterActions(newsLetters);
+  const { data, setData, errorApi } = useNewsLetterStore();
+  const currentData = !data.length ? newsLetters : data;
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
-    data,
+    currentData,
     5
   );
   // Génére l'objet de configuration pour useForm par apport aux items affiché
@@ -46,7 +37,10 @@ export default function Admin({
 
   const { validateField, errors } = useForm(generateFormConfig(items));
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    console.log('render');
+    setData(currentData);
+  }, [data]);
 
   return (
     <>
@@ -57,52 +51,27 @@ export default function Admin({
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main className={styles.admin}>
-        {items.length > 0 ? (
-          <>
-            {
-              <>
-                <AdminHeader
-                  handleSearch={handleSearch}
-                  handleFilter={handleFilter}
-                  loadData={loadData}
-                />
-                <div className={styles.input_list}>
-                  {items.map((item, key) => (
-                    <NewsLetterActions
-                      loading={loading}
-                      key={`email_${key}`}
-                      id={item.id}
-                      email={item.email}
-                      active={item.active}
-                      handleEditSubscribe={(
-                        id: string,
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        if (validateField(event)) {
-                          handleEditSubscribe(id, event);
-                        }
-                      }}
-                      handleDeletesubscribe={handleDeletesubscribe}
-                      handleUnsubscribe={handleUnsubscribe}
-                      error={errors[`email_${item.id}`]}
-                    />
-                  ))}
-                </div>
-                {totalPages > 1 && (
-                  <Pagination
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    nextPage={nextPage}
-                    prevPage={prevPage}
-                  />
-                )}
-                <p>{errorApi}</p>
-              </>
-            }
-          </>
-        ) : (
-          <p>No results available.</p>
+        <AdminHeader />
+        <div className={styles.input_list}>
+          {items.map((item, key) => (
+            <NewsLetterActions
+              key={`email_${key}`}
+              id={item.id}
+              email={item.email}
+              active={item.active}
+              // error={errors[`email_${item.id}`]}
+            />
+          ))}
+        </div>
+        {totalPages > 1 && (
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            prevPage={prevPage}
+          />
         )}
+        <p>{errorApi}</p>
       </main>
     </>
   );

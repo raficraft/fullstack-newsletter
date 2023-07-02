@@ -1,7 +1,7 @@
 import { Button } from '@components/atoms';
 import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
-import useNewsLetterAPI from '@hooks/useNewsLetterAPI/useNewsLetterApi';
+import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import { debounce } from '@utils/debounce/debounce';
 import { FormEvent } from 'react';
 
@@ -10,7 +10,8 @@ type Props = {
 };
 
 const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
-  const { errorApi, subscribe, setErrorApi } = useNewsLetterAPI();
+  const { errorApi, subscribe, setErrorApi, loading, currentAction } =
+    useNewsLetterStore();
 
   const { validateForm, validateField, errors, getFormData, reset } = useForm({
     fields: {
@@ -67,7 +68,11 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
       >
         <label htmlFor='newsletter'>Email adress</label>
       </Field>
-      <Button type='submit' className='btn_primary fullWidth'>
+      <Button
+        type='submit'
+        className='btn_primary fullWidth'
+        loading={loading && StoreActions.INSERT === currentAction}
+      >
         Subscribe to monthly newsletter
       </Button>
     </form>

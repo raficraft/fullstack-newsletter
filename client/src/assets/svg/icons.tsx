@@ -236,23 +236,6 @@ export function IconeEdit(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IconeUnsubscribe(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      width='1em'
-      height='1em'
-      viewBox='0 0 24 24'
-      {...props}
-    >
-      <path
-        fill='currentColor'
-        d='M18.5 11.5c.92 0 1.75.26 2.49.69V5c0-1.1-.89-2-1.99-2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h8.55c-.02-.17-.05-.33-.05-.5c0-2.76 2.24-5 5-5zm-5.61-1.45c-.56.28-1.23.28-1.79 0l-5.61-2.8a.893.893 0 0 1-.49-.8c0-.66.7-1.1 1.29-.8L12 8.5l5.71-2.85a.89.89 0 0 1 1.29.8c0 .34-.19.65-.49.8l-5.62 2.8zM18.5 13c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5s3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5zm2 3.5c0 .28-.22.5-.5.5h-3c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h3c.28 0 .5.22.5.5z'
-      ></path>
-    </svg>
-  );
-}
-
 export function IconeDelete(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -318,6 +301,23 @@ export function IconeReload(props: SVGProps<SVGSVGElement>) {
         fillRule='evenodd'
         d='M20.5 3a1 1 0 0 0-1.707-.707l-1.33 1.33A9.955 9.955 0 0 0 12 2C6.477 2 2 6.477 2 12a1 1 0 0 0 2 0a8 8 0 0 1 12.01-6.924l-1.217 1.217A1 1 0 0 0 15.5 8h4a1 1 0 0 0 1-1V3ZM7.99 18.924l1.217-1.217A1 1 0 0 0 8.5 16h-4a1 1 0 0 0-1 1v4a1 1 0 0 0 1.707.707l1.33-1.33A9.956 9.956 0 0 0 12 22c5.523 0 10-4.477 10-10a1 1 0 1 0-2 0a8 8 0 0 1-12.01 6.924Z'
         clipRule='evenodd'
+      ></path>
+    </svg>
+  );
+}
+
+export function IconUnsubscribe(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='1em'
+      height='1em'
+      viewBox='0 0 24 24'
+      {...props}
+    >
+      <path
+        fill='currentColor'
+        d='M20 18.69L7.84 6.14L5.27 3.49L4 4.76l2.8 2.8v.01c-.52.99-.8 2.16-.8 3.42v5l-2 2v1h13.73l2 2L21 19.72l-1-1.03zM12 22c1.11 0 2-.89 2-2h-4c0 1.11.89 2 2 2zm6-7.32V11c0-3.08-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68c-.15.03-.29.08-.42.12c-.1.03-.2.07-.3.11h-.01c-.01 0-.01 0-.02.01c-.23.09-.46.2-.68.31c0 0-.01 0-.01.01L18 14.68z'
       ></path>
     </svg>
   );

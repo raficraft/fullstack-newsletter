@@ -1,19 +1,15 @@
 import { IconMagnify } from '@assets/svg/icons';
 import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
+import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import { debounce } from '@utils/debounce/debounce';
 import { ChangeEvent, HTMLAttributes } from 'react';
 
 interface AdminSearchProps extends HTMLAttributes<HTMLDivElement> {
-  callback: (value: string) => void;
   children?: any;
 }
 
-const AdminSearch: React.FC<AdminSearchProps> = ({
-  className,
-  callback,
-  children,
-}) => {
+const AdminSearch: React.FC<AdminSearchProps> = ({ className, children }) => {
   const { validateField, errors, reset } = useForm({
     fields: {
       search: {
@@ -27,11 +23,13 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
     },
   });
 
+  const { searchSubscriber, loading, currentAction } = useNewsLetterStore();
+
   const handleChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
     if (validateField(event)) {
-      callback(event.target.value);
+      searchSubscriber(event.target.value);
       reset();
     }
   }, 300);
@@ -45,6 +43,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
       svg={<IconMagnify />}
       minLength={2}
       required
+      loading={loading && currentAction === StoreActions.SEARCH}
       error={errors.search}
       onChange={handleChange}
       onSubmit={handleChange}

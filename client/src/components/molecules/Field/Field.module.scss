@@ -1,15 +1,16 @@
 @import '@css/mixin/mixin.scss';
 
+$offset: 2px;
+
 .icon {
   position: absolute;
-  top: 1px;
-  right: 1px;
+  top: $offset;
+  right: $offset;
   bottom: 0;
   @include flex(row, center, center);
   width: 2.5rem;
-  height: calc(100% - 2px);
+  height: calc(100% - ($offset * 2));
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  background-color: rgb(255, 255, 255);
 
   svg {
     @include size(1rem);
@@ -25,6 +26,10 @@
   position: relative;
   @include flex(row, '', center);
   gap: 1rem;
+}
+.input {
+  position: relative;
+  flex-grow: 1;
 }
 
 .label {

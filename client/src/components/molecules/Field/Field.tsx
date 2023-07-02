@@ -44,17 +44,19 @@ const Field = forwardRef(
           </span>
         )}
         <div className={styles.field_input}>
-          <Input ref={ref} {...rest}>
-            {svg && !loading ? (
-              <span className={styles.icon}>{svg}</span>
-            ) : null}
-          </Input>
+          <span className={styles.input}>
+            <Input ref={ref} {...rest}>
+              {svg && !loading ? (
+                <span className={styles.icon}>{svg}</span>
+              ) : null}
+            </Input>
 
-          {loading && (
-            <span className={styles.icon}>
-              <Spinner />
-            </span>
-          )}
+            {loading && (
+              <span className={styles.icon}>
+                <Spinner color='black' />
+              </span>
+            )}
+          </span>
           {reverse && children ? children : null}
         </div>
 

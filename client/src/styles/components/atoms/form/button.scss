@@ -2,6 +2,7 @@
 
 .btn {
   &_primary {
+    @include flexCenter();
     border: none;
     background: var(--clr-primary-200);
     color: var(--clr-light);
@@ -49,5 +50,9 @@
 
   &_blue {
     background-color: var(--clr-blue);
+  }
+
+  &_purple {
+    background-color: var(--clr-purple);
   }
 }

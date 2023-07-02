@@ -1,12 +1,9 @@
-import { Button, DropList, Modal } from '@components/atoms';
 import { useState } from 'react';
+import { Button, DropList, Modal, Text } from '@components/atoms';
 import styles from './AdminFilter.module.scss';
 import { IconeFilter, IconeReload } from '@assets/svg/icons';
-
-interface AdminFilterProps {
-  submit: (url: string) => void;
-  reset: () => void;
-}
+import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
+import Spinner from '@components/atoms/Spinner/Spinner';
 
 interface FilterState {
   sortBy: string;
@@ -15,30 +12,31 @@ interface FilterState {
 }
 
 const optionsFilter = [
-  { label: 'None', value: 'none' },
-  { label: 'Email', value: 'email' },
   { label: 'CreatedAt', value: 'createdAt' },
+  { label: 'Email', value: 'email' },
   { label: 'UpdatedAt', value: 'updatedAt' },
 ];
 
 const optionsOrder = [
-  { label: 'None', value: 'none' },
   { label: 'Ascendant', value: 'asc' },
   { label: 'Descendant', value: 'desc' },
 ];
 
 const optionsFilterActive = [
-  { label: 'all', value: 'none' },
+  { label: 'All', value: 'none' },
   { label: 'Active', value: 'true' },
   { label: 'Disabled', value: 'false' },
 ];
 
-const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
+const AdminFilter = () => {
   const [filter, setFilter] = useState<FilterState>({
-    sortBy: 'none',
-    order: 'none',
+    sortBy: 'createdAt',
+    order: 'asc',
     active: 'none',
   });
+
+  const { loading, currentAction, registered, filterData, setFilterRequest } =
+    useNewsLetterStore();
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -52,24 +50,23 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
   const generateFilterUrl = (): string => {
     const params = [];
 
-    if (filter.sortBy !== 'none') {
-      params.push(`sortBy=${filter.sortBy}`);
-    }
-
-    if (filter.order !== 'none') {
-      params.push(`order=${filter.order}`);
-    }
+    params.push(`sortBy=${filter.sortBy}`);
+    params.push(`order=${filter.order}`);
 
     if (filter.active !== 'none') {
       params.push(`active=${filter.active}`);
     }
 
-    return params.length > 0 ? `?${params.join('&')}` : '';
+    const requestOptions = params.length > 0 ? `?${params.join('&')}` : '';
+    setFilterRequest(requestOptions);
+
+    return requestOptions;
   };
 
   const resetFilter = () => {
-    setFilter({ sortBy: 'none', order: 'none', active: 'none' });
-    reset();
+    setFilter({ sortBy: 'createAt', order: 'asc', active: 'none' });
+    setFilterRequest(generateFilterUrl());
+    registered();
   };
 
   return (
@@ -82,7 +79,11 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
         }}
         title='Filter data'
       >
-        <IconeFilter />
+        {loading && StoreActions.FILTER === currentAction ? (
+          <Spinner style={{ borderColor: 'white' }} />
+        ) : (
+          <IconeFilter />
+        )}
       </button>
       <span className='hr_vertical'></span>
       <button
@@ -91,7 +92,11 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
         className='btn_icon btn_green'
         title='Reset filter and reload data'
       >
-        <IconeReload />
+        {loading && StoreActions.RELOAD === currentAction ? (
+          <Spinner style={{ borderColor: 'white' }} />
+        ) : (
+          <IconeReload />
+        )}
       </button>
 
       {dialogOpen && (
@@ -103,7 +108,7 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
           <div className={`box ${styles.dialog}`}>
             <div className={styles.items}>
               <div className={styles.droplist}>
-                <label className='text_s bold'>Sort By :</label>
+                <Text className='text_s bold'>Sort by :</Text>
                 <DropList
                   options={optionsFilter}
                   name='sortBy'
@@ -112,7 +117,7 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
               </div>
               <hr></hr>
               <div className={styles.droplist}>
-                <label className='text_s bold'>Order by :</label>
+                <Text className='text_s bold'>Order by :</Text>
                 <DropList
                   options={optionsOrder}
                   name='order'
@@ -121,7 +126,7 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
               </div>
               <hr></hr>
               <div className={styles.droplist}>
-                <label className='text_s bold'>Active :</label>
+                <Text className='text_s bold'>Active :</Text>
                 <DropList
                   options={optionsFilterActive}
                   name='active'
@@ -133,7 +138,7 @@ const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
               <Button
                 className='btn_primary full_width'
                 onClick={() => {
-                  submit(generateFilterUrl());
+                  filterData(generateFilterUrl());
                   setFilter({ sortBy: 'none', order: 'none', active: 'none' });
                   setDialogOpen(false);
                 }}
