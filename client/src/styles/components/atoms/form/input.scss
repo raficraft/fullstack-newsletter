@@ -15,7 +15,7 @@
 
   &::placeholder {
     opacity: 0.5;
-    color: var(--clr-primary-100);
+    color: var(--clr-primary-200);
     font-weight: 400;
   }
 
@@ -25,9 +25,9 @@
   }
 
   &:focus {
-    border-color: var(--clr-primary-100);
-    outline-color: var(--clr-primary-100);
-    caret-color: var(--clr-primary-100);
+    border-color: var(--clr-primary-200);
+    outline-color: var(--clr-primary-200);
+    caret-color: var(--clr-primary-200);
   }
 
   &:disabled {

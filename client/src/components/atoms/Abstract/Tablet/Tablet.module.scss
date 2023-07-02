@@ -3,7 +3,7 @@
 .tablet {
   @include size(432px, 290px);
   border-radius: 1rem;
-  background-color: var(--clr-primary-100);
+  background-color: var(--clr-primary-200);
 
   & span {
     position: absolute;

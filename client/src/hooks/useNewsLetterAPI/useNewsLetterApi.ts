@@ -42,8 +42,8 @@ const useNewsLetterAPI = () => {
       method: 'GET',
     });
 
-  const registered = () =>
-    handleRequest(`${route}/registered`, {
+  const registered = (url?: string) =>
+    handleRequest(`${route}/registered${url}`, {
       method: 'GET',
     });
 

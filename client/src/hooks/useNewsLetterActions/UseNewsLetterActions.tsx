@@ -5,6 +5,7 @@ const useNewsLetterActions = (initialData: any) => {
   const [data, setData] = useState(initialData || []);
   const {
     errorApi,
+    loading,
     setErrorApi,
     deleteSubscribe,
     toggleSubscribe,
@@ -70,6 +71,7 @@ const useNewsLetterActions = (initialData: any) => {
   return {
     data,
     errorApi,
+    loading,
     handleDeletesubscribe,
     handleUnsubscribe,
     handleEditSubscribe,

@@ -1,12 +1,10 @@
 import Head from 'next/head';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { useEffect } from 'react';
-import { AdminFilter, NewsLetterActions } from '@components/molecules';
-import { Text } from '@components/atoms';
+import { NewsLetterActions, Pagination } from '@components/molecules';
 import { useForm, usePaginate } from '@hooks/index';
 import styles from '@styles/pages/Admin.module.scss';
-import useNewsLetterAPI from '@hooks/useNewsLetterAPI/useNewsLetterApi';
-import { AdminSearch } from '@components/organisms';
+import { AdminHeader } from '@components/organisms';
 import { UseFormOptions, FieldsOptions } from '@hooks/useForm/types';
 import useNewsLetterActions from '@hooks/useNewsLetterActions/UseNewsLetterActions';
 
@@ -16,6 +14,7 @@ export default function Admin({
   const {
     data,
     errorApi,
+    loading,
     handleDeletesubscribe,
     handleUnsubscribe,
     handleEditSubscribe,
@@ -27,7 +26,7 @@ export default function Admin({
     data,
     5
   );
-  // Génére l'objet de configuration pour useForm
+  // Génére l'objet de configuration pour useForm par apport aux items affiché
   const generateFormConfig = (items: any[]): UseFormOptions => {
     let fieldsConfig: FieldsOptions = {};
 
@@ -62,19 +61,15 @@ export default function Admin({
           <>
             {
               <>
-                <header className={styles.admin_header}>
-                  <AdminSearch
-                    callback={handleSearch}
-                    className={styles.header_search}
-                  >
-                    <span className={styles.header_icon}>
-                      <AdminFilter submit={handleFilter} reset={loadData} />
-                    </span>
-                  </AdminSearch>
-                </header>
+                <AdminHeader
+                  handleSearch={handleSearch}
+                  handleFilter={handleFilter}
+                  loadData={loadData}
+                />
                 <div className={styles.input_list}>
                   {items.map((item, key) => (
                     <NewsLetterActions
+                      loading={loading}
                       key={`email_${key}`}
                       id={item.id}
                       email={item.email}
@@ -94,25 +89,12 @@ export default function Admin({
                   ))}
                 </div>
                 {totalPages > 1 && (
-                  <div className={styles.paginate}>
-                    <button
-                      onClick={prevPage}
-                      disabled={currentPage === 0}
-                      className='btn_primary'
-                    >
-                      Prev
-                    </button>
-                    <Text tag='p' className='bold'>
-                      {currentPage + 1} / {totalPages}
-                    </Text>
-                    <button
-                      onClick={nextPage}
-                      disabled={currentPage === totalPages - 1}
-                      className='btn_primary'
-                    >
-                      Next
-                    </button>
-                  </div>
+                  <Pagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                  />
                 )}
                 <p>{errorApi}</p>
               </>

@@ -1,33 +1,29 @@
 @import '@css/mixin/mixin.scss';
 
+@import '@css/mixin/mixin.scss';
+
 .dialog {
   position: relative;
   @include flex(column);
   padding: 5rem 4rem 4rem 4rem;
-  gap: 3rem;
+  gap: 0rem;
   position: relative;
-}
+  width: min(100%, 380px);
 
-.droplist {
-  @include flex(row, space-between, center);
-  gap: 2rem;
-}
-
-.filter {
-  .summary {
-    padding: 0 0 1rem 0;
+  p {
+    text-wrap: balance;
   }
 
   footer {
-    padding: 2rem 0 0 0;
     @include flex(row, space-between);
     button {
-      padding: 0 2rem;
+      padding: 0 1rem;
     }
   }
 }
 
-.items {
+.content {
   @include flex(column);
-  gap: 2rem;
+  gap: 1.5rem;
+  padding: 1rem 0;
 }

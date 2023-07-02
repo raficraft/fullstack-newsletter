@@ -1,0 +1,16 @@
+@import '@css/mixin/mixin.scss';
+
+.header {
+  @include flex(row, space-between);
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--clr-primary-800);
+
+  &_search {
+    width: 100%;
+  }
+
+  &_icon {
+    @include flexCenter();
+    gap: 0.5rem;
+  }
+}

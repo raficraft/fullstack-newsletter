@@ -5,14 +5,12 @@
   padding: 0;
   border-radius: 0;
   background-color: var(--clr-light);
-  height: 100%;
 
   @media screen and (min-width: 1023px) {
     @include flex();
     gap: 4rem;
     border-radius: var(--radius-xl);
     padding: 1.5rem 1.5rem 1.5rem 4rem;
-    height: min-content;
   }
 
   &_form {
@@ -23,6 +21,7 @@
       padding: 4.5625rem 0;
     }
   }
+
   &_info {
     @include flex(column);
     gap: 1.5rem;
@@ -34,8 +33,8 @@
   }
 
   li {
-    list-style: none;
     @include flex(row, '', center);
     gap: 1rem;
+    list-style: none;
   }
 }

@@ -61,7 +61,7 @@ export function IconArrowDown(props: SVGProps<SVGSVGElement>) {
       viewBox='0 0 13 9'
       {...props}
     >
-      <path stroke='#A445ED' strokeWidth='1.5' d='m1 1 6 6 6-6' />
+      <path stroke='currentColor' strokeWidth='1.5' d='m1 1 6 6 6-6' />
     </svg>
   );
 }

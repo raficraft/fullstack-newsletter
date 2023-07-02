@@ -1,0 +1,31 @@
+@import '@css/mixin/mixin.scss';
+
+.modal {
+  position: absolute;
+  inset: 0;
+  background-color: var(--clr-primary-transparent);
+  z-index: 1000;
+  @include flexCenter();
+  backdrop-filter: blur(2px);
+}
+
+.wrapper {
+  @include flexCenter();
+}
+
+.icon_close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  @include size(1.5rem);
+
+  svg {
+    color: white;
+    @include size(1.5rem);
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

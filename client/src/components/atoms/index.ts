@@ -8,6 +8,7 @@ import Browser from '@atoms/Abstract/Browser/Browser';
 import Graphic from '@atoms/Abstract/Graphic/Graphic';
 import Range from '@atoms/Abstract/Range/Range';
 import DropList from '@atoms/DropList/DropList';
+import Modal from '@atoms/Modal/Modal';
 
 export {
   Input,
@@ -15,6 +16,7 @@ export {
   Text,
   Button,
   DropList,
+  Modal,
   Loading,
   Tablet,
   Browser,

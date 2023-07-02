@@ -65,9 +65,7 @@ export default function (prisma: PrismaClient) {
     }
 
     if (email === undefined || typeof email !== 'string') {
-      return res
-        .status(400)
-        .json({ error: 'Invalid value for "email". Expected a string.' });
+      return res.status(400).json({ error: 'Valid email is required' });
     }
 
     try {

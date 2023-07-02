@@ -10,7 +10,7 @@
     border: none;
     font-weight: bold;
     font-size: var(--fs-200);
-    color: var(--clr-primary-100);
+    color: var(--clr-primary-200);
     font-family: var(--font-family);
   }
 }
@@ -19,6 +19,9 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  svg {
+    color: var(--clr-accent);
+  }
 }
 
 .optionsList {

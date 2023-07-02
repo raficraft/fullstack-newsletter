@@ -51,28 +51,20 @@ export default function (prisma: PrismaClient) {
   const router = express.Router();
 
   router.get('/', async (req: Request, res: Response): Promise<Response> => {
-    const { email, createdAt, updatedAt, active } = req.query;
+    const { sortBy, order, active } = req.query;
 
     const sortOptions = ['asc', 'desc'];
+    const fieldOptions = ['email', 'createdAt', 'updatedAt'];
 
-    let sortField: string | null = null;
     let sortOrder: 'asc' | 'desc' | null = null;
+    let sortField: string | null = null;
 
-    switch (true) {
-      case email && sortOptions.includes(email as string):
-        sortField = 'email';
-        sortOrder = email as 'asc' | 'desc';
-        break;
-      case createdAt && sortOptions.includes(createdAt as string):
-        sortField = 'createdAt';
-        sortOrder = createdAt as 'asc' | 'desc';
-        break;
-      case updatedAt && sortOptions.includes(updatedAt as string):
-        sortField = 'updatedAt';
-        sortOrder = updatedAt as 'asc' | 'desc';
-        break;
-      default:
-        break;
+    if (sortOptions.includes(order as string)) {
+      sortOrder = order as 'asc' | 'desc';
+    }
+
+    if (fieldOptions.includes(sortBy as string)) {
+      sortField = sortBy as string;
     }
 
     const filterParams: any = {};
@@ -92,7 +84,7 @@ export default function (prisma: PrismaClient) {
       return res.json(registeredUsers);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Something went wrong.' });
+      return res.status(500).json({ error: 'Something went wrong' });
     }
   });
 

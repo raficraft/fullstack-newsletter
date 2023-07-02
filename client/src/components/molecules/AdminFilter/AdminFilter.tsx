@@ -1,8 +1,7 @@
-import { Button, DropList, Text } from '@components/atoms';
+import { Button, DropList, Modal } from '@components/atoms';
 import { useState } from 'react';
 import styles from './AdminFilter.module.scss';
-import { IconCross, IconeFilter, IconeReload } from '@assets/svg/icons';
-import { createPortal } from 'react-dom';
+import { IconeFilter, IconeReload } from '@assets/svg/icons';
 
 interface AdminFilterProps {
   submit: (url: string) => void;
@@ -34,14 +33,13 @@ const optionsFilterActive = [
   { label: 'Disabled', value: 'false' },
 ];
 
-const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
+const AdminFilter = ({ submit, reset }: AdminFilterProps) => {
   const [filter, setFilter] = useState<FilterState>({
     sortBy: 'none',
     order: 'none',
     active: 'none',
   });
 
-  // const [resetKey, setResetKey] = useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const updateState = (key: string, value: string) => {
@@ -72,7 +70,6 @@ const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
   const resetFilter = () => {
     setFilter({ sortBy: 'none', order: 'none', active: 'none' });
     reset();
-    // setResetKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -82,8 +79,8 @@ const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
         className='btn_icon btn_blue'
         onClick={() => {
           setDialogOpen(!dialogOpen);
-          submit(generateFilterUrl());
         }}
+        title='Filter data'
       >
         <IconeFilter />
       </button>
@@ -92,70 +89,61 @@ const AdminFilter: React.FC<AdminFilterProps> = ({ submit, reset }) => {
         type='button'
         onClick={resetFilter}
         className='btn_icon btn_green'
+        title='Reset filter and reload data'
       >
         <IconeReload />
       </button>
 
-      {dialogOpen &&
-        createPortal(
-          <div
-            className={styles.dialog}
-            onClick={(event) => {
-              setDialogOpen(false);
-            }}
-          >
-            <div
-              className={styles.dialog_content}
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              <header>
-                <IconCross />
-              </header>
-
-              <div className={styles.items}>
-                <div className={styles.droplist}>
-                  <label className='text_s bold'>Sort By :</label>
-                  <DropList
-                    options={optionsFilter}
-                    name='sortBy'
-                    callback={(value: string) => updateState('sortBy', value)}
-                  />
-                </div>
-                <hr></hr>
-                <div className={styles.droplist}>
-                  <label className='text_s bold'>Order :</label>
-                  <DropList
-                    options={optionsOrder}
-                    name='order'
-                    callback={(value: string) => updateState('order', value)}
-                  />
-                </div>
-                <hr></hr>
-                <div className={styles.droplist}>
-                  <label className='text_s bold'>Active :</label>
-                  <DropList
-                    options={optionsFilterActive}
-                    name='active'
-                    callback={(value: string) => updateState('active', value)}
-                  />
-                </div>
+      {dialogOpen && (
+        <Modal
+          onClick={() => {
+            setDialogOpen(false);
+          }}
+        >
+          <div className={`box ${styles.dialog}`}>
+            <div className={styles.items}>
+              <div className={styles.droplist}>
+                <label className='text_s bold'>Sort By :</label>
+                <DropList
+                  options={optionsFilter}
+                  name='sortBy'
+                  callback={(value: string) => updateState('sortBy', value)}
+                />
               </div>
-              <footer>
-                <Button
-                  className='btn_primary'
-                  onClick={() => {
-                    submit(generateFilterUrl());
-                  }}
-                >
-                  Filtrer
-                </Button>
-              </footer>
+              <hr></hr>
+              <div className={styles.droplist}>
+                <label className='text_s bold'>Order by :</label>
+                <DropList
+                  options={optionsOrder}
+                  name='order'
+                  callback={(value: string) => updateState('order', value)}
+                />
+              </div>
+              <hr></hr>
+              <div className={styles.droplist}>
+                <label className='text_s bold'>Active :</label>
+                <DropList
+                  options={optionsFilterActive}
+                  name='active'
+                  callback={(value: string) => updateState('active', value)}
+                />
+              </div>
             </div>
-          </div>,
-          document.body
-        )}
+            <footer>
+              <Button
+                className='btn_primary full_width'
+                onClick={() => {
+                  submit(generateFilterUrl());
+                  setFilter({ sortBy: 'none', order: 'none', active: 'none' });
+                  setDialogOpen(false);
+                }}
+              >
+                Filtrer
+              </Button>
+            </footer>
+          </div>
+        </Modal>
+      )}
     </>
   );
 };

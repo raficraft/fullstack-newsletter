@@ -1,5 +1,5 @@
 import Abstract from './Abstract/Abstract';
 import SubscribeNewsletter from './form/SubscribeNewsLetter/SubscribeNewsletter';
-import AdminSearch from './form/AdminSearch/AdminSearch';
+import AdminHeader from './AdminHeader/AdminHeader';
 
-export { Abstract, SubscribeNewsletter, AdminSearch };
+export { Abstract, SubscribeNewsletter, AdminHeader };
