@@ -11,12 +11,13 @@ import useNewsLetterStore from '@store/useNewsletterStore';
 export default function Admin({
   newsLetters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data, setData, errorApi } = useNewsLetterStore();
+  const { data, setData, errorApi, currentAction } = useNewsLetterStore();
   const currentData = !data.length ? newsLetters : data;
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
     currentData,
     5
   );
+
   // Génére l'objet de configuration pour useForm par apport aux items affiché
   const generateFormConfig = (items: any[]): UseFormOptions => {
     let fieldsConfig: FieldsOptions = {};
@@ -38,7 +39,6 @@ export default function Admin({
   const { validateField, errors } = useForm(generateFormConfig(items));
 
   useEffect(() => {
-    console.log('render');
     setData(currentData);
   }, [data]);
 
@@ -59,7 +59,8 @@ export default function Admin({
               id={item.id}
               email={item.email}
               active={item.active}
-              // error={errors[`email_${item.id}`]}
+              error={errors[`email_${item.id}`]}
+              validation={validateField}
             />
           ))}
         </div>
@@ -71,7 +72,6 @@ export default function Admin({
             prevPage={prevPage}
           />
         )}
-        <p>{errorApi}</p>
       </main>
     </>
   );

@@ -16,6 +16,7 @@ interface NewsLetterActionsProps {
   email: string;
   active: boolean;
   error?: string;
+  validation: any;
 }
 
 export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
@@ -23,6 +24,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
   email,
   active,
   error,
+  validation,
 }) => {
   const {
     editSubscribe,
@@ -31,9 +33,39 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
     loading,
     currentActiveElement,
     currentAction,
+    errorApi,
+    setErrorApi,
   } = useNewsLetterStore();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const showLoading = loading && currentActiveElement === id;
+  const errorField = currentActiveElement === id ? errorApi || error : '';
+
+  const handleEdit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    try {
+      if (validation(event)) {
+        await editSubscribe(id, event.target.value);
+      }
+    } catch (error: any) {
+      setErrorApi(error.message);
+    }
+  };
+
+  const handleToggle = () => {
+    try {
+      toggleSubscribe(id, !active);
+    } catch (error: any) {
+      setErrorApi(error.message);
+    }
+  };
+
+  const handleDelete = () => {
+    try {
+      deleteSubscribe(id);
+    } catch (error: any) {
+      setErrorApi(error.message);
+    }
+  };
 
   return (
     <>
@@ -46,9 +78,9 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
         loading={showLoading && currentAction === StoreActions.EDIT}
         defaultValue={email}
         onChange={(event) => {
-          editSubscribe(id, event.target.value);
+          handleEdit(event);
         }}
-        error={error}
+        error={errorField}
         {...(!active && { disabled: true })}
       >
         <span className={styles.newsLetterAction}>
@@ -56,9 +88,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
             className={`btn_icon ${active ? 'btn_purple' : 'btn_green'}`}
             type='button'
             title={active ? 'Unsubscribe' : 'Subscribe'}
-            onClick={() => {
-              toggleSubscribe(id, !active);
-            }}
+            onClick={handleToggle}
           >
             {showLoading && currentAction == StoreActions.TOGGLE ? (
               <Spinner style={{ borderColor: 'white' }} />
@@ -96,9 +126,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
             cancel={() => {
               setDialogOpen(false);
             }}
-            confirm={() => {
-              deleteSubscribe(id);
-            }}
+            confirm={handleDelete}
           />
         </Modal>
       )}

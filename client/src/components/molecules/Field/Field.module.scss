@@ -33,7 +33,7 @@ $offset: 2px;
 }
 
 .label {
-  @include flex(row, space-between);
+  @include flex(row, space-between, center);
   margin-bottom: 0.5rem;
   max-height: 1.125rem;
 

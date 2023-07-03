@@ -3,7 +3,7 @@ import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import { debounce } from '@utils/debounce/debounce';
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 
 type Props = {
   onSuccessfulSubmit: (email: string) => void;

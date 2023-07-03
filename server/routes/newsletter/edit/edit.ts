@@ -1,6 +1,6 @@
 import validator from 'validator';
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ import { PrismaClient } from '@prisma/client';
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.put('/:id', async (req: Request, res: Response): Promise<Response> => {
+  router.put('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const { email } = req.body;
 
@@ -76,7 +76,13 @@ export default function (prisma: PrismaClient) {
 
       return res.json(user);
     } catch (error) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+      if (prismaError.code === 'P2002') {
+        res.status(400).json({ error: 'This email is already in use' });
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+      }
     }
   });
 
