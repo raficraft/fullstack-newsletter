@@ -13,7 +13,13 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
   const { errorApi, subscribe, setErrorApi, loading, currentAction } =
     useNewsLetterStore();
 
-  const { validateForm, validateField, errors, getFormData, reset } = useForm({
+  const {
+    validateForm,
+    validateField,
+    errors,
+    getFormData,
+    reset: resetFormErrors,
+  } = useForm({
     fields: {
       newsletter: {
         required: {
@@ -36,7 +42,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
       try {
         await subscribe(email);
         onSuccessfulSubmit(email);
-        reset();
+        resetFormErrors();
       } catch (error: any) {
         setErrorApi(error.message);
       }
@@ -47,7 +53,7 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       if (validateField(event)) {
-        reset();
+        resetFormErrors();
       }
     },
     300

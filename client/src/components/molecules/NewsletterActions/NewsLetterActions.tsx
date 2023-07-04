@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Modal } from '@components/atoms';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import Spinner from '@components/atoms/Spinner/Spinner';
+import { debounce } from '@utils/debounce/debounce';
 
 interface NewsLetterActionsProps {
   id: string;
@@ -40,16 +41,19 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
   const showLoading = loading && currentActiveElement === id;
   const errorField = currentActiveElement === id ? errorApi || error : '';
 
-  const handleEdit = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    try {
-      if (validation(event)) {
-        await editSubscribe(id, event.target.value);
+  const handleEdit = debounce(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      try {
+        if (validation(event)) {
+          await editSubscribe(id, event.target.value);
+        }
+      } catch (error: any) {
+        setErrorApi(error.message);
       }
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
-  };
+    },
+    300
+  );
 
   const handleToggle = () => {
     try {
@@ -117,7 +121,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
       </Field>
       {dialogOpen && (
         <Modal
-          onClick={() => {
+          close={() => {
             setDialogOpen(false);
           }}
         >

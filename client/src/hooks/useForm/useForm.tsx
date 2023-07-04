@@ -123,7 +123,7 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
   };
 
   // Réinitialise les erreurs du formulaire
-  const reset = () => {
+  const resetFormErrors = () => {
     setErrors({});
   };
 
@@ -132,7 +132,7 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
     validateForm,
     validateField,
     getFormData,
-    reset,
+    reset: resetFormErrors,
     errors,
   };
 };

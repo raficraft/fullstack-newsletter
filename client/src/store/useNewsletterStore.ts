@@ -13,24 +13,20 @@ export enum StoreActions {
 }
 
 type Store = {
-  data: any[];
+  data: any[] | any;
   errorApi: string;
   loading: boolean;
   filterRequest: string;
   currentActiveElement: string | null;
   currentAction: string | null;
-  handleRequest: (
-    url: string,
-    options: RequestInit,
-    id?: string
-  ) => Promise<any>;
-  registered: () => Promise<any[]>;
-  subscribe: (email: string) => Promise<any>;
-  deleteSubscribe: (id: string) => Promise<void>;
-  toggleSubscribe: (id: string, active: boolean) => Promise<any>;
-  editSubscribe: (id: string, email: string) => Promise<any>;
-  filterData: (url: string) => Promise<any[]>;
-  searchSubscriber: (query: string) => Promise<any[]>;
+  handleRequest: (url: string, options: RequestInit, id?: string) => void;
+  registered: () => void;
+  subscribe: (email: string) => void;
+  deleteSubscribe: (id: string) => void;
+  toggleSubscribe: (id: string, active: boolean) => void;
+  editSubscribe: (id: string, email: string) => void;
+  filterData: (url: string) => void;
+  searchSubscriber: (query: string) => void;
   createReqOptions: (method: string, data: any) => any;
   setFilterRequest: (filter: string) => void;
   setData: (data: any[]) => void;
@@ -55,24 +51,18 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     try {
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
-      // Introduce a minimum delay for the loading spinner.
       const delay = new Promise((resolve) => setTimeout(resolve, 500));
       const dataFetch = fetch(url, options);
 
-      // Use Promise.all to wait for both the data and the delay.
       const [response] = await Promise.all([dataFetch, delay]);
-
-      // Manage Error
 
       if (!response.ok) {
         let errorMessage = 'An error has occurred, please try again';
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.indexOf('application/json') !== -1) {
-          // It's a JSON response, parse it
           const errorData = await response.json();
           errorMessage = errorData.error;
         } else {
-          // It's not a JSON response, use a generic error message
           errorMessage = `HTTP error! status: ${response.status}`;
         }
         throw new Error(errorMessage);
@@ -96,12 +86,9 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     set({ currentAction: StoreActions.RELOAD });
     const newsLetters = await get().handleRequest(
       `${ROUTE}/registered${get().filterRequest}`,
-      {
-        method: 'GET',
-      }
+      { method: 'GET' }
     );
     set({ data: newsLetters });
-    return newsLetters;
   },
 
   subscribe: async (email: string) => {
@@ -111,7 +98,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       get().createReqOptions('POST', { email })
     );
     set({ data: [data, ...get().data] });
-    return data;
   },
 
   deleteSubscribe: async (id: string) => {
@@ -122,7 +108,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       id
     );
     set((state) => {
-      const newData = state.data.filter((item) => item.id !== id);
+      const newData = state.data.filter((item: any) => item.id !== id);
       return { data: newData };
     });
   },
@@ -143,8 +129,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       }
       return { data: newData };
     });
-
-    return response;
   },
 
   editSubscribe: async (id: string, email: string) => {
@@ -163,8 +147,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       }
       return { data: newData };
     });
-
-    return response;
   },
 
   filterData: async (url: string) => {
@@ -173,7 +155,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       method: 'GET',
     });
     set({ data: result });
-    return result;
   },
 
   searchSubscriber: async (query: string) => {
@@ -182,7 +163,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       method: 'GET',
     });
     set({ data: result });
-    return result;
   },
 
   createReqOptions: (method: string, data: any) => ({

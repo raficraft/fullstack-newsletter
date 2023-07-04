@@ -9,8 +9,17 @@ interface AdminSearchProps extends HTMLAttributes<HTMLDivElement> {
   children?: any;
 }
 
-const AdminSearch: React.FC<AdminSearchProps> = ({ className, children }) => {
-  const { validateField, errors, reset } = useForm({
+const AdminSearch: React.FC<AdminSearchProps> = ({
+  className = '',
+  children,
+}) => {
+  const {
+    validateField,
+    validateForm,
+    errors,
+    reset: resetFormErrors,
+    getFormData,
+  } = useForm({
     fields: {
       search: {
         required: {
@@ -25,32 +34,43 @@ const AdminSearch: React.FC<AdminSearchProps> = ({ className, children }) => {
 
   const { searchSubscriber, loading, currentAction } = useNewsLetterStore();
 
-  const handleChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(validateField(event));
     if (validateField(event)) {
       searchSubscriber(event.target.value);
-      reset();
+      resetFormErrors();
     }
-  }, 300);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault;
+
+    if (validateForm(event)) {
+      const formElement = getFormData(event);
+      searchSubscriber(formElement.search);
+      resetFormErrors();
+    }
+  };
 
   return (
-    <Field
-      type='search'
-      className={`bloc_input ${className}`}
-      placeholder='find a subscriber'
-      name='search'
-      svg={<IconMagnify />}
-      minLength={2}
-      required
-      loading={loading && currentAction === StoreActions.SEARCH}
-      error={errors.search}
-      onChange={handleChange}
-      onSubmit={handleChange}
-      reverse
-    >
-      {children}
-    </Field>
+    <form noValidate onSubmit={handleSubmit} style={{ flexGrow: 1 }}>
+      <Field
+        type='search'
+        className={`bloc_input ${className}`}
+        placeholder='Find a subscriber'
+        name='search'
+        svg={<IconMagnify />}
+        minLength={2}
+        required
+        loading={loading && currentAction === StoreActions.SEARCH}
+        error={errors.search}
+        onChange={handleChange}
+        onSubmit={handleChange}
+        reverse
+      >
+        {children}
+      </Field>
+    </form>
   );
 };
 

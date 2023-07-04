@@ -101,7 +101,7 @@ const AdminFilter = () => {
 
       {dialogOpen && (
         <Modal
-          onClick={() => {
+          close={() => {
             setDialogOpen(false);
           }}
         >
