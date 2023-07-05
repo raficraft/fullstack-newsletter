@@ -1,62 +1,108 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AdminSearch from '../AdminSearch';
-import { useForm } from '@hooks/index';
-jest.mock('hooks/useForm');
 
-describe('When the component AdminSearch is loaded', () => {
-  const renderer = () => {
-    return render(<AdminSearch />);
-  };
+const useNewsLetterStoreMock = {
+  data: [],
+  errorApi: '',
+  loading: false,
+  filterRequest: '',
+  currentActiveElement: null,
+  currentAction: null,
+  handleRequest: jest.fn(),
+  registered: jest.fn(),
+  subscribe: jest.fn(),
+  deleteSubscribe: jest.fn(),
+  toggleSubscribe: jest.fn(),
+  editSubscribe: jest.fn(),
+  filterData: jest.fn(),
+  searchSubscriber: jest.fn(),
+  createReqOptions: jest.fn(),
+  setFilterRequest: jest.fn(),
+  setData: jest.fn(),
+  setErrorApi: jest.fn(),
+};
 
-  const error = {
-    empty: /^Value required$/,
-    tooShort: /^Two characters minimum$/,
-  };
+// Mock du store
+jest.mock('@store/useNewsletterStore', () => ({
+  __esModule: true,
+  default: () => useNewsLetterStoreMock,
+}));
 
-  test('Should be render', () => {
+beforeEach(() => jest.resetAllMocks());
+
+const renderer = () => {
+  return render(<AdminSearch />);
+};
+
+const error = {
+  required: /^Value required$/,
+  pattern: /^Two characters minimum sixty four maximum$/,
+};
+
+describe('AdminSearch component', () => {
+  test('should render properly', () => {
     const { container } = renderer();
 
     expect(container).toBeInTheDocument();
   });
 
-  describe('When the user performs a wrong action ', () => {
-    describe('When user submit search with an empty field', () => {
-      test('Should be display error Value Required', () => {
-        renderer();
-
+  describe('User interaction tests', () => {
+    beforeEach(() => renderer());
+    describe('When the search form is submitted with an empty field', () => {
+      test('should display "Value Required" error', async () => {
         const input = screen.getByPlaceholderText(/^Find a subscriber$/);
         fireEvent.submit(input);
 
-        expect(screen.getByText(error.empty)).toBeInTheDocument();
+        await waitFor(() => {
+          expect(screen.getByText(error.required)).toBeInTheDocument();
+          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
+        });
       });
     });
 
-    describe('When user submit search with an empty field and ....', () => {
-      test('Should be not display error', () => {
-        renderer();
-
+    describe('When the search form is submitted with valid input', () => {
+      test('should not display any error and searchSubscriber should be called once', async () => {
         const input = screen.getByPlaceholderText(/^Find a subscriber$/);
-        fireEvent.submit(input);
-
-        expect(screen.getByText(error.empty)).toBeInTheDocument();
-
         fireEvent.input(input, { target: { value: 'abc' } });
+        fireEvent.submit(input);
 
-        expect(screen.queryByText(error.empty)).not.toBeInTheDocument();
+        await waitFor(() => {
+          expect(useNewsLetterStoreMock.searchSubscriber).toBeCalled();
+          expect(useNewsLetterStoreMock.searchSubscriber).toBeCalledTimes(1);
+          expect(screen.queryByText(error.required)).not.toBeInTheDocument();
+        });
       });
     });
 
-    describe('When user submit search with an empty field and ....', () => {
-      test('Should be not display error', async () => {
-        renderer();
-
+    describe('When the search form is submitted with input length less than two', () => {
+      test('should display any error and searchSubscriber should not be called', async () => {
         const input = screen.getByPlaceholderText(/^Find a subscriber$/);
-
         fireEvent.input(input, { target: { value: 'a' } });
 
-        waitFor(() => {
-          expect(useForm({ fields: {} }).validateField).toHaveBeenCalled();
-          expect(screen.getByText(error.tooShort)).toBeInTheDocument();
+        fireEvent.submit(input);
+
+        await waitFor(() => {
+          expect(screen.getByText(error.pattern)).toBeInTheDocument();
+          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
+        });
+      });
+    });
+
+    describe('When the search form is submitted with input length less than two', () => {
+      test('should display any error and searchSubscriber should not be called', async () => {
+        const input = screen.getByPlaceholderText(/^Find a subscriber$/);
+        fireEvent.input(input, {
+          target: {
+            value:
+              "I'm a very long string containing more than sixty-four characters to illustrate a certain condition in a test case.",
+          },
+        });
+
+        fireEvent.submit(input);
+
+        await waitFor(() => {
+          expect(screen.getByText(error.pattern)).toBeInTheDocument();
+          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
         });
       });
     });

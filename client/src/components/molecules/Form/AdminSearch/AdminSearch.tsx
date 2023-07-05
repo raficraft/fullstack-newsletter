@@ -25,8 +25,8 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
         required: {
           message: 'Value required',
         },
-        minLength: {
-          message: 'Two characters minimum',
+        pattern: {
+          message: 'Two characters minimum sixty four maximum',
         },
       },
     },
@@ -35,17 +35,17 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
   const { searchSubscriber, loading, currentAction } = useNewsLetterStore();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(validateField(event));
     if (validateField(event)) {
-      searchSubscriber(event.target.value);
       resetFormErrors();
     }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault;
+    event.preventDefault();
 
+    console.log('......');
     if (validateForm(event)) {
+      console.log('sub');
       const formElement = getFormData(event);
       searchSubscriber(formElement.search);
       resetFormErrors();
@@ -60,7 +60,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
         placeholder='Find a subscriber'
         name='search'
         svg={<IconMagnify />}
-        minLength={2}
+        pattern='^.{2,64}$'
         required
         loading={loading && currentAction === StoreActions.SEARCH}
         error={errors.search}

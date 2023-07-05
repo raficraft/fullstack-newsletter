@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, DropList, Modal, Text } from '@components/atoms';
+import { Button, DropList, Modal } from '@components/atoms';
 import styles from './AdminFilter.module.scss';
 import { IconeFilter, IconeReload } from '@assets/svg/icons';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
@@ -90,7 +90,7 @@ const AdminFilter = () => {
         type='button'
         onClick={resetFilter}
         className='btn_icon btn_green'
-        title='Reset filter and reload data'
+        title='Reset'
       >
         {loading && StoreActions.RELOAD === currentAction ? (
           <Spinner style={{ borderColor: 'white' }} />
@@ -105,31 +105,42 @@ const AdminFilter = () => {
             setDialogOpen(false);
           }}
         >
-          <div className={`box ${styles.dialog}`}>
+          <div
+            className={`box ${styles.dialog}`}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <div className={styles.items}>
               <div className={styles.droplist}>
-                <Text className='text_s bold'>Sort by :</Text>
+                <label className='text_s bold' htmlFor='sortBy'>
+                  Sort by :
+                </label>
                 <DropList
                   options={optionsFilter}
-                  name='sortBy'
+                  id='sortBy'
                   callback={(value: string) => updateState('sortBy', value)}
                 />
               </div>
               <hr></hr>
               <div className={styles.droplist}>
-                <Text className='text_s bold'>Order by :</Text>
+                <label className='text_s bold' htmlFor='order'>
+                  Order by :
+                </label>
                 <DropList
                   options={optionsOrder}
-                  name='order'
+                  id='order'
                   callback={(value: string) => updateState('order', value)}
                 />
               </div>
               <hr></hr>
               <div className={styles.droplist}>
-                <Text className='text_s bold'>Active :</Text>
+                <label className='text_s bold' htmlFor='active'>
+                  Active :
+                </label>
                 <DropList
                   options={optionsFilterActive}
-                  name='active'
+                  id='active'
                   callback={(value: string) => updateState('active', value)}
                 />
               </div>
@@ -143,7 +154,7 @@ const AdminFilter = () => {
                   setDialogOpen(false);
                 }}
               >
-                Filtrer
+                Filter
               </Button>
             </footer>
           </div>

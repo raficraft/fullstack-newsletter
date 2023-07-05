@@ -12,24 +12,25 @@ interface ModalProps extends InputHTMLAttributes<HTMLDivElement> {
 const Modal = ({ className, children, close, ...rest }: ModalProps) => {
   return createPortal(
     <div
+      data-testid='backdrop'
       className={styles.modal}
       onClick={(e) => {
         close();
       }}
       {...rest}
     >
-      <span className={styles.icon_close}>
-        <IconCross
-          data-testid='close_modal'
-          onClick={(e) => {
-            e.stopPropagation();
-            close();
-          }}
-        />
+      <span
+        className={styles.icon_close}
+        title='Close modal'
+        onClick={(e) => {
+          e.stopPropagation();
+          close();
+        }}
+      >
+        <IconCross />
       </span>
-      <div data-testid='backdrop' className={`${styles.wrapper} ${className}`}>
-        {children}
-      </div>
+
+      {children}
     </div>,
     document.body
   );

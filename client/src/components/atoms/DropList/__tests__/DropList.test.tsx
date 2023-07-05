@@ -216,7 +216,7 @@ describe("When the dropList is open", () => {
   // Use Tab for navigate for navigate on the option
 
   describe("When the tab key is pressed once", () => {
-    test("should focus the next option", () => {
+    test("Should focus the next option", () => {
       const { selectButton, optionsList, getByTestId } = renderDropList();
       useCase.openListOnClick(selectButton, optionsList);
       fireEvent.keyDown(selectButton, { key: "Tab" });
@@ -227,7 +227,7 @@ describe("When the dropList is open", () => {
   });
 
   describe("when the user presses the tab key once more than the number of options", () => {
-    test("should loop through the list of options and return to the first option", () => {
+    test("Should loop through the list of options and return to the first option", () => {
       const { selectButton, optionsList, getByTestId } = renderDropList();
       useCase.openListOnClick(selectButton, optionsList);
 

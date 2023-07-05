@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest  src/components/molecules/Form/AdminSearch/__tests__/AdminSearch.test.tsx --watch"
+    "test": "jest --config ./jest.config.ts --watchAll"
   },
   "dependencies": {
     "@types/node": "20.3.1",

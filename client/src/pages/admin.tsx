@@ -72,6 +72,19 @@ export default function Admin({
             prevPage={prevPage}
           />
         )}
+        <label htmlFor='test'>Test</label>
+        <button
+          name='test'
+          id='test'
+          onFocus={() => {
+            console.log('lol');
+          }}
+          onClick={() => {
+            console.log('lol');
+          }}
+        >
+          TEST
+        </button>
       </main>
     </>
   );

@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { HtmlHTMLAttributes, useEffect } from 'react';
 import styles from './DropList.module.scss';
 import { IconArrowDown } from '@assets/svg/icons';
 import useDropList, { Option } from '@hooks/useDropList/UseDropList';
 
-interface SVGProps {
-  open: React.FC<React.SVGProps<SVGSVGElement>>;
-  close: React.FC<React.SVGProps<SVGSVGElement>>;
-  position: 'left' | 'right';
-}
-
-interface DropListProps extends React.HTMLProps<HTMLButtonElement> {
+interface DropListProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   options: Option[];
   callback?: (value: any) => void;
-  svg?: SVGProps;
+  type?: 'button' | 'submit' | 'reset';
+  id?: string;
 }
 
 const DropList: React.FC<DropListProps> = ({
   options,
   callback,
+  type = 'button',
+  id = '',
+  ...rest
 }: DropListProps): JSX.Element | null => {
   const {
     selectedIndex,
@@ -26,6 +24,7 @@ const DropList: React.FC<DropListProps> = ({
     setOpen,
     handleKeyDown,
     handleOptionClick,
+
     optionsRefs,
   } = useDropList({ options, callback });
 
@@ -43,16 +42,17 @@ const DropList: React.FC<DropListProps> = ({
     <div ref={refOutsideClick} className={styles.dropList}>
       <button
         className={styles.select}
-        type='button'
+        type={type}
         value={options[selectedIndex].value}
         onClick={() => {
           setOpen(!open);
         }}
         onKeyDown={handleKeyDown}
-        data-testid='select-button'
+        data-testid={`select-button${id ? `${'-' + id}` : ''}`}
         aria-haspopup='listbox'
         aria-expanded={open}
         aria-label='Select an option'
+        {...rest}
       >
         {options[selectedIndex].label}
         <IconArrowDown />

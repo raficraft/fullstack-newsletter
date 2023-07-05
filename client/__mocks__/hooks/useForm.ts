@@ -1,11 +1,12 @@
 const useFormMock = {
-  validateForm: jest.fn(),
   validateField: jest.fn(),
+  validateForm: jest.fn(),
   getFormData: jest.fn(),
   reset: jest.fn(),
   errors: {},
 };
 
-const mockFunction = () => useFormMock;
-
-export default mockFunction;
+jest.mock('@hooks/index', () => ({
+  __esModule: true,
+  useForm: () => useFormMock,
+}));

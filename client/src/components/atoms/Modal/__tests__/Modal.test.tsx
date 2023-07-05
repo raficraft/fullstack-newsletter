@@ -22,7 +22,7 @@ describe('When Modal is mounted', () => {
   });
 
   test('Should be called callback when clicked on the cross icon', () => {
-    const closeButton = screen.getByTestId('close_modal');
+    const closeButton = screen.getByTitle('Close modal');
 
     fireEvent.click(closeButton);
 
