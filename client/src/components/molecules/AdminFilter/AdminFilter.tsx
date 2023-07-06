@@ -29,45 +29,16 @@ const optionsFilterActive = [
 ];
 
 const AdminFilter = () => {
-  const [filter, setFilter] = useState<FilterState>({
-    sortBy: 'createdAt',
-    order: 'asc',
-    active: 'none',
-  });
-
-  const { loading, currentAction, registered, filterData, setFilterRequest } =
-    useNewsLetterStore();
+  const {
+    loading,
+    currentAction,
+    updateFilter,
+    generateFilterUrl,
+    filterData,
+    resetFilter,
+  } = useNewsLetterStore();
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-
-  const updateState = (key: string, value: string) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      [key]: value,
-    }));
-  };
-
-  const generateFilterUrl = (): string => {
-    const params = [];
-
-    params.push(`sortBy=${filter.sortBy}`);
-    params.push(`order=${filter.order}`);
-
-    if (filter.active !== 'none') {
-      params.push(`active=${filter.active}`);
-    }
-
-    const requestOptions = params.length > 0 ? `?${params.join('&')}` : '';
-    setFilterRequest(requestOptions);
-
-    return requestOptions;
-  };
-
-  const resetFilter = () => {
-    setFilter({ sortBy: 'createAt', order: 'asc', active: 'none' });
-    setFilterRequest(generateFilterUrl());
-    registered();
-  };
 
   return (
     <>
@@ -119,7 +90,7 @@ const AdminFilter = () => {
                 <DropList
                   options={optionsFilter}
                   id='sortBy'
-                  callback={(value: string) => updateState('sortBy', value)}
+                  callback={(value: string) => updateFilter('sortBy', value)}
                 />
               </div>
               <hr></hr>
@@ -130,7 +101,7 @@ const AdminFilter = () => {
                 <DropList
                   options={optionsOrder}
                   id='order'
-                  callback={(value: string) => updateState('order', value)}
+                  callback={(value: string) => updateFilter('order', value)}
                 />
               </div>
               <hr></hr>
@@ -141,7 +112,7 @@ const AdminFilter = () => {
                 <DropList
                   options={optionsFilterActive}
                   id='active'
-                  callback={(value: string) => updateState('active', value)}
+                  callback={(value: string) => updateFilter('active', value)}
                 />
               </div>
             </div>
@@ -150,7 +121,6 @@ const AdminFilter = () => {
                 className='btn_primary full_width'
                 onClick={() => {
                   filterData(generateFilterUrl());
-                  setFilter({ sortBy: 'none', order: 'none', active: 'none' });
                   setDialogOpen(false);
                 }}
               >

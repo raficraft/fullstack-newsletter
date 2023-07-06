@@ -43,9 +43,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log('......');
     if (validateForm(event)) {
-      console.log('sub');
       const formElement = getFormData(event);
       searchSubscriber(formElement.search);
       resetFormErrors();

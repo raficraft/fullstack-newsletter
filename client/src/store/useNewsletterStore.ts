@@ -12,25 +12,39 @@ export enum StoreActions {
   SEARCH = 'SEARCH',
 }
 
+type Filter = {
+  sortBy: string;
+  order: string;
+  active: string;
+};
+
 type Store = {
   data: any[] | any;
   errorApi: string;
   loading: boolean;
   filterRequest: string;
   currentActiveElement: string | null;
-  currentAction: string | null;
-  handleRequest: (url: string, options: RequestInit, id?: string) => void;
-  registered: () => void;
-  subscribe: (email: string) => void;
-  deleteSubscribe: (id: string) => void;
-  toggleSubscribe: (id: string, active: boolean) => void;
-  editSubscribe: (id: string, email: string) => void;
-  filterData: (url: string) => void;
-  searchSubscriber: (query: string) => void;
-  createReqOptions: (method: string, data: any) => any;
+  currentAction: StoreActions | null;
+  filter: Filter;
+  handleRequest: (
+    url: string,
+    options: RequestInit,
+    id?: string
+  ) => Promise<any>;
+  registered: () => Promise<void>;
+  subscribe: (email: string) => Promise<void>;
+  deleteSubscribe: (id: string) => Promise<void>;
+  toggleSubscribe: (id: string, active: boolean) => Promise<void>;
+  editSubscribe: (id: string, email: string) => Promise<void>;
+  filterData: (url: string, setAction?: boolean) => Promise<void>;
+  searchSubscriber: (query: string) => Promise<void>;
+  createReqOptions: (method: string, data: any) => RequestInit;
   setFilterRequest: (filter: string) => void;
   setData: (data: any[]) => void;
   setErrorApi: (errorApi: string) => void;
+  updateFilter: (key: string, value: string) => void;
+  generateFilterUrl: () => string;
+  resetFilter: () => Promise<void>;
 };
 
 const useNewsLetterStore = create<Store>((set, get) => ({
@@ -40,8 +54,46 @@ const useNewsLetterStore = create<Store>((set, get) => ({
   filterRequest: '',
   currentActiveElement: null,
   currentAction: null,
+  filter: {
+    sortBy: 'createdAt',
+    order: 'asc',
+    active: 'none',
+  },
 
   setData: (data: any[]) => set({ data }),
+
+  updateFilter: (key: string, value: string) =>
+    set((state) => ({
+      ...state,
+      filter: {
+        ...state.filter,
+        [key]: value,
+      },
+    })),
+
+  generateFilterUrl: () => {
+    const params = [];
+    const { sortBy, order, active } = get().filter;
+
+    params.push(`sortBy=${sortBy}`);
+    params.push(`order=${order}`);
+
+    if (active !== 'none') {
+      params.push(`active=${active}`);
+    }
+
+    const requestOptions = params.length > 0 ? `?${params.join('&')}` : '';
+    set({ filterRequest: requestOptions });
+
+    return requestOptions;
+  },
+
+  resetFilter: async () => {
+    set({ filter: { sortBy: 'createAt', order: 'asc', active: 'none' } });
+    const url = get().generateFilterUrl();
+    await get().filterData(url, false);
+    await get().registered();
+  },
 
   handleRequest: async (
     url: string,
@@ -49,6 +101,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     activeId?: string
   ) => {
     try {
+      console.log(url);
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
       const delay = new Promise((resolve) => setTimeout(resolve, 500));
@@ -149,8 +202,8 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     });
   },
 
-  filterData: async (url: string) => {
-    set({ currentAction: StoreActions.FILTER });
+  filterData: async (url: string, setAction = true) => {
+    setAction && set({ currentAction: StoreActions.FILTER });
     const result = await get().handleRequest(`${ROUTE}/registered${url}`, {
       method: 'GET',
     });

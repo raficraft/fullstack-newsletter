@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --config ./jest.config.ts --watchAll"
+    "test": "jest --config ./jest.config.ts --watchAll  src/components/organisms/Modal/FilterDialog/__tests__/FilterDialog.test.tsx"
   },
   "dependencies": {
     "@types/node": "20.3.1",

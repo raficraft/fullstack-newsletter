@@ -11,7 +11,7 @@ import useNewsLetterStore from '@store/useNewsletterStore';
 export default function Admin({
   newsLetters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data, setData, errorApi, currentAction } = useNewsLetterStore();
+  const { data, setData } = useNewsLetterStore();
   const currentData = !data.length ? newsLetters : data;
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
     currentData,
@@ -72,19 +72,6 @@ export default function Admin({
             prevPage={prevPage}
           />
         )}
-        <label htmlFor='test'>Test</label>
-        <button
-          name='test'
-          id='test'
-          onFocus={() => {
-            console.log('lol');
-          }}
-          onClick={() => {
-            console.log('lol');
-          }}
-        >
-          TEST
-        </button>
       </main>
     </>
   );

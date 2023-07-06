@@ -18,11 +18,11 @@ describe('When Modal is mounted', () => {
   });
 
   test('Should be rendered', () => {
-    expect(screen.getByTestId('backdrop')).toBeInTheDocument();
+    expect(screen.getByTestId('dialog')).toBeInTheDocument();
   });
 
   test('Should be called callback when clicked on the cross icon', () => {
-    const closeButton = screen.getByTitle('Close modal');
+    const closeButton = screen.getByTitle('Close');
 
     fireEvent.click(closeButton);
 
@@ -30,7 +30,7 @@ describe('When Modal is mounted', () => {
   });
 
   test('Should be called callback when clicked on the background', () => {
-    const background = screen.getByTestId('backdrop');
+    const background = screen.getByTestId('dialog');
 
     fireEvent.click(background);
 
