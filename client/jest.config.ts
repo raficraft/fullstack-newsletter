@@ -14,7 +14,8 @@ const config: JestConfigWithTsJest = {
   moduleNameMapper,
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   testMatch: ['**/__tests__/**/*.test.(ts|tsx|js)'],
-  testEnvironment: 'jest-environment-jsdom',
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
   collectCoverage: true,
   collectCoverageFrom: [
     '!**/node_modules/** ',

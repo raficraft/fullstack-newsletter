@@ -5,12 +5,6 @@ import { IconeFilter, IconeReload } from '@assets/svg/icons';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import Spinner from '@components/atoms/Spinner/Spinner';
 
-interface FilterState {
-  sortBy: string;
-  order: string;
-  active: string;
-}
-
 const optionsFilter = [
   { label: 'CreatedAt', value: 'createdAt' },
   { label: 'Email', value: 'email' },
@@ -95,13 +89,13 @@ const AdminFilter = () => {
               </div>
               <hr></hr>
               <div className={styles.droplist}>
-                <label className='text_s bold' htmlFor='order'>
+                <label className='text_s bold' htmlFor='orderBy'>
                   Order by :
                 </label>
                 <DropList
                   options={optionsOrder}
-                  id='order'
-                  callback={(value: string) => updateFilter('order', value)}
+                  id='orderBy'
+                  callback={(value: string) => updateFilter('orderBy', value)}
                 />
               </div>
               <hr></hr>
@@ -118,6 +112,7 @@ const AdminFilter = () => {
             </div>
             <footer>
               <Button
+                title='Filter'
                 className='btn_primary full_width'
                 onClick={() => {
                   filterData(generateFilterUrl());

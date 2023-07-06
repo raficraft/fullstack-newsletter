@@ -14,7 +14,7 @@ export enum StoreActions {
 
 type Filter = {
   sortBy: string;
-  order: string;
+  orderBy: string;
   active: string;
 };
 
@@ -56,7 +56,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
   currentAction: null,
   filter: {
     sortBy: 'createdAt',
-    order: 'asc',
+    orderBy: 'asc',
     active: 'none',
   },
 
@@ -73,10 +73,10 @@ const useNewsLetterStore = create<Store>((set, get) => ({
 
   generateFilterUrl: () => {
     const params = [];
-    const { sortBy, order, active } = get().filter;
+    const { sortBy, orderBy, active } = get().filter;
 
     params.push(`sortBy=${sortBy}`);
-    params.push(`order=${order}`);
+    params.push(`order=${orderBy}`);
 
     if (active !== 'none') {
       params.push(`active=${active}`);
@@ -85,11 +85,12 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     const requestOptions = params.length > 0 ? `?${params.join('&')}` : '';
     set({ filterRequest: requestOptions });
 
+    console.log(requestOptions);
     return requestOptions;
   },
 
   resetFilter: async () => {
-    set({ filter: { sortBy: 'createAt', order: 'asc', active: 'none' } });
+    set({ filter: { sortBy: 'createAt', orderBy: 'asc', active: 'none' } });
     const url = get().generateFilterUrl();
     await get().filterData(url, false);
     await get().registered();
@@ -104,7 +105,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       console.log(url);
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
-      const delay = new Promise((resolve) => setTimeout(resolve, 500));
+      const delay = new Promise((resolve) => setTimeout(resolve, 50000));
       const dataFetch = fetch(url, options);
 
       const [response] = await Promise.all([dataFetch, delay]);
