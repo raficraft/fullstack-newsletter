@@ -85,7 +85,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     const requestOptions = params.length > 0 ? `?${params.join('&')}` : '';
     set({ filterRequest: requestOptions });
 
-    console.log(requestOptions);
     return requestOptions;
   },
 
@@ -105,7 +104,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       console.log(url);
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
-      const delay = new Promise((resolve) => setTimeout(resolve, 50000));
+      const delay = new Promise((resolve) => setTimeout(resolve, 500));
       const dataFetch = fetch(url, options);
 
       const [response] = await Promise.all([dataFetch, delay]);

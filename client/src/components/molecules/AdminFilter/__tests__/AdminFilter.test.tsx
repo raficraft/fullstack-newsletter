@@ -2,116 +2,193 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import AdminFilter from '../AdminFilter';
 import { StoreActions } from '@store/useNewsletterStore';
 import useNewsletterStore from '@store/useNewsletterStore';
-import fetchMock from 'fetch-mock';
+import { act } from 'react-dom/test-utils';
+
+const state = useNewsletterStore.getState();
+
+const resetFilterSpy = jest.spyOn(state, 'resetFilter');
+const updateFilterSpy = jest.spyOn(state, 'updateFilter');
+const filterDataSpy = jest.spyOn(state, 'filterData');
+const generateFilterUrlSpy = jest.spyOn(state, 'generateFilterUrl');
+
+const regex = {
+  filterData: /^Filter data$/,
+  filter: /^Filter$/,
+  close: /^Close$/,
+  reset: /^Reset$/,
+};
+
+const useCase = {
+  openModal: () => {
+    const filterButton = screen.getByTitle(regex.filterData);
+    fireEvent.click(filterButton);
+  },
+  closeModal: () => {
+    const closeButton = screen.getByTitle(regex.close);
+    fireEvent.click(closeButton);
+  },
+  reset: () => {
+    const resetButton = screen.getByTitle(regex.reset);
+    fireEvent.click(resetButton);
+  },
+  filter: () => {
+    const buttonFilter = screen.getByTitle(regex.filter);
+    fireEvent.click(buttonFilter);
+  },
+  selectOption: (testId: string, optionText: string) => {
+    fireEvent.click(screen.getByTestId(testId));
+    fireEvent.click(screen.getByText(optionText));
+  },
+};
 
 beforeEach(() => {
+  resetFilterSpy.mockClear();
+  updateFilterSpy.mockClear();
+  filterDataSpy.mockClear();
+  generateFilterUrlSpy.mockClear();
+
   useNewsletterStore.setState({
     loading: false,
     currentAction: null,
-    updateFilter: jest.fn(),
-    filterData: jest.fn(),
-    // generateFilterUrl: jest.fn(),
-    resetFilter: jest.fn(),
+    resetFilter: state.resetFilter,
+    updateFilter: state.updateFilter,
+    filterData: state.filterData,
+    generateFilterUrl: state.generateFilterUrl,
   });
 });
 
 describe('AdminFilter component', () => {
-  test('should render properly', () => {
-    const { container } = render(<AdminFilter />);
-    expect(container).toBeInTheDocument();
-  });
-
-  test('should open and close filter dialog', async () => {
-    render(<AdminFilter />);
-    const filterButton = screen.getByTitle(/^Filter data$/);
-    fireEvent.click(filterButton);
-
-    expect(screen.getByTitle(/^Filter$/)).toBeInTheDocument();
-
-    const closeButton = screen.getByTitle(/^Close$/);
-    fireEvent.click(closeButton);
-
-    await waitFor(() => {
-      expect(screen.queryByTitle(/^Filter$/)).not.toBeInTheDocument();
+  describe('Component rendering', () => {
+    test('should render properly', () => {
+      const { container } = render(<AdminFilter />);
+      expect(container).toBeInTheDocument();
     });
   });
 
-  test('should call resetFilter on reset button click', () => {
-    render(<AdminFilter />);
-    const resetButton = screen.getByTitle(/Reset/);
-    fireEvent.click(resetButton);
+  describe('UI interaction', () => {
+    test('clicking the reset button displays the spinner', async () => {
+      useNewsletterStore.setState({
+        loading: true,
+        currentAction: StoreActions.RELOAD,
+      });
 
-    const { resetFilter } = useNewsletterStore.getState();
-    expect(resetFilter).toBeCalledTimes(1);
-  });
-
-  test('should call Filter when click on the dialog box button', () => {
-    render(<AdminFilter />);
-    const filterButton = screen.getByTitle(/^Filter data$/);
-    fireEvent.click(filterButton);
-
-    const buttonFilter = screen.getByTitle(/^Filter$/);
-    fireEvent.click(buttonFilter);
-
-    const { filterData } = useNewsletterStore.getState();
-    expect(filterData).toBeCalledTimes(1);
-  });
-
-  test('should call Filter when click on the dialog box button', () => {
-    render(<AdminFilter />);
-    const filterButton = screen.getByTitle(/^Filter data$/);
-    fireEvent.click(filterButton);
-
-    // Select Sort By options
-    // OpenList
-    fireEvent.click(screen.getByTestId('select-button-sortBy'));
-    fireEvent.click(screen.getByText('Email'));
-
-    const { updateFilter } = useNewsletterStore.getState();
-    expect(updateFilter).toBeCalledTimes(1);
-
-    fireEvent.click(screen.getByTestId('select-button-orderBy'));
-    fireEvent.click(screen.getByText('Descendant'));
-
-    expect(updateFilter).toBeCalledTimes(2);
-
-    fireEvent.click(screen.getByTestId('select-button-active'));
-    fireEvent.click(screen.getByText('Disabled'));
-
-    expect(updateFilter).toBeCalledTimes(3);
-  });
-
-  test('click button filter display spinner', async () => {
-    useNewsletterStore.setState({
-      loading: true,
-      currentAction: StoreActions.RELOAD,
+      render(<AdminFilter />);
+      useCase.reset();
+      await waitFor(() => {
+        expect(screen.getByTestId('spinner')).toBeInTheDocument();
+      });
     });
 
-    render(<AdminFilter />);
-    const ResetButton = screen.getByTitle(/^Reset$/);
-    fireEvent.click(ResetButton);
+    test('clicking the filter button in the modal displays the spinner', async () => {
+      useNewsletterStore.setState({
+        loading: true,
+        currentAction: StoreActions.FILTER,
+      });
 
-    await waitFor(() => {
-      expect(screen.getByTestId('spinner')).toBeInTheDocument();
+      render(<AdminFilter />);
+      useCase.openModal();
+      useCase.filter();
+
+      await waitFor(() => {
+        expect(screen.getByTestId('spinner')).toBeInTheDocument();
+      });
     });
   });
 
-  test('click button filter display spinner', async () => {
-    useNewsletterStore.setState({
-      loading: true,
-      currentAction: StoreActions.FILTER,
+  describe('Modal interaction', () => {
+    test('should open and close filter dialog', async () => {
+      render(<AdminFilter />);
+      useCase.openModal();
+      expect(screen.getByTitle(regex.filter)).toBeInTheDocument();
+      useCase.closeModal();
+      await waitFor(() => {
+        expect(screen.queryByTitle(regex.filter)).not.toBeInTheDocument();
+      });
     });
 
-    render(<AdminFilter />);
+    test('should close the modal after clicking on the Filter button in the modal', async () => {
+      render(<AdminFilter />);
+      useCase.openModal();
+      expect(screen.getByTitle(regex.filter)).toBeInTheDocument();
 
-    //open Modal
-    const ResetButton = screen.getByTitle(/^Filter data$/);
-    fireEvent.click(ResetButton);
+      useCase.filter();
 
-    fireEvent.click(screen.getByTitle('Filter'));
+      await waitFor(() => {
+        expect(screen.queryByTitle(regex.filter)).not.toBeInTheDocument();
+      });
+    });
+  });
 
-    await waitFor(() => {
-      expect(screen.getByTestId('spinner')).toBeInTheDocument();
+  describe('Store state testing', () => {
+    test('should call resetFilter on reset button click', () => {
+      render(<AdminFilter />);
+      useCase.reset();
+      expect(resetFilterSpy).toBeCalledTimes(1);
+    });
+
+    test('should call Filter when click on the dialog box button', () => {
+      render(<AdminFilter />);
+      useCase.openModal();
+      useCase.filter();
+      expect(filterDataSpy).toBeCalledTimes(1);
+    });
+
+    test('should update filter when select options are chosen', async () => {
+      render(<AdminFilter />);
+
+      useCase.openModal();
+      useCase.selectOption('select-button-sortBy', 'Email');
+      useCase.selectOption('select-button-orderBy', 'Descendant');
+      useCase.selectOption('select-button-active', 'Disabled');
+
+      // Get the current state
+      const { filter } = useNewsletterStore.getState();
+
+      // Verify the state
+
+      await waitFor(() => {
+        expect(filter).toEqual({
+          sortBy: 'email',
+          orderBy: 'desc',
+          active: 'false',
+        });
+
+        expect(updateFilterSpy).toBeCalledTimes(3);
+      });
+    });
+
+    test('should call filterData with correct URL on Filter button click', () => {
+      render(<AdminFilter />);
+      useCase.openModal();
+
+      useCase.filter();
+
+      act(() => {
+        const correctUrl = useNewsletterStore.getState().generateFilterUrl();
+        expect(filterDataSpy).toBeCalledWith(correctUrl);
+      });
+
+      expect(filterDataSpy).toBeCalledTimes(1);
+    });
+
+    test('should generate correct URL when filter options are changed', () => {
+      render(<AdminFilter />);
+      useCase.openModal();
+
+      const { generateFilterUrl } = useNewsletterStore.getState();
+
+      useCase.selectOption('select-button-sortBy', 'Email');
+      useCase.selectOption('select-button-orderBy', 'Descendant');
+      useCase.selectOption('select-button-active', 'Disabled');
+      useCase.filter();
+
+      act(() => {
+        const correctUrl = generateFilterUrl();
+        expect(correctUrl).toBe('?sortBy=email&order=desc&active=false');
+        expect(filterDataSpy).toBeCalledWith(correctUrl);
+      });
+
+      expect(filterDataSpy).toBeCalledTimes(1);
     });
   });
 });
