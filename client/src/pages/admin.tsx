@@ -59,8 +59,6 @@ export default function Admin({
               id={item.id}
               email={item.email}
               active={item.active}
-              error={errors[`email_${item.id}`]}
-              validation={validateField}
             />
           ))}
         </div>

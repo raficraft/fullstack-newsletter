@@ -1,5 +1,4 @@
 import Text from '@atoms/Text/Text';
-import SwitchButton from '@atoms/Form/SwitchButton/SwitchButton';
 import Input from '@atoms/Form/Input/Input';
 import Button from '@atoms/Form/Button/Button';
 import Tablet from '@atoms/Abstract/Tablet/Tablet';
@@ -11,7 +10,6 @@ import Modal from '@atoms/Modal/Modal';
 
 export {
   Input,
-  SwitchButton,
   Text,
   Button,
   DropList,

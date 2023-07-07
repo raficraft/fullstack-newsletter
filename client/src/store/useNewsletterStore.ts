@@ -45,6 +45,7 @@ type Store = {
   updateFilter: (key: string, value: string) => void;
   generateFilterUrl: () => string;
   resetFilter: () => Promise<void>;
+  setCurrentActiveElement: (id: string) => void;
 };
 
 const useNewsLetterStore = create<Store>((set, get) => ({
@@ -61,6 +62,18 @@ const useNewsLetterStore = create<Store>((set, get) => ({
   },
 
   setData: (data: any[]) => set({ data }),
+
+  setFilterRequest: (filter: string) => {
+    set({ filterRequest: filter });
+  },
+
+  setCurrentActiveElement: (id: string) => {
+    set({ currentActiveElement: id });
+  },
+
+  setErrorApi: (errorApi: string) => {
+    set({ errorApi });
+  },
 
   updateFilter: (key: string, value: string) =>
     set((state) => ({
@@ -223,14 +236,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }),
-
-  setFilterRequest: (filter: string) => {
-    set({ filterRequest: filter });
-  },
-
-  setErrorApi: (errorApi: string) => {
-    set({ errorApi });
-  },
 }));
 
 export default useNewsLetterStore;

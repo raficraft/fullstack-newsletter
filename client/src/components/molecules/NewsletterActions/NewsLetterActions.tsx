@@ -1,31 +1,23 @@
 import { ConfirmAction, Field } from '@components/molecules';
-import {
-  IconCross,
-  IconUnsubscribe,
-  IconeDelete,
-  IconeEnabled,
-} from '@assets/svg/icons';
+import { IconUnsubscribe, IconeDelete, IconeEnabled } from '@assets/svg/icons';
 import styles from './NewsLetterActions.module.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal } from '@components/atoms';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import Spinner from '@components/atoms/Spinner/Spinner';
 import { debounce } from '@utils/debounce/debounce';
+import { useForm } from '@hooks/index';
 
 interface NewsLetterActionsProps {
   id: string;
   email: string;
   active: boolean;
-  error?: string;
-  validation: any;
 }
 
 export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
   id,
   email,
   active,
-  error,
-  validation,
 }) => {
   const {
     editSubscribe,
@@ -36,36 +28,51 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
     currentAction,
     errorApi,
     setErrorApi,
+    setCurrentActiveElement,
   } = useNewsLetterStore();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [emailEdit, setEmailEdit] = useState<string>(email);
   const showLoading = loading && currentActiveElement === id;
-  const errorField = currentActiveElement === id ? errorApi || error : '';
 
-  const handleEdit = debounce(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
-      try {
-        if (validation(event)) {
-          await editSubscribe(id, event.target.value);
-        }
-      } catch (error: any) {
-        setErrorApi(error.message);
-      }
+  const { validateField, validateForm, errors } = useForm({
+    fields: {
+      [`email_${id}`]: {
+        required: {
+          message: 'Email required',
+        },
+        typeMismatch: {
+          message: 'Valid email required',
+        },
+      },
     },
-    300
-  );
+  });
 
-  const handleToggle = () => {
+  const errorField =
+    currentActiveElement === id ? errorApi || errors[`email_${id}`] : '';
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
     try {
-      toggleSubscribe(id, !active);
+      console.log('what ???????????????????', validateForm(event));
+      if (validateForm(event)) {
+        await editSubscribe(id, emailEdit);
+      }
     } catch (error: any) {
       setErrorApi(error.message);
     }
   };
 
-  const handleDelete = () => {
+  const handleToggle = async () => {
     try {
-      deleteSubscribe(id);
+      await toggleSubscribe(id, !active);
+    } catch (error: any) {
+      setErrorApi(error.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteSubscribe(id);
     } catch (error: any) {
       setErrorApi(error.message);
     }
@@ -73,52 +80,69 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
 
   return (
     <>
-      <Field
-        reverse
-        type='email'
-        className={`bloc_input ${styles.admin_input}`}
-        key={`email_${id}`}
-        name={`email_${id}`}
-        loading={showLoading && currentAction === StoreActions.EDIT}
-        defaultValue={email}
-        onChange={(event) => {
-          handleEdit(event);
+      <form
+        noValidate
+        onSubmit={(event) => {
+          handleSubmit(event);
         }}
-        error={errorField}
-        {...(!active && { disabled: true })}
+        data-testid='form'
       >
-        <span className={styles.newsLetterAction}>
-          <button
-            className={`btn_icon ${active ? 'btn_purple' : 'btn_green'}`}
-            type='button'
-            title={active ? 'Unsubscribe' : 'Subscribe'}
-            onClick={handleToggle}
-          >
-            {showLoading && currentAction == StoreActions.TOGGLE ? (
-              <Spinner style={{ borderColor: 'white' }} />
-            ) : active ? (
-              <IconUnsubscribe />
-            ) : (
-              <IconeEnabled />
-            )}
-          </button>
-          <span className='hr_vertical'></span>
-          <button
-            className='btn_icon btn_accent'
-            title='Delete'
-            type='button'
-            onClick={() => {
-              setDialogOpen(true);
-            }}
-          >
-            {showLoading && currentAction === StoreActions.DELETE ? (
-              <Spinner />
-            ) : (
-              <IconeDelete />
-            )}
-          </button>
-        </span>
-      </Field>
+        <Field
+          reverse
+          type='email'
+          className={`bloc_input ${styles.admin_input}`}
+          key={`email_${id}`}
+          name={`email_${id}`}
+          loading={showLoading && currentAction === StoreActions.EDIT}
+          defaultValue={email}
+          onFocus={() => {
+            setCurrentActiveElement(id);
+          }}
+          onChange={(event) => {
+            setCurrentActiveElement(id);
+            if (validateField(event)) {
+              setEmailEdit(event.target.value);
+            }
+          }}
+          error={errorField}
+          {...(!active && { disabled: true })}
+          placeholder='Edit email'
+          required
+        >
+          <span className={styles.newsLetterAction}>
+            <button
+              className={`btn_icon ${active ? 'btn_purple' : 'btn_green'}`}
+              type='button'
+              title={active ? 'Unsubscribe' : 'Subscribe'}
+              onClick={handleToggle}
+              data-testid='toggle'
+            >
+              {showLoading && currentAction == StoreActions.TOGGLE ? (
+                <Spinner style={{ borderColor: 'white' }} />
+              ) : active ? (
+                <IconUnsubscribe data-testid='iconUnsubscribe' />
+              ) : (
+                <IconeEnabled data-testid='iconEnabled' />
+              )}
+            </button>
+            <span className='hr_vertical'></span>
+            <button
+              className='btn_icon btn_accent'
+              title='Delete'
+              type='button'
+              onClick={() => {
+                setDialogOpen(true);
+              }}
+            >
+              {showLoading && currentAction === StoreActions.DELETE ? (
+                <Spinner />
+              ) : (
+                <IconeDelete data-testid='iconDelete' />
+              )}
+            </button>
+          </span>
+        </Field>
+      </form>
       {dialogOpen && (
         <Modal
           close={() => {
@@ -127,7 +151,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
         >
           <ConfirmAction
             constraint={email}
-            cancel={() => {
+            close={() => {
               setDialogOpen(false);
             }}
             confirm={handleDelete}

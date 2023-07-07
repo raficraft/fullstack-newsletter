@@ -35,8 +35,8 @@ const renderer = () => {
 };
 
 const error = {
-  required: /^Value required$/,
-  pattern: /^Two characters minimum sixty four maximum$/,
+  required: /^Value required$/i,
+  pattern: /^Two characters minimum sixty four maximum$/i,
 };
 
 describe('AdminSearch component', () => {

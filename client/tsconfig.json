@@ -37,6 +37,6 @@
       "@pages/*": ["src/pages/*"]
     }    
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__mocks__/zustand.jsx", "__mocks__/zustand.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__mocks__/zustand.jsx", "__mocks__/zustand.js", "src/components/yolo.tsx"],
   "exclude": ["node_modules"]
 }

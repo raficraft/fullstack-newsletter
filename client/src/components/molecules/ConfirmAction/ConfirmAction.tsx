@@ -5,14 +5,14 @@ import styles from './ConfirmAction.module.scss';
 
 interface ConfirmActionProps {
   confirm: () => void;
-  cancel: () => void;
+  close: () => void;
   constraint: string;
   className?: string;
 }
 
 const ConfirmAction = ({
   confirm,
-  cancel,
+  close,
   constraint,
   className = '',
 }: ConfirmActionProps) => {
@@ -25,7 +25,12 @@ const ConfirmAction = ({
   };
 
   return (
-    <div className={`box ${styles.dialog} ${className}`}>
+    <form
+      className={`box ${styles.dialog} ${className}`}
+      onClick={(event) => {
+        event.stopPropagation();
+      }}
+    >
       <div className={styles.content}>
         <Text tag='p'>
           To confirm your action please enter{' '}
@@ -41,25 +46,27 @@ const ConfirmAction = ({
       </div>
       <footer>
         <Button
+          data-testid='cancel'
           type='button'
-          onClick={cancel}
+          onClick={close}
           className='btn_primary btn_accent'
         >
-          Annuler
+          Cancel
         </Button>
         <Button
+          data-testid='confirm'
           className='btn_primary'
           type='button'
           onClick={() => {
             confirm();
-            cancel();
+            close();
           }}
           {...(!constraintValid && { disabled: true })}
         >
           Confirm
         </Button>
       </footer>
-    </div>
+    </form>
   );
 };
 
