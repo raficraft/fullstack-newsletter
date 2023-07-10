@@ -4,7 +4,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 /**
  * @swagger
- * /newsletter/signup:
+ * /newsletter/subscribe:
  *   post:
  *     tags:
  *       - Newsletter
@@ -56,7 +56,7 @@ export default function (prisma: PrismaClient) {
       const newUser = await prisma.newsletter.create({
         data: {
           email,
-          active: true, // New users are active by default
+          active: true,
         },
       });
 
