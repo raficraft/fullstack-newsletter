@@ -44,4 +44,5 @@ export type UseFormReturn = {
   ) => boolean;
   errors: Record<string, string | undefined>;
   reset: () => void;
+  setErrors: any;
 };

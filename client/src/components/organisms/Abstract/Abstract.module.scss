@@ -19,11 +19,19 @@
   position: absolute;
   left: -192px;
   top: 211px;
-  @media screen and (max-width: 1023px) {
+
+  @media screen and (max-width: 499px) {
     transform: scale(0.542);
     transform-origin: 0 0;
     top: 5.5rem;
     left: -1rem;
+  }
+
+  @media screen and (min-width: 500px) and (max-width: 1023px) {
+    transform: scale(0.9);
+    transform-origin: 0 0;
+    top: 2.5rem;
+    left: 2rem;
   }
 }
 
@@ -31,20 +39,31 @@
   position: absolute;
   top: 115px;
   right: -160px;
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 499px) {
     transform: scale(0.54);
     transform-origin: top right;
     top: 2.25rem;
     right: -1rem;
+  }
+
+  @media screen and (min-width: 500px) and (max-width: 1023px) {
+    transform: scale(0.9);
+    transform-origin: top right;
+    top: 1rem;
+    right: 2rem;
   }
 }
 
 .range {
   position: absolute;
   top: 14.9375rem;
-  left: 18.375rem;
-  @media screen and (max-width: 1023px) {
+  right: -1.25rem;
+  @media screen and (max-width: 499px) {
     display: none;
+  }
+  @media screen and (min-width: 500px) and (max-width: 1023px) {
+    top: 35%;
+    transform: scale(1.2);
   }
 }
 
@@ -52,8 +71,12 @@
   position: absolute;
   top: 5.8125rem;
   left: 15.3125rem;
-  @media screen and (max-width: 1023px) {
+  @media screen and (max-width: 499px) {
     display: none;
+  }
+  @media screen and (min-width: 500px) and (max-width: 1023px) {
+    top: 15%;
+    transform: scale(1.2);
   }
 }
 
@@ -61,7 +84,7 @@
   display: none;
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 499px) {
   .combo {
     display: block;
     position: absolute;

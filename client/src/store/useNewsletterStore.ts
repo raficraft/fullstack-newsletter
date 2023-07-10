@@ -262,6 +262,8 @@ const useNewsLetterStore = create<Store>((set, get) => ({
         method: 'GET',
       }
     );
+
+    console.log(response);
     if (response.success) {
       set({ data: response.data });
     } else {

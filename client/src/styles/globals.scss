@@ -95,11 +95,8 @@ body {
   width: 100%;
   min-height: 100%;
   height: inherit;
-  @include flex(column);
+  @include flex(column, center, center);
   background-color: var(--clr-primary-400);
-  @media screen and (min-width: 1023px) {
-    @include flex(column, center, center);
-  }
 }
 
 .rootContainer {

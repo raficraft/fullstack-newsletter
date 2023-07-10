@@ -3,7 +3,7 @@ import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
 import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import { debounce } from '@utils/debounce/debounce';
-import { ChangeEvent, HTMLAttributes } from 'react';
+import { ChangeEvent, HTMLAttributes, useEffect } from 'react';
 
 interface AdminSearchProps extends HTMLAttributes<HTMLFormElement> {
   children?: any;
@@ -20,6 +20,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
     errors,
     reset: resetFormErrors,
     getFormData,
+    setErrors,
   } = useForm({
     fields: {
       search: {
@@ -41,13 +42,17 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (validateForm(event)) {
       const formElement = getFormData(event);
-      searchSubscriber(formElement.search);
+      const response = await searchSubscriber(formElement.search);
       resetFormErrors();
+
+      if (!response.data.length) {
+        setErrors((state: any) => ({ ...state, search: 'No result' }));
+      }
     }
   };
 

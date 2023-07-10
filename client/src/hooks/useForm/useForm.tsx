@@ -134,6 +134,7 @@ const useForm = ({ fields = {} }: UseFormOptions): UseFormReturn => {
     getFormData,
     reset: resetFormErrors,
     errors,
+    setErrors,
   };
 };
 
