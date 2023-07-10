@@ -36,9 +36,9 @@ const Field = forwardRef(
         {!reverse && children && (
           <span className={styles.label}>
             {children}
-            {errorPosition === 'label' && error && (
+            {errorPosition === 'label' && (
               <Text className={`text_warning text_xs bold_700`} role='alert'>
-                {error}
+                {error || ''}
               </Text>
             )}
           </span>

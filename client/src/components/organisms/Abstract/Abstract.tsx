@@ -3,12 +3,12 @@ import styles from './Abstract.module.scss';
 
 const Abstract = () => {
   return (
-    <div className={styles.abstractContent}>
-      <Tablet className={styles.tablet} />
-      <Browser className={styles.browser} />
-      <Graphic className={styles.graphic} />
-      <Range className={styles.range} />
-      <div className={styles.combo}></div>
+    <div className={styles.abstractContent} data-testid='abstract'>
+      <Tablet className={styles.tablet} data-testid='tablet' />
+      <Browser className={styles.browser} data-testid='browser' />
+      <Graphic className={styles.graphic} data-testid='graphic' />
+      <Range className={styles.range} data-testid='range' />
+      <div className={styles.combo} data-testid='combo'></div>
     </div>
   );
 };

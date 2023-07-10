@@ -18,9 +18,10 @@ const config: JestConfigWithTsJest = {
   testEnvironment: 'jsdom',
   collectCoverage: true,
   collectCoverageFrom: [
-    '!**/node_modules/** ',
+    '!**/node_modules/**',
     '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/src/pages/**/*.{js,jsx,ts,tsx}',
+    '!<rootDir>/src/**/index.{ts,tsx}',
+    '<rootDir>/src/pages/**/*.{ts,tsx}',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'cobertura'],

@@ -7,13 +7,11 @@ const state = useNewsLetterStore.getState();
 const toggleSubscribeSpy = jest.spyOn(state, 'toggleSubscribe');
 const deleteSubscribeSpy = jest.spyOn(state, 'deleteSubscribe');
 const editSubscribeSpy = jest.spyOn(state, 'editSubscribe');
-const setErrorApiSpy = jest.spyOn(state, 'setErrorApi');
 
 beforeEach(() => {
   toggleSubscribeSpy.mockClear();
   deleteSubscribeSpy.mockClear();
   editSubscribeSpy.mockClear();
-  setErrorApiSpy.mockClear();
   useNewsLetterStore.getState().setCurrentActiveElement('10');
 });
 
@@ -119,21 +117,6 @@ describe('NewsLetterActions component', () => {
     });
   });
 
-  test('Should display error API with invalid email', async () => {
-    rendered(propsEnabled);
-    const fields = screen.getByPlaceholderText('Edit email');
-    fireEvent.change(fields, { target: { value: '' } });
-    fireEvent.change(fields, { target: { value: 'invalid email' } });
-
-    fireEvent.submit(screen.getByTestId('form'));
-
-    await waitFor(() => {
-      useNewsLetterStore.getState().setErrorApi('Expected error message');
-      expect(setErrorApiSpy).toBeCalledWith('Expected error message');
-      expect(screen.getByText('Expected error message')).toBeInTheDocument();
-    });
-  });
-
   test('Should call toggleSubscribe if input is enabled', async () => {
     rendered(propsEnabled);
     fireEvent.click(screen.getByTestId('iconUnsubscribe'));
@@ -199,55 +182,6 @@ describe('NewsLetterActions component', () => {
 
     await waitFor(() => {
       expect(useNewsLetterStore.getState().currentActiveElement).toEqual('10');
-    });
-  });
-
-  test('should handle toggle error toggleSubscribe', async () => {
-    const mockError = new Error('Toggle error');
-    toggleSubscribeSpy.mockRejectedValueOnce(mockError);
-
-    rendered(propsEnabled);
-    fireEvent.click(screen.getByTestId('toggle'));
-
-    await waitFor(() => {
-      expect(setErrorApiSpy).toHaveBeenCalledWith(mockError.message);
-    });
-  });
-
-  test('should handle toggle error editSubscribe', async () => {
-    const mockError = new Error('Toggle error');
-    editSubscribeSpy.mockRejectedValueOnce(mockError);
-
-    rendered(propsEnabled);
-
-    const fields = screen.getByPlaceholderText('Edit email');
-    fireEvent.change(fields, { target: { value: '' } });
-    fireEvent.change(fields, { target: { value: 'email@email.com' } });
-
-    fireEvent.submit(screen.getByTestId('form'));
-
-    await waitFor(() => {
-      expect(setErrorApiSpy).toHaveBeenCalledWith(mockError.message);
-    });
-  });
-
-  test('should handle toggle error for deleteSubscribe', async () => {
-    const mockError = new Error('Toggle error');
-    deleteSubscribeSpy.mockRejectedValueOnce(mockError);
-
-    rendered(propsEnabled);
-
-    fireEvent.click(screen.getByTestId('iconDelete'));
-
-    const confirmField = screen.getByPlaceholderText('Enter the text in red');
-    fireEvent.change(confirmField, { target: { value: propsEnabled.email } });
-
-    const button = screen.getByRole('button', { name: /confirm/i });
-
-    fireEvent.click(button);
-
-    await waitFor(() => {
-      expect(setErrorApiSpy).toHaveBeenCalledWith(mockError.message);
     });
   });
 });

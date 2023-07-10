@@ -39,40 +39,37 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
       const dataForm = getFormData(event);
       const email = dataForm.newsletter;
 
-      try {
-        await subscribe(email);
-        onSuccessfulSubmit(email);
+      const response = await subscribe(email);
+
+      if (!response.error) {
         resetFormErrors();
-      } catch (error: any) {
-        setErrorApi(error.message);
+        onSuccessfulSubmit(email);
       }
     }
   };
 
-  const handleEmailChange = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
-      if (validateField(event)) {
-        resetFormErrors();
-      }
-    },
-    300
-  );
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    if (validateField(event)) {
+      resetFormErrors();
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} noValidate role='form'>
       <Field
+        id='newsletter'
+        name='newsletter'
         type='email'
+        required
         className='bloc_input'
         placeholder='email@company.com'
         errorPosition='label'
-        name='newsletter'
         onChange={handleEmailChange}
         error={errors.newsletter || errorApi}
-        required
         style={{ marginBottom: '1.5rem' }}
       >
-        <label htmlFor='newsletter'>Email adress</label>
+        <label htmlFor='newsletter'>Email address</label>
       </Field>
       <Button
         type='submit'

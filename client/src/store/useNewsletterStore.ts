@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const ROUTE = `${process.env.NEXT_PUBLIC_API_URL}newsletter`;
+export const ROUTE = `${process.env.NEXT_PUBLIC_API_URL}newsletter`;
 
 export enum StoreActions {
   RELOAD = 'RELOAD',
@@ -18,7 +18,13 @@ type Filter = {
   active: string;
 };
 
-type Store = {
+export type ApiResponse = {
+  success: boolean;
+  error?: string;
+  data?: any;
+};
+
+export type Store = {
   data: any[] | any;
   errorApi: string;
   loading: boolean;
@@ -30,14 +36,14 @@ type Store = {
     url: string,
     options: RequestInit,
     id?: string
-  ) => Promise<any>;
+  ) => Promise<ApiResponse>;
   registered: () => Promise<void>;
-  subscribe: (email: string) => Promise<void>;
-  deleteSubscribe: (id: string) => Promise<void>;
-  toggleSubscribe: (id: string, active: boolean) => Promise<void>;
-  editSubscribe: (id: string, email: string) => Promise<void>;
-  filterData: (url: string, setAction?: boolean) => Promise<void>;
-  searchSubscriber: (query: string) => Promise<void>;
+  subscribe: (email: string) => Promise<ApiResponse>;
+  deleteSubscribe: (id: string) => Promise<ApiResponse>;
+  toggleSubscribe: (id: string, active: boolean) => Promise<ApiResponse>;
+  editSubscribe: (id: string, email: string) => Promise<ApiResponse>;
+  filterData: (url: string, setAction?: boolean) => Promise<ApiResponse>;
+  searchSubscriber: (query: string) => Promise<ApiResponse>;
   createReqOptions: (method: string, data: any) => RequestInit;
   setFilterRequest: (filter: string) => void;
   setData: (data: any[]) => void;
@@ -60,6 +66,8 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     orderBy: 'asc',
     active: 'none',
   },
+
+  // setter and helper
 
   setData: (data: any[]) => set({ data }),
 
@@ -108,13 +116,14 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     await get().registered();
   },
 
+  // call api
+
   handleRequest: async (
     url: string,
     options: RequestInit,
     activeId?: string
   ) => {
     try {
-      console.log(url);
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
       const delay = new Promise((resolve) => setTimeout(resolve, 500));
@@ -122,27 +131,29 @@ const useNewsLetterStore = create<Store>((set, get) => ({
 
       const [response] = await Promise.all([dataFetch, delay]);
 
+      let data = null;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        data = await response.json();
+      }
+
       if (!response.ok) {
         let errorMessage = 'An error has occurred, please try again';
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.indexOf('application/json') !== -1) {
-          const errorData = await response.json();
-          errorMessage = errorData.error;
+        if (data && data.error) {
+          errorMessage = data.error;
         } else {
           errorMessage = `HTTP error! status: ${response.status}`;
         }
-        throw new Error(errorMessage);
+
+        return { success: false, error: errorMessage };
       }
 
-      const data = await response.json();
-      return data;
+      return { success: true, data };
     } catch (error: any) {
-      set({
-        errorApi: `Action: ${get().currentAction}, Error: ${
-          error.message || 'An error has occurred, please try again'
-        }`,
-      });
-      throw error;
+      return {
+        success: false,
+        error: error.message || 'An error has occurred, please try again',
+      };
     } finally {
       set({ loading: false });
     }
@@ -154,29 +165,43 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       `${ROUTE}/registered${get().filterRequest}`,
       { method: 'GET' }
     );
-    set({ data: newsLetters });
+    if (newsLetters.success) {
+      set({ data: newsLetters.data });
+    } else {
+      set({ errorApi: newsLetters.error });
+    }
   },
 
   subscribe: async (email: string) => {
     set({ currentAction: StoreActions.INSERT });
-    const data = await get().handleRequest(
+    const response = await get().handleRequest(
       `${ROUTE}/subscribe`,
       get().createReqOptions('POST', { email })
     );
-    set({ data: [data, ...get().data] });
+    if (response.success) {
+      set({ data: [response.data, ...get().data] });
+    } else {
+      set({ errorApi: response.error });
+    }
+    return response;
   },
 
   deleteSubscribe: async (id: string) => {
     set({ currentAction: StoreActions.DELETE });
-    await get().handleRequest(
+    const response = await get().handleRequest(
       `${ROUTE}/delete/${id}`,
       { method: 'DELETE' },
       id
     );
-    set((state) => {
-      const newData = state.data.filter((item: any) => item.id !== id);
-      return { data: newData };
-    });
+    if (response.success) {
+      set((state) => {
+        const newData = state.data.filter((item: any) => item.id !== id);
+        return { data: newData };
+      });
+    } else {
+      set({ errorApi: response.error });
+    }
+    return response;
   },
 
   toggleSubscribe: async (id: string, active: boolean) => {
@@ -186,15 +211,23 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       get().createReqOptions('PUT', { active }),
       id
     );
+    if (response.success) {
+      set((state) => {
+        const newData = [...state.data];
+        const index = newData.findIndex((item) => item.id === id);
+        if (index !== -1) {
+          newData[index] = response.data;
+        } else {
+          console.warn('ID not found in data:', id);
+        }
 
-    set((state) => {
-      const newData = [...state.data];
-      const index = newData.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        newData[index] = response;
-      }
-      return { data: newData };
-    });
+        return { data: newData };
+      });
+    } else {
+      set({ errorApi: response.error });
+    }
+
+    return response;
   },
 
   editSubscribe: async (id: string, email: string) => {
@@ -205,37 +238,64 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       id
     );
 
-    set((state) => {
-      const newData = [...state.data];
-      const index = newData.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        newData[index] = response;
-      }
-      return { data: newData };
-    });
-  },
+    if (response.success) {
+      set((state) => {
+        const newData = [...state.data];
+        const index = newData.findIndex((item) => item.id === id);
+        if (index !== -1) {
+          newData[index] = response.data;
+        }
+        return { data: newData };
+      });
+    } else {
+      set({ errorApi: response.error });
+    }
 
-  filterData: async (url: string, setAction = true) => {
-    setAction && set({ currentAction: StoreActions.FILTER });
-    const result = await get().handleRequest(`${ROUTE}/registered${url}`, {
-      method: 'GET',
-    });
-    set({ data: result });
+    return response;
   },
 
   searchSubscriber: async (query: string) => {
     set({ currentAction: StoreActions.SEARCH });
-    const result = await get().handleRequest(`${ROUTE}/search?query=${query}`, {
-      method: 'GET',
-    });
-    set({ data: result });
+    const response = await get().handleRequest(
+      `${ROUTE}/search?query=${query}`,
+      {
+        method: 'GET',
+      }
+    );
+    if (response.success) {
+      set({ data: response.data });
+    } else {
+      set({ errorApi: response.error });
+    }
+    return response;
   },
 
-  createReqOptions: (method: string, data: any) => ({
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  }),
+  createReqOptions: (method: string, data: any) => {
+    return {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+  },
+
+  filterData: async (url: string, setAction: boolean = true) => {
+    if (setAction) {
+      set({ currentAction: StoreActions.FILTER });
+    }
+    const response = await get().handleRequest(`${ROUTE}/registered${url}`, {
+      method: 'GET',
+    });
+
+    if (response.success) {
+      set({ data: response.data });
+    } else {
+      set({ errorApi: response.error });
+    }
+
+    return response;
+  },
 }));
 
 export default useNewsLetterStore;

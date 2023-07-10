@@ -5,13 +5,14 @@ import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import { debounce } from '@utils/debounce/debounce';
 import { ChangeEvent, HTMLAttributes } from 'react';
 
-interface AdminSearchProps extends HTMLAttributes<HTMLDivElement> {
+interface AdminSearchProps extends HTMLAttributes<HTMLFormElement> {
   children?: any;
 }
 
 const AdminSearch: React.FC<AdminSearchProps> = ({
   className = '',
   children,
+  ...rest
 }) => {
   const {
     validateField,
@@ -51,7 +52,7 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit} style={{ flexGrow: 1 }}>
+    <form noValidate onSubmit={handleSubmit} style={{ flexGrow: 1 }} {...rest}>
       <Field
         type='search'
         className={`bloc_input ${className}`}

@@ -52,30 +52,18 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    try {
-      console.log('what ???????????????????', validateForm(event));
-      if (validateForm(event)) {
-        await editSubscribe(id, emailEdit);
-      }
-    } catch (error: any) {
-      setErrorApi(error.message);
+
+    if (validateForm(event)) {
+      await editSubscribe(id, emailEdit);
     }
   };
 
   const handleToggle = async () => {
-    try {
-      await toggleSubscribe(id, !active);
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
+    await toggleSubscribe(id, !active);
   };
 
   const handleDelete = async () => {
-    try {
-      await deleteSubscribe(id);
-    } catch (error: any) {
-      setErrorApi(error.message);
-    }
+    await deleteSubscribe(id);
   };
 
   return (
