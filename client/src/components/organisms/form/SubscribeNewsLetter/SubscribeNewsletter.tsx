@@ -41,8 +41,6 @@ const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
 
       const response = await subscribe(email);
 
-      console.log(response);
-
       if (!response.error) {
         resetFormErrors();
         onSuccessfulSubmit(email);

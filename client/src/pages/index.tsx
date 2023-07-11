@@ -16,6 +16,7 @@ export default function Home() {
     setSubscribed(true);
     setSubscribedEmail(email);
   };
+
   return (
     <>
       <Head>

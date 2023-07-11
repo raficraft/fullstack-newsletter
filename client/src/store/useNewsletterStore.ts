@@ -126,7 +126,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     options: RequestInit,
     activeId?: string
   ) => {
-    console.log('url', url);
     try {
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
@@ -267,13 +266,11 @@ const useNewsLetterStore = create<Store>((set, get) => ({
       }
     );
 
-    console.log(response);
     if (response.success) {
       set({ data: response.data });
     } else {
       set({ errorApi: response.error });
     }
-    console.log('search', response);
     return response;
   },
 

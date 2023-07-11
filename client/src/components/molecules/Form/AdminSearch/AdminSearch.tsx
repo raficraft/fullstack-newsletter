@@ -50,17 +50,12 @@ const AdminSearch: React.FC<AdminSearchProps> = ({
       const response = await searchSubscriber(formElement.search);
 
       if (response && !response.data.length) {
-        console.log('...');
         setErrors((state: any) => ({ ...state, search: 'No result' }));
       } else {
         resetFormErrors();
       }
     }
   };
-
-  useEffect(() => {
-    console.log(currentAction);
-  }, [loading]);
 
   return (
     <form noValidate onSubmit={handleSubmit} style={{ flexGrow: 1 }} {...rest}>
