@@ -35,7 +35,25 @@ import { PrismaClient } from '@prisma/client';
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The user ID.
+ *                   email:
+ *                     type: string
+ *                     description: The user's email.
+ *                   active:
+ *                     type: boolean
+ *                     description: Whether the user is active or not.
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the user was created.
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date the user was last updated.
  *       500:
  *         description: Something went wrong.
  *         content:

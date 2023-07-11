@@ -15,7 +15,11 @@ dotenv.config();
 const app: Express = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://fullstack-newsletter-knlv.vercel.app',
+  })
+);
 
 const PORT: string | number = process.env.PORT || 5000;
 
