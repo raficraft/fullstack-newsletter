@@ -127,7 +127,6 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     activeId?: string
   ) => {
     console.log('url', url);
-    console.log('options', options);
     try {
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 
