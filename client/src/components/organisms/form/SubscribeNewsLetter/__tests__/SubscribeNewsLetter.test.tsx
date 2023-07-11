@@ -1,12 +1,10 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import SubscribeNewsletter from '../SubscribeNewsletter';
 import useNewsletterStore from '@store/useNewsletterStore';
-import { responseApi } from '__mocks__/data/response';
+import { mockNewsletters } from '__mocks__/data/data';
 
-const state = useNewsletterStore.getState();
-
-const subscribeSpy = jest.spyOn(state, 'subscribe');
-
+const store = useNewsletterStore.getState();
+const subscribeSpy = jest.spyOn(store, 'subscribe');
 const mockCallback = jest.fn();
 
 beforeEach(() => {
@@ -16,8 +14,8 @@ beforeEach(() => {
   useNewsletterStore.setState({
     loading: false,
     currentAction: null,
-    errorApi: state.errorApi,
-    subscribe: state.subscribe,
+    errorApi: store.errorApi,
+    subscribe: store.subscribe,
   });
 });
 
@@ -118,7 +116,7 @@ describe('SubscribeNewsletter component', () => {
 
   describe('Callbacks and side effects', () => {
     test('should call callback and submit function if submit with valid email', async () => {
-      fetchMock.mockResponseOnce(JSON.stringify(responseApi.subscribe.success));
+      fetchMock.mockResponseOnce(JSON.stringify(mockNewsletters[0]));
       rendered();
 
       useCases.setupValidEmail();

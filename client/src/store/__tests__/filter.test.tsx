@@ -93,10 +93,10 @@ describe('useNewsLetterStore', () => {
       expect(store.errorApi).toEqual('');
     });
 
-    test('should filter email with default order', async () => {
+    test('should filter email whith asc order', async () => {
       const filter = {
         sortBy: 'email',
-        orderBy: 'desc',
+        orderBy: 'asc',
         active: 'none',
       };
       const store = await filterDataWithMockResponse(

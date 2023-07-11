@@ -69,7 +69,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
 
   // setter and helper
 
-  setData: (data: any[]) => set({ data }),
+  setData: (data: any[]) => set({ data: data }),
 
   setFilterRequest: (filter: string) => {
     set({ filterRequest: filter });
@@ -110,7 +110,10 @@ const useNewsLetterStore = create<Store>((set, get) => ({
   },
 
   resetFilter: async () => {
-    set({ filter: { sortBy: 'createAt', orderBy: 'asc', active: 'none' } });
+    set({
+      filter: { sortBy: 'createAt', orderBy: 'asc', active: 'none' },
+      currentAction: StoreActions.RELOAD,
+    });
     const url = get().generateFilterUrl();
     await get().filterData(url, false);
     await get().registered();
@@ -269,6 +272,7 @@ const useNewsLetterStore = create<Store>((set, get) => ({
     } else {
       set({ errorApi: response.error });
     }
+    console.log('search', response);
     return response;
   },
 

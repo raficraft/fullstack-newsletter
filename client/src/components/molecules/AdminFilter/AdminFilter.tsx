@@ -57,7 +57,7 @@ const AdminFilter = () => {
         className='btn_icon btn_green'
         title='Reset'
       >
-        {loading && StoreActions.RELOAD === currentAction ? (
+        {loading && currentAction === StoreActions.RELOAD ? (
           <Spinner style={{ borderColor: 'white' }} />
         ) : (
           <IconeReload />

@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AdminSearch from '../AdminSearch';
+import { mockNewsletters } from '__mocks__/data/data';
 
 const useNewsLetterStoreMock = {
-  data: [],
+  data: mockNewsletters,
   errorApi: '',
   loading: false,
   filterRequest: '',
