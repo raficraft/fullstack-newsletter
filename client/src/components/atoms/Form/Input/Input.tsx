@@ -1,8 +1,8 @@
-import React, {
-  forwardRef,
+import {
   ForwardedRef,
   InputHTMLAttributes,
   ReactNode,
+  forwardRef,
 } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

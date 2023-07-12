@@ -26,8 +26,8 @@ type TextElementMap = {
 };
 
 const Text: FC<TextProps> = ({ tag = 'p', children, ...rest }) => {
-  const Component = tag as keyof TextElementMap;
-  return <Component {...rest}>{children}</Component>;
+  const Tag = tag as keyof TextElementMap;
+  return <Tag {...rest}>{children}</Tag>;
 };
 
 export default Text;

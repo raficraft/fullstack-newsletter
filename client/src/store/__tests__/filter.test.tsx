@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore, { ApiResponse } from '../useNewsletterStore';
 
 // Mock sort result api Response
 
@@ -10,14 +10,6 @@ const sortNewslettersAsc = mockNewsletters.sort((a, b) =>
 const sortNewslettersDesc = mockNewsletters.sort((a, b) =>
   b.email.localeCompare(a.email)
 );
-
-const sortedInactiveNewsletters = [...mockNewsletters]
-  .filter((newsletter) => !newsletter.active)
-  .sort((a, b) => a.email.localeCompare(b.email));
-
-const sortedActiveNewsletters = [...mockNewsletters]
-  .filter((newsletter) => !newsletter.active)
-  .sort((a, b) => b.email.localeCompare(a.email));
 
 const mockFilterDataResponse = (
   responseBody: Int_Newsletter[] | ApiResponse,
@@ -40,7 +32,7 @@ const filterDataWithMockResponse = async (
 ) => {
   mockFilterDataResponse(responseBody, status);
 
-  const { result: store } = renderHook(() => useNewsLetterStore());
+  const { result: store } = renderHook(() => useNewsletterStore());
   act(() => {
     store.current.updateFilter('sortBy', filter.sortBy);
     store.current.updateFilter('orderBy', filter.orderBy);
@@ -54,11 +46,11 @@ const filterDataWithMockResponse = async (
   return store.current;
 };
 
-describe('useNewsLetterStore', () => {
+describe('useNewsletterStore', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     jest.useFakeTimers();
-    useNewsLetterStore.setState({
+    useNewsletterStore.setState({
       data: mockNewsletters,
     });
   });
@@ -67,7 +59,6 @@ describe('useNewsLetterStore', () => {
     jest.useRealTimers();
   });
 
-  // filterData
   describe('Call filterData method', () => {
     test('should filter email with default order', async () => {
       const store = await filterDataWithMockResponse(sortNewslettersAsc);

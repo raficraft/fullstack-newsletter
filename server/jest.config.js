@@ -1,5 +1,5 @@
 const config = {
-  preset: 'ts-jest', // Ajouter cette ligne
+  preset: 'ts-jest',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   modulePaths: ['<rootDir>'],

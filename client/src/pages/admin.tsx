@@ -1,24 +1,26 @@
-import Head from 'next/head';
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
-import { useEffect } from 'react';
-import { NewsLetterActions, Pagination } from '@components/molecules';
-import { usePaginate } from '@hooks/index';
-import styles from '@styles/pages/Admin.module.scss';
+import { NewslettersActions, Pagination } from '@components/molecules';
 import { AdminHeader } from '@components/organisms';
-import useNewsLetterStore from '@store/useNewsletterStore';
+import { usePaginate } from '@hooks/index';
+import useNewsletterStore from '@store/useNewsletterStore';
+import styles from '@styles/pages/Admin.module.scss';
 import { Int_Newsletter } from '__mocks__/data/data';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
+import { useEffect } from 'react';
 
 export default function Admin({
   newsletters,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data, setData } = useNewsLetterStore();
-  const currentData = newsletters || data;
+  const { data, setData } = useNewsletterStore();
+  const currentData = !data.length ? newsletters : data;
   const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
     currentData,
     5
   );
 
   useEffect(() => {
+    console.log(data);
+    console.log('reload', currentData);
     setData(currentData);
   }, [data]);
 
@@ -26,7 +28,7 @@ export default function Admin({
     <>
       <Head>
         <title>Newsletters Admin</title>
-        <meta name='description' content='NewsLetter' />
+        <meta name='description' content='Newsletters' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
@@ -35,7 +37,7 @@ export default function Admin({
         <div className={styles.input_list}>
           {items && items.length > 0 ? (
             items.map((item, key) => (
-              <NewsLetterActions
+              <NewslettersActions
                 key={`email_${key}`}
                 id={item.id}
                 email={item.email}
@@ -66,8 +68,8 @@ export async function loadNewsletter() {
     if (!res.ok) {
       throw new Error('Error loading newsletter data');
     }
-    const newsLetter = await res.json();
-    return newsLetter;
+    const newsletters = await res.json();
+    return newsletters;
   } catch (err) {
     console.error(err);
     return [];

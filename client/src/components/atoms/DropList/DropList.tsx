@@ -1,7 +1,7 @@
-import React, { HtmlHTMLAttributes, useEffect } from 'react';
-import styles from './DropList.module.scss';
 import { IconArrowDown } from '@assets/svg/icons';
 import useDropList, { Option } from '@hooks/useDropList/UseDropList';
+import React, { HtmlHTMLAttributes, useEffect } from 'react';
+import styles from './DropList.module.scss';
 
 interface DropListProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   options: Option[];
@@ -30,7 +30,7 @@ const DropList: React.FC<DropListProps> = ({
 
   useEffect(() => {
     if (options.length === 0) {
-      console.warn("Aucune option n'a été fournie pour DropList.");
+      console.warn('No options were provided for the DropList.');
     }
   }, [options]);
 

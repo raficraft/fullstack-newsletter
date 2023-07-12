@@ -1,17 +1,17 @@
-import Field from '@molecules/Field/Field';
-import Success from '@molecules/Success/Success';
 import AdminFilter from '@molecules/AdminFilter/AdminFilter';
-import NewsLetterActions from '@molecules/NewsletterActions/NewsLetterActions';
 import ConfirmAction from '@molecules/ConfirmAction/ConfirmAction';
+import Field from '@molecules/Field/Field';
 import AdminSearch from '@molecules/Form/AdminSearch/AdminSearch';
+import NewslettersActions from '@components/molecules/NewsletterActions/NewsletterActions';
 import Pagination from '@molecules/Pagination/Pagination';
+import Success from '@molecules/Success/Success';
 
 export {
-  Field,
-  Success,
   AdminFilter,
-  NewsLetterActions,
-  ConfirmAction,
   AdminSearch,
+  ConfirmAction,
+  Field,
+  NewslettersActions,
   Pagination,
+  Success,
 };

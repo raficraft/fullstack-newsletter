@@ -34,9 +34,10 @@
       "@svg/*": ["src/assets/svg/*"],
       "@styles/*": ["src/styles/*"],
       "@store/*": ["src/store/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@__mocks__/*": ["__mocks__/*"]
     }    
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__mocks__/zustand.jsx", "__mocks__/zustand.js", "src/components/yolo.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

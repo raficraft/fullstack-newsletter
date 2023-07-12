@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Text } from '@components/atoms';
 import styles from '@styles/pages/Home.module.scss';
 import Abstract from '@organisms/Abstract/Abstract';
-import SubscribeNewsletter from '@organisms/form/SubscribeNewsLetter/SubscribeNewsletter';
+import SubscribeNewsletter from '@organisms/form/SubscribeNewsletter/SubscribeNewsletter';
 import Succcess from '@molecules/Success/Success';
 import { IconCheck } from '@assets/svg/icons';
 import { Inter } from 'next/font/google';

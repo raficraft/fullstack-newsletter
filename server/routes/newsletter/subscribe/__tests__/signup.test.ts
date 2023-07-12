@@ -1,8 +1,8 @@
-import request from 'supertest';
 import express from 'express';
-import createSignupRouter from '../subscribe';
+import request from 'supertest';
 import { prismaMock } from '../../../../__mocks__/prisma';
 import { convertDatesToStrings } from '../../../../utils/utils';
+import createSignupRouter from '../subscribe';
 
 const app = express();
 app.use(express.json());

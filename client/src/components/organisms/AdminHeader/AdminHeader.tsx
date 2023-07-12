@@ -1,5 +1,4 @@
-import React from 'react';
-import { AdminSearch, AdminFilter } from '@components/molecules';
+import { AdminFilter, AdminSearch } from '@components/molecules';
 import styles from './AdminHeader.module.scss';
 
 const AdminHeader = () => {

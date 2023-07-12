@@ -1,23 +1,21 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
-import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore from '../useNewsletterStore';
 
-const registeredSpy = jest.spyOn(useNewsLetterStore.getState(), 'registered');
+const registeredSpy = jest.spyOn(useNewsletterStore.getState(), 'registered');
 
 const generateFilterUrlSpy = jest.spyOn(
-  useNewsLetterStore.getState(),
+  useNewsletterStore.getState(),
   'generateFilterUrl'
 );
-const filterDataSpy = jest.spyOn(useNewsLetterStore.getState(), 'filterData');
+const filterDataSpy = jest.spyOn(useNewsletterStore.getState(), 'filterData');
 
 describe('Helpers function on store', () => {
   describe('generateFilterUrl', () => {
     test('should return correctly URL with default filter params', () => {
-      const { generateFilterUrl, filter } = useNewsLetterStore.getState();
+      const { generateFilterUrl, filter } = useNewsletterStore.getState();
       const url = generateFilterUrl();
 
       expect(url).toBe('?sortBy=createdAt&order=asc');
-      expect(useNewsLetterStore.getState().filterRequest).toBe(
+      expect(useNewsletterStore.getState().filterRequest).toBe(
         '?sortBy=createdAt&order=asc'
       );
 
@@ -29,18 +27,18 @@ describe('Helpers function on store', () => {
     });
 
     test('should return correctly URL with other url params', () => {
-      useNewsLetterStore.setState({
+      useNewsletterStore.setState({
         filter: {
           sortBy: 'email',
           orderBy: 'desc',
           active: 'true',
         },
       });
-      const { generateFilterUrl, filter } = useNewsLetterStore.getState();
+      const { generateFilterUrl, filter } = useNewsletterStore.getState();
       const url = generateFilterUrl();
 
       expect(url).toBe('?sortBy=email&order=desc&active=true');
-      expect(useNewsLetterStore.getState().filterRequest).toBe(
+      expect(useNewsletterStore.getState().filterRequest).toBe(
         '?sortBy=email&order=desc&active=true'
       );
 
@@ -54,7 +52,7 @@ describe('Helpers function on store', () => {
 
   describe('resetFilter method', () => {
     beforeEach(() => {
-      useNewsLetterStore.setState({
+      useNewsletterStore.setState({
         filter: { sortBy: 'createdAt', orderBy: 'asc', active: 'none' },
         filterRequest: '',
       });
@@ -66,24 +64,24 @@ describe('Helpers function on store', () => {
         orderBy: 'asc',
         active: 'none',
       };
-      useNewsLetterStore.setState({
+      useNewsletterStore.setState({
         filter: { sortBy: 'notDefault', orderBy: 'desc', active: 'all' },
       });
 
-      await useNewsLetterStore.getState().resetFilter();
+      await useNewsletterStore.getState().resetFilter();
 
-      expect(useNewsLetterStore.getState().filter).toEqual(expectedFilter);
+      expect(useNewsletterStore.getState().filter).toEqual(expectedFilter);
     });
 
     test('should call generateFilterUrl and filterData', async () => {
-      await useNewsLetterStore.getState().resetFilter();
+      await useNewsletterStore.getState().resetFilter();
 
       expect(generateFilterUrlSpy).toHaveBeenCalled();
       expect(filterDataSpy).toHaveBeenCalled();
     });
 
     test('should call registered', async () => {
-      await useNewsLetterStore.getState().resetFilter();
+      await useNewsletterStore.getState().resetFilter();
 
       expect(registeredSpy).toHaveBeenCalled();
     });
@@ -105,43 +103,43 @@ describe('Helpers function on store', () => {
     };
 
     afterEach(() => {
-      useNewsLetterStore.setState(initialState);
+      useNewsletterStore.setState(initialState);
     });
 
     test('setData should update data correctly', () => {
       const sampleData = [{ id: '1', email: 'test@email.com', active: true }];
-      useNewsLetterStore.getState().setData(sampleData);
+      useNewsletterStore.getState().setData(sampleData);
 
-      expect(useNewsLetterStore.getState().data).toEqual(sampleData);
+      expect(useNewsletterStore.getState().data).toEqual(sampleData);
     });
 
     test('setFilterRequest should update filterRequest correctly', () => {
       const filterRequest = '?sortBy=email&order=desc&active=true';
-      useNewsLetterStore.getState().setFilterRequest(filterRequest);
+      useNewsletterStore.getState().setFilterRequest(filterRequest);
 
-      expect(useNewsLetterStore.getState().filterRequest).toBe(filterRequest);
+      expect(useNewsletterStore.getState().filterRequest).toBe(filterRequest);
     });
 
     test('setCurrentActiveElement should update currentActiveElement correctly', () => {
       const id = '1';
-      useNewsLetterStore.getState().setCurrentActiveElement(id);
+      useNewsletterStore.getState().setCurrentActiveElement(id);
 
-      expect(useNewsLetterStore.getState().currentActiveElement).toBe(id);
+      expect(useNewsletterStore.getState().currentActiveElement).toBe(id);
     });
 
     test('setErrorApi should update errorApi correctly', () => {
       const errorApi = 'An error has occurred, please try again';
-      useNewsLetterStore.getState().setErrorApi(errorApi);
+      useNewsletterStore.getState().setErrorApi(errorApi);
 
-      expect(useNewsLetterStore.getState().errorApi).toBe(errorApi);
+      expect(useNewsletterStore.getState().errorApi).toBe(errorApi);
     });
 
     test('updateFilter should update filter correctly', () => {
       const key = 'orderBy';
       const value = 'desc';
-      useNewsLetterStore.getState().updateFilter(key, value);
+      useNewsletterStore.getState().updateFilter(key, value);
 
-      expect(useNewsLetterStore.getState().filter[key]).toBe(value);
+      expect(useNewsletterStore.getState().filter[key]).toBe(value);
     });
   });
 });

@@ -1,5 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
 import Admin, { getServerSideProps, loadNewsletter } from '@pages/admin';
+import { render, screen, waitFor } from '@testing-library/react';
 import { mockNewsletters } from '__mocks__/data/data';
 
 describe('Admin', () => {
@@ -11,7 +11,7 @@ describe('Admin', () => {
     expect(screen.getByTestId('admin-page')).toBeInTheDocument();
   });
 
-  test('renders NewsLetterActions for each newsletter', async () => {
+  test('renders NewsletterActions for each newsletter', async () => {
     await waitFor(() => {
       const items = screen.getAllByTestId('form');
       expect(items).toHaveLength(mockNewsletters.length);
@@ -19,7 +19,6 @@ describe('Admin', () => {
   });
 
   test('renders Pagination component if total pages more than 1', () => {
-    // assuming pagination gets rendered only when more than 1 page of newsletters
     if (mockNewsletters.length > 5) {
       expect(screen.getByText('Next')).toBeInTheDocument();
       expect(screen.getByText('Prev')).toBeInTheDocument();
@@ -28,8 +27,14 @@ describe('Admin', () => {
 });
 
 describe('getServerSideProps function', () => {
+  let spy: any;
   beforeEach(() => {
     fetchMock.resetMocks();
+    spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    spy.mockRestore();
   });
 
   test('should return expected props on successful fetch', async () => {
@@ -52,8 +57,14 @@ describe('getServerSideProps function', () => {
 });
 
 describe('loadNewsletter function', () => {
+  let spy: any;
   beforeEach(() => {
     fetchMock.resetMocks();
+    spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    spy.mockRestore();
   });
 
   test('should return newsletter data on successful fetch', async () => {

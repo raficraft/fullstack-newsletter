@@ -1,6 +1,6 @@
+import { IconCheck } from '@assets/svg/icons';
 import { Button, Text } from '@components/atoms';
 import styles from './Success.module.scss';
-import { IconCheck } from '@assets/svg/icons';
 
 type SuccessProps = {
   email: string | null;
@@ -14,7 +14,8 @@ const Succcess = ({ email, close }: SuccessProps) => {
       <div className={styles.message}>
         <Text tag='h1'>Thank for subscribing !</Text>
         <Text tag='p'>
-          A confirmation email has been sent to {email}. Please open it and
+          A confirmation email has been sent to{' '}
+          <span className='bold text_accent'>{email}</span>. Please open it and
           click the button inside to confirm your subscription.
         </Text>
       </div>

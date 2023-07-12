@@ -1,7 +1,7 @@
-import React, { forwardRef, ReactNode, Ref, InputHTMLAttributes } from 'react';
-import styles from './Field.module.scss';
 import { Input, Text } from '@atoms/index';
 import Spinner from '@components/atoms/Spinner/Spinner';
+import { InputHTMLAttributes, ReactNode, Ref, forwardRef } from 'react';
+import styles from './Field.module.scss';
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   children: ReactNode;

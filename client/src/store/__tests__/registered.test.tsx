@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore, { ApiResponse } from '../useNewsletterStore';
 
 const mockFetchResponse = (
   responseBody: Int_Newsletter | ApiResponse,
@@ -18,7 +18,7 @@ const registeredWithMockResponse = async (
 ) => {
   mockFetchResponse(responseBody, status);
 
-  const { result: store } = renderHook(() => useNewsLetterStore());
+  const { result: store } = renderHook(() => useNewsletterStore());
   act(() => {
     store.current.registered();
   });
@@ -29,7 +29,6 @@ const registeredWithMockResponse = async (
   return store.current;
 };
 
-// Tests for the registered method
 describe('Call registered method', () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -64,7 +63,7 @@ describe('Call registered method', () => {
   test('should handle network failure', async () => {
     fetchMock.mockRejectOnce(new Error('Network error'));
 
-    const { result: store } = renderHook(() => useNewsLetterStore());
+    const { result: store } = renderHook(() => useNewsletterStore());
     act(() => {
       store.current.registered();
     });

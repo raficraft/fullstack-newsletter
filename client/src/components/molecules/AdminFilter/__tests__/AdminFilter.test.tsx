@@ -1,8 +1,7 @@
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import AdminFilter from '../AdminFilter';
-import { StoreActions } from '@store/useNewsletterStore';
-import useNewsletterStore from '@store/useNewsletterStore';
+import useNewsletterStore, { StoreActions } from '@store/useNewsletterStore';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
+import AdminFilter from '../AdminFilter';
 
 const state = useNewsletterStore.getState();
 
@@ -141,10 +140,7 @@ describe('AdminFilter component', () => {
       useCase.selectOption('select-button-orderBy', 'Descendant');
       useCase.selectOption('select-button-active', 'Disabled');
 
-      // Get the current state
       const { filter } = useNewsletterStore.getState();
-
-      // Verify the state
 
       await waitFor(() => {
         expect(filter).toEqual({

@@ -1,8 +1,8 @@
-import request from 'supertest';
 import express from 'express';
-import createSearchRouter from '../search'; // Assurez-vous que le chemin d'importation est correct
+import request from 'supertest';
 import { prismaMock } from '../../../../__mocks__/prisma';
 import { convertDatesToStrings } from '../../../../utils/utils';
+import createSearchRouter from '../search';
 
 const app = express();
 app.use(express.json());

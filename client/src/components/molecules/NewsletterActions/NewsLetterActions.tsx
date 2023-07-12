@@ -1,20 +1,19 @@
-import { ConfirmAction, Field } from '@components/molecules';
 import { IconUnsubscribe, IconeDelete, IconeEnabled } from '@assets/svg/icons';
-import styles from './NewsLetterActions.module.scss';
-import { useState } from 'react';
 import { Modal } from '@components/atoms';
-import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
 import Spinner from '@components/atoms/Spinner/Spinner';
-import { debounce } from '@utils/debounce/debounce';
+import { ConfirmAction, Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
+import useNewsletterStore, { StoreActions } from '@store/useNewsletterStore';
+import { useState } from 'react';
+import styles from './NewsletterActions.module.scss';
 
-interface NewsLetterActionsProps {
+interface NewslettersActionsProps {
   id: string;
   email: string;
   active: boolean;
 }
 
-export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
+export const NewslettersActions: React.FC<NewslettersActionsProps> = ({
   id,
   email,
   active,
@@ -29,7 +28,7 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
     errorApi,
     setErrorApi,
     setCurrentActiveElement,
-  } = useNewsLetterStore();
+  } = useNewsletterStore();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [emailEdit, setEmailEdit] = useState<string>(email);
   const showLoading = loading && currentActiveElement === id;
@@ -150,4 +149,4 @@ export const NewsLetterActions: React.FC<NewsLetterActionsProps> = ({
   );
 };
 
-export default NewsLetterActions;
+export default NewslettersActions;

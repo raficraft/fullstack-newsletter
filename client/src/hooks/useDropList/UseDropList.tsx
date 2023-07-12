@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useRef,
-  createRef,
-  RefObject,
-  useEffect,
-} from 'react';
 import { useClickOutside } from '@hooks/index';
+import React, { RefObject, createRef, useRef, useState } from 'react';
 
 export interface Option {
   label: string;

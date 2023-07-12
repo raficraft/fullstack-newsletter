@@ -4,7 +4,7 @@ import usePaginate from '../usePaginate';
 describe('usePaginate', () => {
   const data = Array(50)
     .fill(null)
-    .map((_, i) => i); // [0, 1, ..., 49]
+    .map((_, i) => i); 
 
   test('should initialize correctly', () => {
     const { result } = renderHook(() => usePaginate(data, 10));

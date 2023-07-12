@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AdminSearch from '../AdminSearch';
 import { mockNewsletters } from '__mocks__/data/data';
+import AdminSearch from '../AdminSearch';
 
-const useNewsLetterStoreMock = {
+const useNewsletterStoreMock = {
   data: mockNewsletters,
   errorApi: '',
   loading: false,
@@ -23,10 +23,9 @@ const useNewsLetterStoreMock = {
   setErrorApi: jest.fn(),
 };
 
-// Mock du store
 jest.mock('@store/useNewsletterStore', () => ({
   __esModule: true,
-  default: () => useNewsLetterStoreMock,
+  default: () => useNewsletterStoreMock,
 }));
 
 beforeEach(() => jest.resetAllMocks());
@@ -56,7 +55,7 @@ describe('AdminSearch component', () => {
 
         await waitFor(() => {
           expect(screen.getByText(error.required)).toBeInTheDocument();
-          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
+          expect(useNewsletterStoreMock.searchSubscriber).not.toBeCalled();
         });
       });
     });
@@ -68,8 +67,8 @@ describe('AdminSearch component', () => {
         fireEvent.submit(input);
 
         await waitFor(() => {
-          expect(useNewsLetterStoreMock.searchSubscriber).toBeCalled();
-          expect(useNewsLetterStoreMock.searchSubscriber).toBeCalledTimes(1);
+          expect(useNewsletterStoreMock.searchSubscriber).toBeCalled();
+          expect(useNewsletterStoreMock.searchSubscriber).toBeCalledTimes(1);
           expect(screen.queryByText(error.required)).not.toBeInTheDocument();
         });
       });
@@ -84,7 +83,7 @@ describe('AdminSearch component', () => {
 
         await waitFor(() => {
           expect(screen.getByText(error.pattern)).toBeInTheDocument();
-          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
+          expect(useNewsletterStoreMock.searchSubscriber).not.toBeCalled();
         });
       });
     });
@@ -103,7 +102,7 @@ describe('AdminSearch component', () => {
 
         await waitFor(() => {
           expect(screen.getByText(error.pattern)).toBeInTheDocument();
-          expect(useNewsLetterStoreMock.searchSubscriber).not.toBeCalled();
+          expect(useNewsletterStoreMock.searchSubscriber).not.toBeCalled();
         });
       });
     });

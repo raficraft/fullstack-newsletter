@@ -1,22 +1,22 @@
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import NewsLetterActions from '../NewsLetterActions';
-import useNewsLetterStore from '@store/useNewsletterStore';
+import useNewsletterStore from '@store/useNewsletterStore';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import NewslettersActions from '../NewsletterActions';
 
-const state = useNewsLetterStore.getState();
+const store = useNewsletterStore.getState();
 
-const toggleSubscribeSpy = jest.spyOn(state, 'toggleSubscribe');
-const deleteSubscribeSpy = jest.spyOn(state, 'deleteSubscribe');
-const editSubscribeSpy = jest.spyOn(state, 'editSubscribe');
+const toggleSubscribeSpy = jest.spyOn(store, 'toggleSubscribe');
+const deleteSubscribeSpy = jest.spyOn(store, 'deleteSubscribe');
+const editSubscribeSpy = jest.spyOn(store, 'editSubscribe');
 
 beforeEach(() => {
   toggleSubscribeSpy.mockClear();
   deleteSubscribeSpy.mockClear();
   editSubscribeSpy.mockClear();
-  useNewsLetterStore.getState().setCurrentActiveElement('10');
+  useNewsletterStore.getState().setCurrentActiveElement('10');
 });
 
-describe('NewsLetterActions component', () => {
-  // Mock properties for the NewsLetterActions component
+describe('NewsletterActions component', () => {
+  // Mock properties for the NewsletterActions component
   const propsEnabled = {
     id: '10',
     email: 'test@test.com',
@@ -30,7 +30,7 @@ describe('NewsLetterActions component', () => {
   };
 
   const rendered = (props: any) => {
-    return render(<NewsLetterActions {...props} />);
+    return render(<NewslettersActions {...props} />);
   };
 
   test('Should render properly with input Enabled', () => {
@@ -50,14 +50,14 @@ describe('NewsLetterActions component', () => {
   test('Should be open modal', () => {
     rendered(propsEnabled);
     fireEvent.click(screen.getByTestId('iconDelete'));
-    expect(screen.getByTestId('dialog')).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   test('Should be close modal', () => {
     rendered(propsEnabled);
     fireEvent.click(screen.getByTestId('iconDelete'));
     fireEvent.click(screen.getByTestId('cancel'));
-    expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   test('Should be close modal', async () => {
@@ -65,7 +65,7 @@ describe('NewsLetterActions component', () => {
     fireEvent.click(screen.getByTestId('iconDelete'));
     fireEvent.click(screen.getByTitle('Close'));
     await waitFor(() => {
-      expect(screen.queryByTestId('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
 
@@ -176,12 +176,12 @@ describe('NewsLetterActions component', () => {
   });
 
   test('should define currentActiveElement on input focus', async () => {
-    useNewsLetterStore.getState().setCurrentActiveElement('0');
+    useNewsletterStore.getState().setCurrentActiveElement('0');
     rendered(propsEnabled);
     fireEvent.focus(screen.getByPlaceholderText('Edit email'));
 
     await waitFor(() => {
-      expect(useNewsLetterStore.getState().currentActiveElement).toEqual('10');
+      expect(useNewsletterStore.getState().currentActiveElement).toEqual('10');
     });
   });
 });

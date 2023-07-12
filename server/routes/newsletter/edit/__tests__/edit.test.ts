@@ -42,7 +42,7 @@ describe('PUT /newsletter/edit/:id', () => {
       const res = await request(app).put('/newsletter/edit/1').send({});
       expect(res.status).toBe(400);
       expect(res.body).toEqual({
-        error: 'Invalid value for "email". Expected a string.',
+        error: 'Valid email is required',
       });
 
       const res2 = await request(app)
@@ -50,7 +50,7 @@ describe('PUT /newsletter/edit/:id', () => {
         .send({ email: 123 });
       expect(res2.status).toBe(400);
       expect(res2.body).toEqual({
-        error: 'Invalid value for "email". Expected a string.',
+        error: 'Valid email is required',
       });
     });
 

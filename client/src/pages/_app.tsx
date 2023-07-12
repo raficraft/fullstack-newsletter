@@ -1,5 +1,5 @@
-import { IconSettings, IconCross } from '@assets/svg/icons';
-import useNewsLetterStore from '@store/useNewsletterStore';
+import { IconCross, IconSettings } from '@assets/svg/icons';
+import useNewsletterStore from '@store/useNewsletterStore';
 import '@styles/globals.scss';
 import type { AppProps } from 'next/app';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  const { setErrorApi } = useNewsLetterStore();
+  const { setErrorApi } = useNewsletterStore();
 
   const link = router.pathname === '/admin' ? '/' : '/admin';
   const title =

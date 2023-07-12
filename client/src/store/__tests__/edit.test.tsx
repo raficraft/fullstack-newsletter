@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore, { ApiResponse } from '../useNewsletterStore';
 
 const response = mockNewsletters[0];
 response.email = 'test-updated@example.com';
@@ -21,7 +21,7 @@ const editSubscribeWithMockResponse = async (
 ) => {
   mockFetchResponse(responseBody, status);
 
-  const { result: store } = renderHook(() => useNewsLetterStore());
+  const { result: store } = renderHook(() => useNewsletterStore());
   act(() => {
     store.current.editSubscribe(
       mockNewsletters[0].id,
@@ -35,11 +35,11 @@ const editSubscribeWithMockResponse = async (
   return store.current;
 };
 
-describe('useNewsLetterStore', () => {
+describe('useNewsletterStore', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     jest.useFakeTimers();
-    useNewsLetterStore.setState({
+    useNewsletterStore.setState({
       data: mockNewsletters,
     });
   });
@@ -47,8 +47,6 @@ describe('useNewsLetterStore', () => {
   afterEach(() => {
     jest.useRealTimers();
   });
-
-  // editSubscribe
 
   describe('Call editSubscribe method', () => {
     test('should edit subscribe correctly with valid id and email', async () => {
@@ -89,7 +87,7 @@ describe('useNewsLetterStore', () => {
     test('should handle network failure', async () => {
       fetchMock.mockRejectOnce(new Error('Network error'));
 
-      const { result: store } = renderHook(() => useNewsLetterStore());
+      const { result: store } = renderHook(() => useNewsletterStore());
       act(() => {
         store.current.editSubscribe(
           mockNewsletters[0].id,

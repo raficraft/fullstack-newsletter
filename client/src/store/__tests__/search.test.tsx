@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore, { ApiResponse } from '../useNewsletterStore';
 
 const query = 'searched';
 
@@ -26,7 +26,7 @@ const searchSubscriberWithMockResponse = async (
 ) => {
   mockFetchResponse(responseBody, status);
 
-  const { result: store } = renderHook(() => useNewsLetterStore());
+  const { result: store } = renderHook(() => useNewsletterStore());
   act(() => {
     store.current.searchSubscriber(query);
   });
@@ -37,11 +37,11 @@ const searchSubscriberWithMockResponse = async (
   return store.current;
 };
 
-describe('useNewsLetterStore', () => {
+describe('useNewsletterStore', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     jest.useFakeTimers();
-    useNewsLetterStore.setState({
+    useNewsletterStore.setState({
       data: mockNewsletters,
     });
   });
@@ -105,7 +105,7 @@ describe('useNewsLetterStore', () => {
 
       fetchMock.mockRejectOnce(new Error('Network error'));
 
-      const { result: store } = renderHook(() => useNewsLetterStore());
+      const { result: store } = renderHook(() => useNewsletterStore());
       act(() => {
         store.current.searchSubscriber(query);
       });

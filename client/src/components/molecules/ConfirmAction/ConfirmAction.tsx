@@ -1,6 +1,6 @@
-import { Button, Input, Text } from '@components/atoms';
+import { Button, Text } from '@components/atoms';
+import Field from '@molecules/Field/Field';
 import { ChangeEvent, useState } from 'react';
-import Field from '../Field/Field';
 import styles from './ConfirmAction.module.scss';
 
 interface ConfirmActionProps {

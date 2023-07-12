@@ -77,17 +77,23 @@ export default function (prisma: PrismaClient) {
     let sortOrder: 'asc' | 'desc' | null = null;
     let sortField: string | null = null;
 
-    if (sortOptions.includes(order as string)) {
+    if (order && !sortOptions.includes(order as string)) {
+      return res.status(400).json({ error: 'Invalid order parameter.' });
+    } else {
       sortOrder = order as 'asc' | 'desc';
     }
 
-    if (fieldOptions.includes(sortBy as string)) {
+    if (sortBy && !fieldOptions.includes(sortBy as string)) {
+      return res.status(400).json({ error: 'Invalid sortBy parameter.' });
+    } else {
       sortField = sortBy as string;
     }
 
     const filterParams: any = {};
     if (active !== undefined && (active === 'true' || active === 'false')) {
       filterParams.active = active === 'true';
+    } else if (active !== undefined) {
+      return res.status(400).json({ error: 'Invalid active parameter.' });
     }
 
     try {

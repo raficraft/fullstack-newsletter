@@ -1,6 +1,6 @@
 import { IconCross } from '@assets/svg/icons';
-import { createPortal } from 'react-dom';
 import { InputHTMLAttributes, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './Modal.module.scss';
 
 interface ModalProps extends InputHTMLAttributes<HTMLDivElement> {
@@ -12,23 +12,25 @@ interface ModalProps extends InputHTMLAttributes<HTMLDivElement> {
 const Modal = ({ className, children, close, ...rest }: ModalProps) => {
   return createPortal(
     <div
-      data-testid='dialog'
       className={styles.modal}
       onClick={(e) => {
         close();
       }}
+      role='dialog'
+      aria-modal='true'
       {...rest}
     >
-      <span
+      <button
         className={styles.icon_close}
         title='Close'
+        aria-label='Close modal'
         onClick={(e) => {
           e.stopPropagation();
           close();
         }}
       >
         <IconCross />
-      </span>
+      </button>
 
       {children}
     </div>,

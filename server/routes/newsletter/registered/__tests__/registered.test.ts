@@ -87,10 +87,12 @@ describe('GET /newsletter/registered', () => {
     });
 
     test('should return an error if the sort parameter is invalid', async () => {
-      const res = await request(app).get('/newsletter/registered?sort=invalid');
+      const res = await request(app).get(
+        '/newsletter/registered?sortBy=invalid'
+      );
 
       expect(res.status).toBe(400);
-      expect(res.body).toEqual({ error: 'Invalid sort parameter.' });
+      expect(res.body).toEqual({ error: 'Invalid sortBy parameter.' });
     });
 
     test('should handle server errors', async () => {

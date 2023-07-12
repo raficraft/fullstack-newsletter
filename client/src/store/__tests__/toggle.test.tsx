@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import useNewsLetterStore, { ApiResponse } from '../useNewsletterStore';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Int_Newsletter, mockNewsletters } from '__mocks__/data/data';
+import useNewsletterStore, { ApiResponse } from '../useNewsletterStore';
 
 const response = mockNewsletters[0];
 response.active = !response.active;
@@ -21,7 +21,7 @@ const toggleSubscribeWithMockResponse = async (
 ) => {
   mockFetchResponse(responseBody, status);
 
-  const { result: store } = renderHook(() => useNewsLetterStore());
+  const { result: store } = renderHook(() => useNewsletterStore());
   act(() => {
     store.current.toggleSubscribe(
       mockNewsletters[0].id,
@@ -35,11 +35,11 @@ const toggleSubscribeWithMockResponse = async (
   return store.current;
 };
 
-describe('useNewsLetterStore', () => {
+describe('useNewsletterStore', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     jest.useFakeTimers();
-    useNewsLetterStore.setState({
+    useNewsletterStore.setState({
       data: mockNewsletters,
     });
   });
@@ -48,7 +48,6 @@ describe('useNewsLetterStore', () => {
     jest.useRealTimers();
   });
 
-  // toggleSubscribe
 
   describe('Call toggleSubscribe method', () => {
     test('should toggle subscribe correctly with valid id', async () => {
@@ -89,7 +88,7 @@ describe('useNewsLetterStore', () => {
     test('should handle network failure', async () => {
       fetchMock.mockRejectOnce(new Error('Network error'));
 
-      const { result: store } = renderHook(() => useNewsLetterStore());
+      const { result: store } = renderHook(() => useNewsletterStore());
       act(() => {
         store.current.toggleSubscribe(
           mockNewsletters[0].id,

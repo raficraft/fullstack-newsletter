@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Button, DropList, Modal } from '@components/atoms';
-import styles from './AdminFilter.module.scss';
 import { IconeFilter, IconeReload } from '@assets/svg/icons';
-import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
+import { Button, DropList, Modal } from '@components/atoms';
 import Spinner from '@components/atoms/Spinner/Spinner';
+import useNewsletterStore, { StoreActions } from '@store/useNewsletterStore';
+import { useState } from 'react';
+import styles from './AdminFilter.module.scss';
 
 const optionsFilter = [
   { label: 'CreatedAt', value: 'createdAt' },
@@ -30,7 +30,7 @@ const AdminFilter = () => {
     generateFilterUrl,
     filterData,
     resetFilter,
-  } = useNewsLetterStore();
+  } = useNewsletterStore();
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 

@@ -1,9 +1,8 @@
 import { Button } from '@components/atoms';
 import { Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
-import useNewsLetterStore, { StoreActions } from '@store/useNewsletterStore';
-import { debounce } from '@utils/debounce/debounce';
-import { FormEvent, useEffect } from 'react';
+import useNewsletterStore, { StoreActions } from '@store/useNewsletterStore';
+import { FormEvent } from 'react';
 
 type Props = {
   onSuccessfulSubmit: (email: string) => void;
@@ -11,7 +10,7 @@ type Props = {
 
 const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
   const { errorApi, subscribe, setErrorApi, loading, currentAction } =
-    useNewsLetterStore();
+    useNewsletterStore();
 
   const {
     validateForm,

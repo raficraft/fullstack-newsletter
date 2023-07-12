@@ -1,7 +1,7 @@
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import SubscribeNewsletter from '../SubscribeNewsletter';
 import useNewsletterStore from '@store/useNewsletterStore';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { mockNewsletters } from '__mocks__/data/data';
+import SubscribeNewsletter from '../SubscribeNewsletter';
 
 const store = useNewsletterStore.getState();
 const subscribeSpy = jest.spyOn(store, 'subscribe');

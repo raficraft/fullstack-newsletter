@@ -1,6 +1,5 @@
-// components/molecules/Pagination.tsx
-import React from 'react';
 import { Button, Text } from '@components/atoms';
+import React from 'react';
 import styles from './Pagination.module.scss';
 
 interface PaginationProps {
