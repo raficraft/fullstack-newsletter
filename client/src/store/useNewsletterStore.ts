@@ -126,7 +126,6 @@ const useNewsletterStore = create<Store>((set, get) => ({
     options: RequestInit,
     activeId?: string
   ) => {
-    console.log(url);
     try {
       set({ loading: true, currentActiveElement: activeId, errorApi: '' });
 

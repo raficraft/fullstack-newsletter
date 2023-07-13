@@ -19,8 +19,6 @@ export default function Admin({
   );
 
   useEffect(() => {
-    console.log(data);
-    console.log('reload', currentData);
     setData(currentData);
   }, [data]);
 

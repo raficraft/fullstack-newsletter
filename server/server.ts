@@ -1,6 +1,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Express } from 'express';
+import morgan from 'morgan';
 import {
   serve as swaggerUiServe,
   setup as swaggerUiSetup,
@@ -15,6 +16,9 @@ dotenv.config();
 const app: Express = express();
 
 app.use(express.json());
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms')
+);
 app.use(cors());
 
 const PORT: string | number = process.env.PORT || 5000;
