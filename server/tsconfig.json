@@ -10,7 +10,10 @@
     "paths": {
       "@routes/*": ["routes/*"],
       "@newsletter/*": ["routes/newsletter/*"],
-      "@prisma": ["prisma/index.ts"]
+      "@prisma": ["prisma/index.ts"],
+      "@controller/*": ["controller/newsletter/*"],
+      "@mocks/*": ["__mocks__/*"],
+      "@utils/*": ["utils/*"]
     },
     "types": ["jest","node"],
     "outDir": "./dist"

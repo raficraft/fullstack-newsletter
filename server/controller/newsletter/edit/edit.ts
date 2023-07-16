@@ -1,13 +1,14 @@
+import { Prisma, PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import validator from 'validator';
 
 /**
  * @swagger
- * /newsletter/subscribe/toggle/{id}:
- *   put:
+ * /newsletter/edit/{id}:
+ *   patch:
  *     tags:
  *       - Newsletter
- *     summary: Edit active subscribe on BDD
+ *     summary: Edit email field on BDD
  *     consumes:
  *       - application/json
  *     parameters:
@@ -22,11 +23,11 @@ import { PrismaClient } from '@prisma/client';
  *         schema:
  *           type: object
  *           properties:
- *             active:
- *               type: boolean
+ *             email:
+ *               type: string
  *     responses:
  *       200:
- *         description: Successfully edit active field
+ *         description: Successfully edit email field
  *         schema:
  *           type: object
  *           properties:
@@ -55,25 +56,33 @@ import { PrismaClient } from '@prisma/client';
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.put('/:id', async (req: Request, res: Response): Promise<Response> => {
+  router.patch('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { active } = req.body;
+    const { email } = req.body;
 
-    if (active === undefined || typeof active !== 'boolean') {
-      return res
-        .status(400)
-        .json({ error: 'Invalid value for "active". Expected a boolean.' });
+    if (email === undefined || typeof email !== 'string') {
+      return res.status(400).json({ error: 'Valid email is required' });
+    }
+
+    if (!email || !validator.isEmail(email)) {
+      return res.status(400).json({ error: 'Valid email is required' });
     }
 
     try {
       const user = await prisma.newsletter.update({
         where: { id: Number(id) },
-        data: { active },
+        data: { email },
       });
 
       return res.json(user);
     } catch (error) {
-      return res.status(500).json({ error: 'Something went wrong' });
+      const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+      if (prismaError.code === 'P2002') {
+        res.status(400).json({ error: 'This email is already in use' });
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+      }
     }
   });
 

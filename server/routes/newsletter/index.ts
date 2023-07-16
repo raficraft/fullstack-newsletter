@@ -1,11 +1,11 @@
-import { Express } from 'express';
-import signupRouter from './subscribe/subscribe';
-import searchRouter from './search/search';
-import registeredRouter from './registered/registered';
-import editRouter from './edit/edit';
-import deleteRouter from './delete/delete';
-import unsubscribeRouter from './unsubscribe/unsubscribe';
+import deleteRouter from '@controller/delete/delete';
+import editRouter from '@controller/edit/edit';
+import registeredRouter from '@controller/registered/registered';
+import searchRouter from '@controller/search/search';
+import signupRouter from '@controller/subscribe/subscribe';
+import unsubscribeRouter from '@controller/unsubscribe/unsubscribe';
 import { PrismaClient } from '@prisma/client';
+import { Express } from 'express';
 
 const prisma = new PrismaClient();
 

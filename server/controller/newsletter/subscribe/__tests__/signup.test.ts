@@ -1,7 +1,7 @@
+import { prismaMock } from '@mocks/prisma';
+import { convertDatesToStrings } from '@utils/utils';
 import express from 'express';
 import request from 'supertest';
-import { prismaMock } from '../../../../__mocks__/prisma';
-import { convertDatesToStrings } from '../../../../utils/utils';
 import createSignupRouter from '../subscribe';
 
 const app = express();

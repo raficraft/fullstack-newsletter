@@ -52,7 +52,7 @@ describe('useNewsletterStore', () => {
     test('should edit subscribe correctly with valid id and email', async () => {
       const store = await editSubscribeWithMockResponse(response);
 
-      // Exclude createAt and updateAt checking
+      // Exclude createdAt and updateAt checking
 
       expect(store.data[0]).toEqual(
         expect.objectContaining({

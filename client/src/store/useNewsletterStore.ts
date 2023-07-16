@@ -111,7 +111,7 @@ const useNewsletterStore = create<Store>((set, get) => ({
 
   resetFilter: async () => {
     set({
-      filter: { sortBy: 'createAt', orderBy: 'asc', active: 'none' },
+      filter: { sortBy: 'createdAt', orderBy: 'asc', active: 'none' },
       currentAction: StoreActions.RELOAD,
     });
     const url = get().generateFilterUrl();

@@ -60,7 +60,7 @@ describe('Helpers function on store', () => {
 
     test('should reset the filter to its default values', async () => {
       const expectedFilter = {
-        sortBy: 'createAt',
+        sortBy: 'createdAt',
         orderBy: 'asc',
         active: 'none',
       };

@@ -9,13 +9,13 @@ const swaggerOptions = {
       contact: {
         name: 'parodi.dev@gmail.com',
       },
-      servers: ['http://localhost:4000'],
-      version: '1.0.0', // Ajoutez une version ici
+      servers: [process.env.NEXT_PUBLIC_API_URL],
+      version: '1.0.0',
     },
   },
-  apis: ['./routes/**/*.ts'],
+  apis: ['./controller/**/*.ts'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-export { swaggerUi, swaggerDocs };
+export { swaggerDocs, swaggerUi };

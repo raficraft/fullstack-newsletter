@@ -1,8 +1,8 @@
-import request from 'supertest';
+import { prismaMock } from '@mocks/prisma';
+import { convertDatesToStrings } from '@utils/utils';
 import express from 'express';
-import { prismaMock } from '../../../../__mocks__/prisma';
+import request from 'supertest';
 import unsubscribeRouter from '../unsubscribe';
-import { convertDatesToStrings } from '../../../../utils/utils';
 
 const app = express();
 app.use(express.json());

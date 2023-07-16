@@ -1,9 +1,9 @@
-import request from 'supertest';
-import express from 'express';
-import { prismaMock } from '../../../../__mocks__/prisma';
-import editRouter from '../edit';
-import { convertDatesToStrings } from '../../../../utils/utils';
+import { prismaMock } from '@mocks/prisma';
 import { Prisma } from '@prisma/client';
+import { convertDatesToStrings } from '@utils/utils';
+import express from 'express';
+import request from 'supertest';
+import editRouter from '../edit';
 
 const app = express();
 app.use(express.json());

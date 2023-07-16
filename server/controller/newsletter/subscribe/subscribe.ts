@@ -1,6 +1,6 @@
-import validator from 'validator';
+import { Prisma, PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
+import validator from 'validator';
 
 /**
  * @swagger
