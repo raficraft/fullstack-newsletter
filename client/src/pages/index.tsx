@@ -1,12 +1,11 @@
+import { IconCheck } from '@assets/svg/icons';
+import { Text } from '@components/atoms';
+import { SubscribeNewsletter } from '@components/organisms';
+import Succcess from '@molecules/Success/Success';
+import Abstract from '@organisms/Abstract/Abstract';
+import styles from '@styles/pages/Home.module.scss';
 import Head from 'next/head';
 import { useState } from 'react';
-import { Text } from '@components/atoms';
-import styles from '@styles/pages/Home.module.scss';
-import Abstract from '@organisms/Abstract/Abstract';
-import SubscribeNewsletter from '@organisms/form/SubscribeNewsletter/SubscribeNewsletter';
-import Succcess from '@molecules/Success/Success';
-import { IconCheck } from '@assets/svg/icons';
-import { Inter } from 'next/font/google';
 
 export default function Home() {
   const [subscribed, setSubscribed] = useState(false);
