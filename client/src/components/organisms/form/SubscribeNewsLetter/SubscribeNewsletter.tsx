@@ -9,8 +9,7 @@ type Props = {
 };
 
 const SubscribeNewsletter: React.FC<Props> = ({ onSuccessfulSubmit }) => {
-  const { errorApi, subscribe, setErrorApi, loading, currentAction } =
-    useNewsletterStore();
+  const { errorApi, subscribe, loading, currentAction } = useNewsletterStore();
 
   const {
     validateForm,

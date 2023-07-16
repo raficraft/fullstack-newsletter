@@ -26,7 +26,6 @@ export const NewslettersActions: React.FC<NewslettersActionsProps> = ({
     currentActiveElement,
     currentAction,
     errorApi,
-    setErrorApi,
     setCurrentActiveElement,
   } = useNewsletterStore();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
