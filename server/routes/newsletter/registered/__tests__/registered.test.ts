@@ -74,9 +74,31 @@ describe('GET /newsletter/registered', () => {
         expect(res.body).toEqual(mockUsers);
       }
     );
+
+    test('should return users sorted by email in descending order', async () => {
+      const sortedUsers = [...mockUsers].sort((a, b) =>
+        b.email.localeCompare(a.email)
+      );
+      prismaMock.newsletter.findMany.mockResolvedValue(sortedUsers);
+
+      const res = await request(app).get(
+        '/newsletter/registered?sortBy=email&order=desc'
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(sortedUsers);
+    });
   });
 
   describe('Bad request', () => {
+    test('should return an error if the order parameter is invalid', async () => {
+      const res = await request(app).get(
+        '/newsletter/registered?order=invalid'
+      );
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: 'Invalid order parameter.' });
+    });
     test('should return an error if the active parameter is invalid', async () => {
       const res = await request(app).get(
         '/newsletter/registered?active=invalid'

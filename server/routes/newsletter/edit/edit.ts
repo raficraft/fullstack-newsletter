@@ -5,7 +5,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 /**
  * @swagger
  * /newsletter/edit/{id}:
- *   put:
+ *   patch:
  *     tags:
  *       - Newsletter
  *     summary: Edit email field on BDD
@@ -56,15 +56,15 @@ import { PrismaClient, Prisma } from '@prisma/client';
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.put('/:id', async (req: Request, res: Response) => {
+  router.patch('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const { email } = req.body;
 
-    if (!email || !validator.isEmail(email)) {
+    if (email === undefined || typeof email !== 'string') {
       return res.status(400).json({ error: 'Valid email is required' });
     }
 
-    if (email === undefined || typeof email !== 'string') {
+    if (!email || !validator.isEmail(email)) {
       return res.status(400).json({ error: 'Valid email is required' });
     }
 

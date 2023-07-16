@@ -107,7 +107,6 @@ export default function (prisma: PrismaClient) {
 
       return res.json(registeredUsers);
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: 'Something went wrong' });
     }
   });

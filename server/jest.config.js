@@ -10,6 +10,7 @@ const config = {
   collectCoverageFrom: [
     '!**/node_modules/**',
     '<rootDir>/routes/**/*.{js,jsx,ts,tsx}',
+    '!<rootDir>/routes/**/index.{js,jsx,ts,tsx}',
   ],
   clearMocks: true,
   resetMocks: true,
