@@ -1,10 +1,10 @@
-import deleteRouter from '@controller/delete/delete';
-import editRouter from '@controller/edit/edit';
-import registeredRouter from '@controller/registered/registered';
-import searchRouter from '@controller/search/search';
-import signupRouter from '@controller/subscribe/subscribe';
-import unsubscribeRouter from '@controller/unsubscribe/unsubscribe';
 import { PrismaClient } from '@prisma/client';
+import deleteRouter from '../../controller/newsletter/delete/delete';
+import editRouter from '../../controller/newsletter/edit/edit';
+import registeredRouter from '../../controller/newsletter/registered/registered';
+import searchRouter from '../../controller/newsletter/search/search';
+import signupRouter from '../../controller/newsletter/subscribe/subscribe';
+import unsubscribeRouter from '../../controller/newsletter/unsubscribe/unsubscribe';
 import { Express } from 'express';
 
 const prisma = new PrismaClient();
