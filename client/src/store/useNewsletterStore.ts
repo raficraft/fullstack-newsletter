@@ -237,7 +237,7 @@ const useNewsletterStore = create<Store>((set, get) => ({
     set({ currentAction: StoreActions.EDIT });
     const response = await get().handleRequest(
       `${ROUTE}/edit/${id}`,
-      get().createReqOptions('PUT', { email }),
+      get().createReqOptions('PATCH', { email }),
       id
     );
 

@@ -5,7 +5,7 @@ import { ConfirmAction, Field } from '@components/molecules';
 import { useForm } from '@hooks/index';
 import useNewsletterStore, { StoreActions } from '@store/useNewsletterStore';
 import { useState } from 'react';
-import styles from './NewsletterAction.module.scss';
+import styles from './NewsletterActions.module.scss';
 
 interface NewslettersActionsProps {
   id: string;
