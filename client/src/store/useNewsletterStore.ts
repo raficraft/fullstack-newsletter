@@ -192,7 +192,7 @@ const useNewsletterStore = create<Store>((set, get) => ({
   deleteSubscribe: async (id: string) => {
     set({ currentAction: StoreActions.DELETE });
     const response = await get().handleRequest(
-      `${ROUTE}/delete/${id}`,
+      `${ROUTE}/${id}`,
       { method: 'DELETE' },
       id
     );
@@ -211,7 +211,7 @@ const useNewsletterStore = create<Store>((set, get) => ({
     set({ currentAction: StoreActions.TOGGLE });
     const response = await get().handleRequest(
       `${ROUTE}/subscribe/toggle/${id}`,
-      get().createReqOptions('PUT', { active }),
+      get().createReqOptions('PATCH', { active }),
       id
     );
     if (response.success) {
@@ -236,7 +236,7 @@ const useNewsletterStore = create<Store>((set, get) => ({
   editSubscribe: async (id: string, email: string) => {
     set({ currentAction: StoreActions.EDIT });
     const response = await get().handleRequest(
-      `${ROUTE}/edit/${id}`,
+      `${ROUTE}/${id}`,
       get().createReqOptions('PATCH', { email }),
       id
     );

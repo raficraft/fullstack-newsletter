@@ -18,7 +18,7 @@
   --clr-primary-100: rgb(25, 24, 43);
   --clr-primary-200: rgb(36, 39, 66);
   --clr-primary-300: rgba(46, 49, 73);
-  --clr-primary-400: rgba(54, 66, 76);
+  --clr-primary-400: #36424c;
   --clr-primary-500: rgba(105, 117, 137);
   --clr-primary-600: rgba(165, 172, 180);
   --clr-primary-700: rgba(210, 210, 210);
@@ -84,7 +84,7 @@ body {
 body {
   @include flex(column, '', center);
   height: 100%;
-  background-color: var(--background);
+  background-color: var(--clr-primary-400);
   font-family: var(--font-family);
   color: var(--color);
   line-height: 1.5;
