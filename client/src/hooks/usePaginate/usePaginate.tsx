@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 const usePaginate = (data: any[], itemsPerPage: number) => {
+  console.log('...');
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const totalItems = data.length;
@@ -17,7 +18,7 @@ const usePaginate = (data: any[], itemsPerPage: number) => {
     setCurrentPage((prev) => Math.max(prev - 1, 0));
   };
 
-  return { items, nextPage, prevPage, currentPage, totalPages };
+  return { items, nextPage, prevPage, currentPage, totalPages, setCurrentPage };
 };
 
 export default usePaginate;

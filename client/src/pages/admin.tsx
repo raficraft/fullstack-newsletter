@@ -13,14 +13,16 @@ export default function Admin({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data, setData } = useNewsletterStore();
   const currentData = !data.length ? newsletters : data;
-  const { items, nextPage, prevPage, currentPage, totalPages } = usePaginate(
-    currentData,
-    5
-  );
+  const { items, nextPage, prevPage, currentPage, totalPages, setCurrentPage } =
+    usePaginate(currentData, 5);
 
   useEffect(() => {
+    // Fix : When the user deletes the only item present in the last page, we redefine the current page
+    if (currentPage >= totalPages && totalPages > 1) {
+      setCurrentPage(totalPages - 1);
+    }
     setData(currentData);
-  }, [data]);
+  }, [data, totalPages]);
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function Admin({
               />
             ))
           ) : (
-            <p>Aucun élément à afficher.</p>
+            <p className='text_accent text_center'>Aucun élément à afficher.</p>
           )}
         </div>
         {totalPages > 1 && (
