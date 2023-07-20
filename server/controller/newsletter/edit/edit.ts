@@ -4,7 +4,7 @@ import validator from 'validator';
 
 /**
  * @swagger
- * /newsletter/edit/{id}:
+ * /newsletter/{id}:
  *   patch:
  *     tags:
  *       - Newsletter

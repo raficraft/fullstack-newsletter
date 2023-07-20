@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 
 /**
  * @swagger
- * /newsletter/delete/{id}:
+ * /newsletter/{id}:
  *   delete:
  *     tags:
  *       - Newsletter

@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="100" lines-covered="100" line-rate="1" branches-valid="36" branches-covered="36" branch-rate="1" timestamp="1689542858955" complexity="0" version="0.1">
+<coverage lines-valid="101" lines-covered="101" line-rate="1" branches-valid="36" branches-covered="36" branch-rate="1" timestamp="1689810612086" complexity="0" version="0.1">
   <sources>
     <source>D:\dev\portfolio\newsLetter\server</source>
   </sources>
   <packages>
     <package name="delete" line-rate="1" branch-rate="1">
       <classes>
-        <class name="delete.ts" filename="routes\newsletter\delete\delete.ts" line-rate="1" branch-rate="1">
+        <class name="delete.ts" filename="controller\newsletter\delete\delete.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -26,7 +26,7 @@
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
+            <line number="2" hits="1" branch="false"/>
             <line number="45" hits="1" branch="false"/>
             <line number="46" hits="1" branch="false"/>
             <line number="48" hits="1" branch="false"/>
@@ -46,7 +46,7 @@
     </package>
     <package name="edit" line-rate="1" branch-rate="1">
       <classes>
-        <class name="edit.ts" filename="routes\newsletter\edit\edit.ts" line-rate="1" branch-rate="1">
+        <class name="edit.ts" filename="controller\newsletter\edit\edit.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -65,8 +65,8 @@
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
             <line number="2" hits="1" branch="false"/>
+            <line number="3" hits="1" branch="false"/>
             <line number="56" hits="1" branch="false"/>
             <line number="57" hits="1" branch="false"/>
             <line number="59" hits="6" branch="false"/>
@@ -90,7 +90,7 @@
     </package>
     <package name="registered" line-rate="1" branch-rate="1">
       <classes>
-        <class name="registered.ts" filename="routes\newsletter\registered\registered.ts" line-rate="1" branch-rate="1">
+        <class name="registered.ts" filename="controller\newsletter\registered\registered.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -109,7 +109,7 @@
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
+            <line number="2" hits="1" branch="false"/>
             <line number="68" hits="1" branch="false"/>
             <line number="69" hits="1" branch="false"/>
             <line number="71" hits="15" branch="false"/>
@@ -141,7 +141,7 @@
     </package>
     <package name="search" line-rate="1" branch-rate="1">
       <classes>
-        <class name="search.ts" filename="routes\newsletter\search\search.ts" line-rate="1" branch-rate="1">
+        <class name="search.ts" filename="controller\newsletter\search\search.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -160,7 +160,7 @@
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
+            <line number="2" hits="1" branch="false"/>
             <line number="62" hits="1" branch="false"/>
             <line number="63" hits="1" branch="false"/>
             <line number="65" hits="4" branch="false"/>
@@ -178,7 +178,7 @@
     </package>
     <package name="subscribe" line-rate="1" branch-rate="1">
       <classes>
-        <class name="subscribe.ts" filename="routes\newsletter\subscribe\subscribe.ts" line-rate="1" branch-rate="1">
+        <class name="subscribe.ts" filename="controller\newsletter\subscribe\subscribe.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -197,8 +197,8 @@
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
             <line number="2" hits="1" branch="false"/>
+            <line number="3" hits="1" branch="false"/>
             <line number="45" hits="1" branch="false"/>
             <line number="46" hits="1" branch="false"/>
             <line number="48" hits="4" branch="false"/>
@@ -219,7 +219,7 @@
     </package>
     <package name="unsubscribe" line-rate="1" branch-rate="1">
       <classes>
-        <class name="unsubscribe.ts" filename="routes\newsletter\unsubscribe\unsubscribe.ts" line-rate="1" branch-rate="1">
+        <class name="unsubscribe.ts" filename="controller\newsletter\unsubscribe\unsubscribe.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="default_1" hits="1" signature="()V">
               <lines>
@@ -228,29 +228,30 @@
             </method>
             <method name="(anonymous_9)" hits="4" signature="()V">
               <lines>
-                <line number="58" hits="4"/>
+                <line number="60" hits="4"/>
               </lines>
             </method>
             <method name="(anonymous_10)" hits="4" signature="()V">
               <lines>
-                <line number="58" hits="4"/>
+                <line number="60" hits="4"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="1" hits="1" branch="false"/>
+            <line number="2" hits="1" branch="false"/>
             <line number="55" hits="1" branch="false"/>
             <line number="56" hits="1" branch="false"/>
-            <line number="58" hits="4" branch="false"/>
-            <line number="59" hits="4" branch="false"/>
+            <line number="58" hits="1" branch="false"/>
             <line number="60" hits="4" branch="false"/>
-            <line number="62" hits="4" branch="true" condition-coverage="100% (3/3)"/>
-            <line number="63" hits="2" branch="false"/>
-            <line number="68" hits="2" branch="false"/>
-            <line number="69" hits="2" branch="false"/>
-            <line number="74" hits="1" branch="false"/>
+            <line number="61" hits="4" branch="false"/>
+            <line number="62" hits="4" branch="false"/>
+            <line number="64" hits="4" branch="true" condition-coverage="100% (3/3)"/>
+            <line number="65" hits="2" branch="false"/>
+            <line number="70" hits="2" branch="false"/>
+            <line number="71" hits="2" branch="false"/>
             <line number="76" hits="1" branch="false"/>
-            <line number="80" hits="1" branch="false"/>
+            <line number="78" hits="1" branch="false"/>
+            <line number="83" hits="1" branch="false"/>
           </lines>
         </class>
       </classes>

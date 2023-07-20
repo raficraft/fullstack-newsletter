@@ -26,8 +26,6 @@ Frontend:
 - React-testing-library
 - Fetch-mock
 
-Merci pour vos précisions, j'ai adapté les descriptions en conséquence :
-
 ## Features
 
 - **Subscription Management for Newsletters**<br>

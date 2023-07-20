@@ -16,7 +16,7 @@ const mockUser = {
   updatedAt: new Date(),
 };
 
-describe('PUT /newsletter/unsubscribe/:id', () => {
+describe('PATCH /newsletter/unsubscribe/:id', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -26,7 +26,7 @@ describe('PUT /newsletter/unsubscribe/:id', () => {
       prismaMock.newsletter.update.mockResolvedValue(mockUser);
 
       const res = await request(app)
-        .put('/newsletter/unsubscribe/1')
+        .patch('/newsletter/unsubscribe/1')
         .send({ active: !mockUser.active });
 
       expect(res.status).toBe(200);
@@ -39,7 +39,7 @@ describe('PUT /newsletter/unsubscribe/:id', () => {
 
   describe('Wrong request', () => {
     test('should respond with 400 if active value is missing or not a boolean', async () => {
-      const res = await request(app).put('/newsletter/unsubscribe/1').send({});
+      const res = await request(app).patch('/newsletter/unsubscribe/1').send({});
 
       expect(res.status).toBe(400);
       expect(res.body).toEqual({
@@ -47,7 +47,7 @@ describe('PUT /newsletter/unsubscribe/:id', () => {
       });
 
       const res2 = await request(app)
-        .put('/newsletter/unsubscribe/1')
+        .patch('/newsletter/unsubscribe/1')
         .send({ active: 'not a boolean' });
 
       expect(res2.status).toBe(400);
@@ -60,7 +60,7 @@ describe('PUT /newsletter/unsubscribe/:id', () => {
       prismaMock.newsletter.update.mockRejectedValue(new Error());
 
       const res = await request(app)
-        .put('/newsletter/unsubscribe/1')
+        .patch('/newsletter/unsubscribe/1')
         .send({ active: mockUser.active });
 
       expect(res.status).toBe(500);

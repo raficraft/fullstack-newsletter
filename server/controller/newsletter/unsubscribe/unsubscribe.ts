@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express';
 /**
  * @swagger
  * /newsletter/subscribe/toggle/{id}:
- *   put:
+ *   patch:
  *     tags:
  *       - Newsletter
  *     summary: Edit active subscribe on BDD
@@ -55,27 +55,30 @@ import express, { Request, Response } from 'express';
 export default function (prisma: PrismaClient) {
   const router = express.Router();
 
-  router.put('/:id', async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const { active } = req.body;
+  router.patch(
+    '/:id',
+    async (req: Request, res: Response): Promise<Response> => {
+      const { id } = req.params;
+      const { active } = req.body;
 
-    if (active === undefined || typeof active !== 'boolean') {
-      return res
-        .status(400)
-        .json({ error: 'Invalid value for "active". Expected a boolean.' });
+      if (active === undefined || typeof active !== 'boolean') {
+        return res
+          .status(400)
+          .json({ error: 'Invalid value for "active". Expected a boolean.' });
+      }
+
+      try {
+        const user = await prisma.newsletter.update({
+          where: { id: Number(id) },
+          data: { active },
+        });
+
+        return res.json(user);
+      } catch (error) {
+        return res.status(500).json({ error: 'Something went wrong' });
+      }
     }
-
-    try {
-      const user = await prisma.newsletter.update({
-        where: { id: Number(id) },
-        data: { active },
-      });
-
-      return res.json(user);
-    } catch (error) {
-      return res.status(500).json({ error: 'Something went wrong' });
-    }
-  });
+  );
 
   return router;
 }

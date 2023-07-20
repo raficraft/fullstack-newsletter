@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="34" failures="0" errors="0" time="12.393">
-  <testsuite name="GET /newsletter/registered" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:27" time="8.674" tests="15">
-    <testcase classname="GET /newsletter/registered Good request should return all registered users" name="GET /newsletter/registered Good request should return all registered users" time="0.049">
+<testsuites name="jest tests" tests="34" failures="0" errors="0" time="8.514">
+  <testsuite name="POST /newsletter/signup" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:04" time="6.383" tests="4">
+    <testcase classname="POST /newsletter/signup Good request should register a new user" name="POST /newsletter/signup Good request should register a new user" time="0.072">
     </testcase>
-    <testcase classname="GET /newsletter/registered Good request should return registered users based on the active parameter" name="GET /newsletter/registered Good request should return registered users based on the active parameter" time="0.013">
+    <testcase classname="POST /newsletter/signup Wrong request should handle duplicate email error" name="POST /newsletter/signup Wrong request should handle duplicate email error" time="0.017">
+    </testcase>
+    <testcase classname="POST /newsletter/signup Wrong request should handle server errors" name="POST /newsletter/signup Wrong request should handle server errors" time="0.009">
+    </testcase>
+    <testcase classname="POST /newsletter/signup Wrong request should validate email" name="POST /newsletter/signup Wrong request should validate email" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="PATCH /newsletter/unsubscribe/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:04" time="6.332" tests="3">
+    <testcase classname="PATCH /newsletter/unsubscribe/:id Good request should update user active status successfully" name="PATCH /newsletter/unsubscribe/:id Good request should update user active status successfully" time="0.069">
+    </testcase>
+    <testcase classname="PATCH /newsletter/unsubscribe/:id Wrong request should respond with 400 if active value is missing or not a boolean" name="PATCH /newsletter/unsubscribe/:id Wrong request should respond with 400 if active value is missing or not a boolean" time="0.02">
+    </testcase>
+    <testcase classname="PATCH /newsletter/unsubscribe/:id Wrong request should respond with 500 if something goes wrong in the database" name="PATCH /newsletter/unsubscribe/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /newsletter/registered" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:10" time="0.622" tests="15">
+    <testcase classname="GET /newsletter/registered Good request should return all registered users" name="GET /newsletter/registered Good request should return all registered users" time="0.033">
+    </testcase>
+    <testcase classname="GET /newsletter/registered Good request should return registered users based on the active parameter" name="GET /newsletter/registered Good request should return registered users based on the active parameter" time="0.012">
     </testcase>
     <testcase classname="GET /newsletter/registered Good request should list registered users sorted by idAsc" name="GET /newsletter/registered Good request should list registered users sorted by idAsc" time="0.011">
     </testcase>
@@ -13,71 +31,53 @@
     </testcase>
     <testcase classname="GET /newsletter/registered Good request should list registered users sorted by emailDesc" name="GET /newsletter/registered Good request should list registered users sorted by emailDesc" time="0.008">
     </testcase>
-    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by createdAtAsc" name="GET /newsletter/registered Good request should list registered users sorted by createdAtAsc" time="0.009">
+    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by createdAtAsc" name="GET /newsletter/registered Good request should list registered users sorted by createdAtAsc" time="0.008">
     </testcase>
     <testcase classname="GET /newsletter/registered Good request should list registered users sorted by createdAtDesc" name="GET /newsletter/registered Good request should list registered users sorted by createdAtDesc" time="0.007">
     </testcase>
-    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by updatedAtAsc" name="GET /newsletter/registered Good request should list registered users sorted by updatedAtAsc" time="0.013">
+    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by updatedAtAsc" name="GET /newsletter/registered Good request should list registered users sorted by updatedAtAsc" time="0.023">
     </testcase>
-    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by updatedAtDesc" name="GET /newsletter/registered Good request should list registered users sorted by updatedAtDesc" time="0.007">
+    <testcase classname="GET /newsletter/registered Good request should list registered users sorted by updatedAtDesc" name="GET /newsletter/registered Good request should list registered users sorted by updatedAtDesc" time="0.008">
     </testcase>
-    <testcase classname="GET /newsletter/registered Good request should return users sorted by email in descending order" name="GET /newsletter/registered Good request should return users sorted by email in descending order" time="0.022">
+    <testcase classname="GET /newsletter/registered Good request should return users sorted by email in descending order" name="GET /newsletter/registered Good request should return users sorted by email in descending order" time="0.024">
     </testcase>
-    <testcase classname="GET /newsletter/registered Bad request should return an error if the order parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the order parameter is invalid" time="0.014">
+    <testcase classname="GET /newsletter/registered Bad request should return an error if the order parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the order parameter is invalid" time="0.007">
     </testcase>
-    <testcase classname="GET /newsletter/registered Bad request should return an error if the active parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the active parameter is invalid" time="0.012">
+    <testcase classname="GET /newsletter/registered Bad request should return an error if the active parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the active parameter is invalid" time="0.007">
     </testcase>
-    <testcase classname="GET /newsletter/registered Bad request should return an error if the sort parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the sort parameter is invalid" time="0.008">
+    <testcase classname="GET /newsletter/registered Bad request should return an error if the sort parameter is invalid" name="GET /newsletter/registered Bad request should return an error if the sort parameter is invalid" time="0.007">
     </testcase>
-    <testcase classname="GET /newsletter/registered Bad request should handle server errors" name="GET /newsletter/registered Bad request should handle server errors" time="0.013">
-    </testcase>
-  </testsuite>
-  <testsuite name="PATCH /newsletter/edit/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:27" time="9.148" tests="5">
-    <testcase classname="PATCH /newsletter/edit/:id Good request should update user email successfully" name="PATCH /newsletter/edit/:id Good request should update user email successfully" time="0.094">
-    </testcase>
-    <testcase classname="PATCH /newsletter/edit/:id Wrong request should respond with 400 if email is invalid" name="PATCH /newsletter/edit/:id Wrong request should respond with 400 if email is invalid" time="0.037">
-    </testcase>
-    <testcase classname="PATCH /newsletter/edit/:id Wrong request should respond with 400 if email value is missing or not a string" name="PATCH /newsletter/edit/:id Wrong request should respond with 400 if email value is missing or not a string" time="0.049">
-    </testcase>
-    <testcase classname="PATCH /newsletter/edit/:id Wrong request should respond with 500 if something goes wrong in the database" name="PATCH /newsletter/edit/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.04">
-    </testcase>
-    <testcase classname="PATCH /newsletter/edit/:id Wrong request should respond with 400 if the email is already in use" name="PATCH /newsletter/edit/:id Wrong request should respond with 400 if the email is already in use" time="0.015">
+    <testcase classname="GET /newsletter/registered Bad request should handle server errors" name="GET /newsletter/registered Bad request should handle server errors" time="0.007">
     </testcase>
   </testsuite>
-  <testsuite name="POST /newsletter/signup" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:35" time="1.555" tests="4">
-    <testcase classname="POST /newsletter/signup Good request should register a new user" name="POST /newsletter/signup Good request should register a new user" time="0.058">
+  <testsuite name="PATCH /newsletter/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:10" time="0.771" tests="5">
+    <testcase classname="PATCH /newsletter/:id Good request should update user email successfully" name="PATCH /newsletter/:id Good request should update user email successfully" time="0.038">
     </testcase>
-    <testcase classname="POST /newsletter/signup Wrong request should handle duplicate email error" name="POST /newsletter/signup Wrong request should handle duplicate email error" time="0.013">
+    <testcase classname="PATCH /newsletter/:id Wrong request should respond with 400 if email is invalid" name="PATCH /newsletter/:id Wrong request should respond with 400 if email is invalid" time="0.015">
     </testcase>
-    <testcase classname="POST /newsletter/signup Wrong request should handle server errors" name="POST /newsletter/signup Wrong request should handle server errors" time="0.008">
+    <testcase classname="PATCH /newsletter/:id Wrong request should respond with 400 if email value is missing or not a string" name="PATCH /newsletter/:id Wrong request should respond with 400 if email value is missing or not a string" time="0.016">
     </testcase>
-    <testcase classname="POST /newsletter/signup Wrong request should validate email" name="POST /newsletter/signup Wrong request should validate email" time="0.01">
+    <testcase classname="PATCH /newsletter/:id Wrong request should respond with 500 if something goes wrong in the database" name="PATCH /newsletter/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.014">
     </testcase>
-  </testsuite>
-  <testsuite name="PUT /newsletter/unsubscribe/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:36" time="1.059" tests="3">
-    <testcase classname="PUT /newsletter/unsubscribe/:id Good request should update user active status successfully" name="PUT /newsletter/unsubscribe/:id Good request should update user active status successfully" time="0.033">
-    </testcase>
-    <testcase classname="PUT /newsletter/unsubscribe/:id Wrong request should respond with 400 if active value is missing or not a boolean" name="PUT /newsletter/unsubscribe/:id Wrong request should respond with 400 if active value is missing or not a boolean" time="0.016">
-    </testcase>
-    <testcase classname="PUT /newsletter/unsubscribe/:id Wrong request should respond with 500 if something goes wrong in the database" name="PUT /newsletter/unsubscribe/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.009">
+    <testcase classname="PATCH /newsletter/:id Wrong request should respond with 400 if the email is already in use" name="PATCH /newsletter/:id Wrong request should respond with 400 if the email is already in use" time="0.01">
     </testcase>
   </testsuite>
-  <testsuite name="GET /" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:37" time="1.021" tests="4">
-    <testcase classname="GET / good request should return users based on the query string" name="GET / good request should return users based on the query string" time="0.022">
+  <testsuite name="DELETE /newsletter/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:11" time="0.484" tests="3">
+    <testcase classname="DELETE /newsletter/:id Good request should delete the user successfully" name="DELETE /newsletter/:id Good request should delete the user successfully" time="0.018">
+    </testcase>
+    <testcase classname="DELETE /newsletter/:id Wrong request should respond with 404 if the user is not found" name="DELETE /newsletter/:id Wrong request should respond with 404 if the user is not found" time="0.009">
+    </testcase>
+    <testcase classname="DELETE /newsletter/:id Wrong request should respond with 500 if something goes wrong in the database" name="DELETE /newsletter/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /" errors="0" failures="0" skipped="0" timestamp="2023-07-19T23:50:11" time="0.464" tests="4">
+    <testcase classname="GET / good request should return users based on the query string" name="GET / good request should return users based on the query string" time="0.025">
     </testcase>
     <testcase classname="GET / good request should return empty array if no users match the query string" name="GET / good request should return empty array if no users match the query string" time="0.008">
     </testcase>
-    <testcase classname="GET / bad request should handle server errors" name="GET / bad request should handle server errors" time="0.012">
+    <testcase classname="GET / bad request should handle server errors" name="GET / bad request should handle server errors" time="0.008">
     </testcase>
-    <testcase classname="GET / bad request should return 400 if query string is missing" name="GET / bad request should return 400 if query string is missing" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="DELETE /newsletter/delete/:id" errors="0" failures="0" skipped="0" timestamp="2023-07-16T21:27:37" time="1.012" tests="3">
-    <testcase classname="DELETE /newsletter/delete/:id Good request should delete the user successfully" name="DELETE /newsletter/delete/:id Good request should delete the user successfully" time="0.019">
-    </testcase>
-    <testcase classname="DELETE /newsletter/delete/:id Wrong request should respond with 404 if the user is not found" name="DELETE /newsletter/delete/:id Wrong request should respond with 404 if the user is not found" time="0.01">
-    </testcase>
-    <testcase classname="DELETE /newsletter/delete/:id Wrong request should respond with 500 if something goes wrong in the database" name="DELETE /newsletter/delete/:id Wrong request should respond with 500 if something goes wrong in the database" time="0.009">
+    <testcase classname="GET / bad request should return 400 if query string is missing" name="GET / bad request should return 400 if query string is missing" time="0.007">
     </testcase>
   </testsuite>
 </testsuites>

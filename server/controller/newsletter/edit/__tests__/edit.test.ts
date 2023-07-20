@@ -7,7 +7,7 @@ import editRouter from '../edit';
 
 const app = express();
 app.use(express.json());
-app.use('/newsletter/edit', editRouter(prismaMock));
+app.use('/newsletter', editRouter(prismaMock));
 
 const mockUser = {
   id: 1,
@@ -17,7 +17,7 @@ const mockUser = {
   updatedAt: new Date(),
 };
 
-describe('PATCH /newsletter/edit/:id', () => {
+describe('PATCH /newsletter/:id', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -27,7 +27,7 @@ describe('PATCH /newsletter/edit/:id', () => {
       prismaMock.newsletter.update.mockResolvedValue(mockUser);
 
       const res = await request(app)
-        .patch('/newsletter/edit/1')
+        .patch('/newsletter/1')
         .send({ email: mockUser.email });
 
       expect(res.status).toBe(200);
@@ -41,7 +41,7 @@ describe('PATCH /newsletter/edit/:id', () => {
   describe('Wrong request', () => {
     test('should respond with 400 if email is invalid', async () => {
       const res = await request(app)
-        .patch('/newsletter/edit/1')
+        .patch('/newsletter/1')
         .send({ email: 'invalid_email' });
 
       expect(res.status).toBe(400);
@@ -51,14 +51,14 @@ describe('PATCH /newsletter/edit/:id', () => {
     });
 
     test('should respond with 400 if email value is missing or not a string', async () => {
-      const res = await request(app).patch('/newsletter/edit/1').send({});
+      const res = await request(app).patch('/newsletter/1').send({});
       expect(res.status).toBe(400);
       expect(res.body).toEqual({
         error: 'Valid email is required',
       });
 
       const res2 = await request(app)
-        .patch('/newsletter/edit/1')
+        .patch('/newsletter/1')
         .send({ email: 123 });
       expect(res2.status).toBe(400);
       expect(res2.body).toEqual({
@@ -70,7 +70,7 @@ describe('PATCH /newsletter/edit/:id', () => {
       prismaMock.newsletter.update.mockRejectedValue(new Error());
 
       const res = await request(app)
-        .patch('/newsletter/edit/1')
+        .patch('/newsletter/1')
         .send({ email: mockUser.email });
 
       expect(res.status).toBe(500);
@@ -84,7 +84,7 @@ describe('PATCH /newsletter/edit/:id', () => {
       prismaMock.newsletter.update.mockRejectedValue(prismaError);
 
       const res = await request(app)
-        .patch('/newsletter/edit/1')
+        .patch('/newsletter/1')
         .send({ email: mockUser.email });
 
       expect(res.status).toBe(400);

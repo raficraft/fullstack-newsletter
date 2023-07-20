@@ -28,6 +28,7 @@
     "prisma": "^4.15.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
+    "tsconfig-paths-jest": "^0.0.1",
     "validator": "^13.9.0"
   },
   "devDependencies": {

@@ -13,8 +13,8 @@ export default function (app: Express) {
   app.use('/newsletter/search', searchRouter(prisma));
   app.use('/newsletter/subscribe', signupRouter(prisma));
   app.use('/newsletter/registered', registeredRouter(prisma));
-  app.use('/newsletter/edit', editRouter(prisma));
-  app.use('/newsletter/delete', deleteRouter(prisma));
+  app.use('/newsletter', editRouter(prisma));
+  app.use('/newsletter', deleteRouter(prisma));
   app.use('/newsletter/subscribe/toggle', unsubscribeRouter(prisma));
 
   return app;
