@@ -2,7 +2,7 @@
 
 This is a Fullstack Newsletter application, a robust solution for managing newsletters and notifications. The backend is hosted on Heroku and the frontend is deployed on Vercel.
 
-![Screenshot](https://fullstack-newsletter-q1l5.vercel.app/screenshot.png)
+![Screenshot](home.PNG)
 
 ## Tech Stack
 
