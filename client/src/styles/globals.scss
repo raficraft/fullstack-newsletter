@@ -94,9 +94,11 @@ body {
 #__next {
   width: 100%;
   min-height: 100%;
-  height: inherit;
   @include flex(column, center, center);
   background-color: var(--clr-primary-400);
+  @media screen and (max-width: 600px) {
+    justify-content: flex-start;
+  }
 }
 
 .rootContainer {
